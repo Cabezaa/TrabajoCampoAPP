@@ -1,0 +1,53 @@
+<br>
+<div class="col-lg-8">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      Trabajo Seleccionado
+    </div>
+    <div class="panel-body">
+      <label >Num. Orden : {{ordenSeleccionada.numOrden}}</label>
+      <br>
+      <label >Num. Trabajo : {{trabajoSeleccionado.numTrabajo}}</label>
+      <br>
+      <label >Fecha : {{trabajoSeleccionado.fechaRealizacion | date:'dd/MM/yyyy'}}</label>
+    </div>
+    <!-- <div class="panel-footer">
+    Panel Footer
+  </div> -->
+</div>
+</div>
+<div class="col-lg-12 example-container ">
+  <div class="example-header">
+    <md-form-field floatPlaceholder="never">
+      <input mdInput #filter placeholder="Filtrar Trabajos">
+    </md-form-field>
+  </div>
+
+  <md-table class='hoverTable'
+  selectable-rows="true"
+   table-card="{title: Nutrition, actionIcons: true}"
+  #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+    The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- ID Column -->
+    <ng-container mdColumnDef="idDocumento">
+      <md-header-cell *mdHeaderCellDef> Num. Documento </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.idDocumento}} </md-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container mdColumnDef="nombreArchivo">
+      <md-header-cell *mdHeaderCellDef> Nombre</md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.nombreArchivo}} </md-cell>
+    </ng-container>
+
+    <md-header-row  *mdHeaderRowDef="displayedColumns"></md-header-row>
+    <!-- <md-row [ngClass]="{'isSpecial':  row.seleccionada == true}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row> -->
+    <md-row [ngClass]="{'isSpecial':  row.idDocumento == seleccionado.idDocumento}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row>
+  </md-table>
+</div>
+<br>
+<br>
+<button type="button" class="btn btn-lg btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.idDocumento =='' " >Siguiente</button>

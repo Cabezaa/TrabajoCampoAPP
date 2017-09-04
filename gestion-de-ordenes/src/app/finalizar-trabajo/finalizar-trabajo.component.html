@@ -8,9 +8,13 @@
     <div class="panel-body">
       <!-- Nav tabs -->
       <ul class="nav nav-pills">
-        <li id='primero'class="active"><a href="#home-pills" data-toggle="tab" aria-expanded="true">Trabajos</a>
+        <li id='primero'class="active"><a href="#ordenes" data-toggle="tab" aria-expanded="true">Ordenes</a>
         </li>
-        <li id='segundo' class=""><a href="#profile-pills" data-toggle="tab" aria-expanded="false">...</a>
+        <li id='segundo' class=""><a href="#trabajos" data-toggle="tab" aria-expanded="false">Trabajos</a>
+        </li>
+        <li id='tercero' class=""><a href="#documentos" data-toggle="tab" aria-expanded="false">Documentos</a>
+        </li>
+        <li id='cuarto' class=""><a href="#profile-pills" data-toggle="tab" aria-expanded="false">...</a>
         </li>
         <!-- <li class=""><a href="#messages-pills" data-toggle="tab" aria-expanded="false">Messages</a>
         </li>
@@ -20,14 +24,31 @@
 
       <!-- Tab panes -->
       <div class="tab-content">
-        <div class="tab-pane fade active in" id="home-pills">
-          <h4>Seleccione el trabajo deseado</h4>
-          <app-tabla-trabajos
+        <div class="tab-pane fade active in" id="ordenes">
+          <h4>Seleccione la orden de servicio deseado</h4>
+          <app-tabla-ordenes
+            (ordenSeleccionada) = 'OnOrdenSeleccionada($event)'
+          >
+        </app-tabla-ordenes>
+        </div>
+        <div class="tab-pane fade  in" id="trabajos">
+
+          <app-tabla-trabajos *ngIf='ordenSeleccionada'
+            [ordenSeleccionada] = 'ordenSeleccionada'
             (trabajoSeleccionado) = 'OnTrabajoSeleccionado($event)'
           >
           </app-tabla-trabajos>
         </div>
-        <div class="tab-pane fade" id="profile-pills">
+        <div class="tab-pane fade  in" id="documentos">
+          <h4>Seleccione el documento deseado</h4>
+          <app-tabla-documentos  *ngIf='trabajoSeleccionado && ordenSeleccionada'
+            [trabajoSeleccionado] = 'trabajoSeleccionado'
+            [ordenSeleccionada] = 'ordenSeleccionada'
+            (documentoSeleccionado) = 'OnDocumentoSeleccionado($event)'
+          >
+        </app-tabla-documentos>
+        </div>
+        <div class="tab-pane fade" id="">
 
           <h4>Oops!!</h4>
           <p>En construccion...</p>

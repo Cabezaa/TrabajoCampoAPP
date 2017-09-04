@@ -38,18 +38,22 @@ import {
   MdTableModule,
   MdTabsModule,
   MdToolbarModule,
-  MdTooltipModule,
+  MdTooltipModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { FinalizarTrabajoComponent } from './finalizar-trabajo/finalizar-trabajo.component';
 
 import { TablaTrabajosComponent } from './finalizar-trabajo/tablaTrabajos/tablaTrabajos.component';
+import { TablaOrdenesComponent } from './finalizar-trabajo/tablaOrdenes/tablaOrdenes.component';
+import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/tablaDocumentos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FinalizarTrabajoComponent,
-    TablaTrabajosComponent
+    TablaTrabajosComponent,
+    TablaOrdenesComponent,
+    TablaDocumentosComponent
   ],
   imports: [
     BrowserModule,

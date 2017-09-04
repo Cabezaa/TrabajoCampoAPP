@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 //Para el data table
 import { ElementRef, ViewChild } from '@angular/core';
@@ -13,16 +13,16 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
 @Component({
-  selector: 'app-tabla-trabajos',
-  templateUrl: './tablaTrabajos.component.html',
-  styleUrls: ['./tablaTrabajos.component.css']
+  selector: 'app-tabla-ordenes',
+  templateUrl: './tablaOrdenes.component.html',
+  styleUrls: ['./tablaOrdenes.component.css']
 })
-export class TablaTrabajosComponent implements OnInit {
+export class TablaOrdenesComponent implements OnInit {
 
-  @Output() trabajoSeleccionado = new EventEmitter();
-  @Input() ordenSeleccionada;
+  @Output() ordenSeleccionada = new EventEmitter();
 
-  displayedColumns = ['numTrabajo', 'fechaRealizacion', 'cuilSupervisor'];
+  displayedColumns = ['numOrden', 'fechaIngreso', 'progresoTrabajo'];
+
   exampleDatabase = new ExampleDatabase();
   dataSource: ExampleDataSource | null;
 
@@ -42,7 +42,7 @@ export class TablaTrabajosComponent implements OnInit {
 
   siguiente(){
     console.log(this.seleccionado);
-    this.trabajoSeleccionado.next(this.seleccionado);
+    this.ordenSeleccionada.next(this.seleccionado);
   }
 
   ngOnInit() {
@@ -67,78 +67,73 @@ const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
 'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
 
-
-export interface Trabajo {
- numTrabajo: string;
- fechaRealizacion: Date;
- Evaluacion: string;
- observaciones: string;
- numOrden: string;
- idTipoTrabajo: string;
- cuilSupervisor: string;
+export interface UserData {
+  id: string;
+  name: string;
+  progress: string;
+  color: string;
+  seleccionada: boolean;
 }
+
+export interface OrdenServicio {
+ numOrden: string;
+ fechaIngreso: Date;
+ progresoTrabajo: string;
+ observaciones: string;
+}
+
+
 
 /** An example database that the data source uses to retrieve data for the table. */
 export class ExampleDatabase {
   /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<Trabajo[]> = new BehaviorSubject<Trabajo[]>([]);
-  get data(): Trabajo[] { return this.dataChange.value; }
+  dataChange: BehaviorSubject<OrdenServicio[]> = new BehaviorSubject<OrdenServicio[]>([]);
+  get data(): OrdenServicio[] { return this.dataChange.value; }
+
+  public ordenesDefault = [
+  {
+    numOrden: '1',
+    fechaIngreso: new Date('10-08-2017'),
+    progresoTrabajo: '50',
+    observaciones: ''
+  },
+  {
+    numOrden: '2',
+    fechaIngreso: new Date('10-08-2017'),
+    progresoTrabajo: '20',
+    observaciones: ''
+  },
+  {
+    numOrden: '3',
+    fechaIngreso: new Date('10-08-2017'),
+    progresoTrabajo: '0',
+    observaciones: '',
+  }
+  ]
+
+  getOrdenes(){
+    return this.ordenesDefault;
+  }
 
   constructor() {
     // Fill up the database with 100 users.
     // for (let i = 0; i < 5; i++) { this.addUser(); }
-    this.setTrabajos();
+    // this.data = this.getOrdenes();
+    this.setOrdenes();
   }
-
-  public trabajos = [
-{
-  numTrabajo: '1',
-  fechaRealizacion: new Date('01-09-2017'),
-  Evaluacion: '',
-  observaciones: '',
-  numOrden: '1',
-  idTipoTrabajo: '1',
-  cuilSupervisor: '400'
-},
-{
-  numTrabajo: '2',
-  fechaRealizacion: new Date('01-09-2017'),
-  Evaluacion: '',
-  observaciones: '',
-  numOrden: '1',
-  idTipoTrabajo: '2',
-  cuilSupervisor: '400'
-},
-{
-  numTrabajo: '3',
-  fechaRealizacion: new Date('01-09-2017'),
-  Evaluacion: '',
-  observaciones: '',
-  numOrden: '2',
-  idTipoTrabajo: '1',
-  cuilSupervisor: '500'
-},
-{
-  numTrabajo: '4',
-  fechaRealizacion: new Date('01-09-2017'),
-  Evaluacion: '',
-  observaciones: '',
-  numOrden: '3',
-  idTipoTrabajo: '2',
-  cuilSupervisor: '400'
-}
-]
 
   /** Adds a new user to the database. */
-Trabajo
-
-  setTrabajos() {
-    let copiedData = this.trabajos;
+  // addUser() {
+  //   const copiedData = this.data.slice();
+  //   copiedData.push(this.createNewUser());
+  //   this.dataChange.next(copiedData);
+  // }
+  setOrdenes() {
+    let copiedData = this.ordenesDefault;
     for (let i = 0; i < copiedData.length; i++) {
-          this.dataChange.next(<Trabajo[]>this.trabajos);
+          this.dataChange.next(<OrdenServicio[]>this.ordenesDefault);
     }
   }
-
 
   /** Builds and returns a new User. */
   private createNewUser() {
@@ -173,15 +168,15 @@ export class ExampleDataSource extends DataSource<any> {
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Trabajo[]> {
+  connect(): Observable<OrdenServicio[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
       this._filterChange,
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      return this._exampleDatabase.data.slice().filter((item: Trabajo) => {
-        let searchStr = (item.numTrabajo + item.fechaRealizacion).toLowerCase();
+      return this._exampleDatabase.data.slice().filter((item: OrdenServicio) => {
+        let searchStr = (item.numOrden + item.fechaIngreso).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
     });
