@@ -44,7 +44,9 @@
     </ng-container>
 
     <md-header-row  *mdHeaderRowDef="displayedColumns"></md-header-row>
-    <!-- <md-row [ngClass]="{'isSpecial':  row.seleccionada == true}" *mdRowDef="let row; columns: displayedColumns;" (click)="handleHeaderRowClick(row)"></md-row> -->
-    <md-row [ngClass]="{'isSpecial':  row.id == seleccionado}" *mdRowDef="let row; columns: displayedColumns;" (click)="handleHeaderRowClick(row)"></md-row>
+    <!-- <md-row [ngClass]="{'isSpecial':  row.seleccionada == true}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row> -->
+    <md-row [ngClass]="{'isSpecial':  row.id == seleccionado.id}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row>
   </md-table>
 </div>
+<br>
+<button type="button" class="btn btn-lg btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.id =='' " >Siguiente</button>

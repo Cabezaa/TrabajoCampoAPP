@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 //Para el data table
 import { ElementRef, ViewChild } from '@angular/core';
@@ -18,22 +18,37 @@ import 'rxjs/add/observable/fromEvent';
   styleUrls: ['./tablaTrabajos.component.css']
 })
 export class TablaTrabajosComponent implements OnInit {
+
+  @Output() trabajoSeleccionado = new EventEmitter();
+
   displayedColumns = ['userId', 'userName', 'progress', 'color'];
   exampleDatabase = new ExampleDatabase();
   dataSource: ExampleDataSource | null;
 
-  seleccionado: string;
+  seleccionado = {
+    'id' : ''
+  };
 
   @ViewChild('filter') filter: ElementRef;
 
-  handleHeaderRowClick(algo){
-    console.log('Tocaron!!!');
-    console.log(algo);
-    algo.seleccionada = !algo.seleccionada;
+  rowClick(row){
+    // console.log('Tocaron!!!');
+    // console.log(row);
+    row.seleccionada = !row.seleccionada;
 
-    this.seleccionado = algo.id;
+    this.seleccionado = row;
   }
+
+  siguiente(){
+    console.log(this.seleccionado);
+    this.trabajoSeleccionado.next(this.seleccionado);
+  }
+
   ngOnInit() {
+    this.seleccionado = {
+      'id' : ''
+    };
+    console.log(this.seleccionado);
     this.dataSource = new ExampleDataSource(this.exampleDatabase);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)

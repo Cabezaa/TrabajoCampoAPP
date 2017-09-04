@@ -12,6 +12,8 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
+declare var $: any;
+
 @Component({
   selector: 'app-finalizar-trabajo',
   templateUrl: './finalizar-trabajo.component.html',
@@ -20,5 +22,25 @@ import 'rxjs/add/observable/fromEvent';
 export class FinalizarTrabajoComponent implements OnInit {
 
   ngOnInit() {
+  }
+
+  OnTrabajoSeleccionado(trabajo){
+    console.log('trabajo: ');
+    console.log(trabajo);
+    this.abrirSegundoTab();
+  }
+
+  abrirSegundoTab(){
+    console.log('$(".active")');
+    console.log($(".active"));
+    // $(".active").removeClass('active');
+    // $("#primero a").attr("aria-expanded","false");
+    // $("#segundo").addClass('active');
+    // $("#segundo a").attr("aria-expanded","true");
+    // $("#segundo").tab('show');
+    $("#segundo a").click();
+
+
+
   }
 }
