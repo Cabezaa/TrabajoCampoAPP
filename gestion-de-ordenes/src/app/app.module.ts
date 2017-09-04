@@ -46,6 +46,7 @@ import { FinalizarTrabajoComponent } from './finalizar-trabajo/finalizar-trabajo
 import { TablaTrabajosComponent } from './finalizar-trabajo/tablaTrabajos/tablaTrabajos.component';
 import { TablaOrdenesComponent } from './finalizar-trabajo/tablaOrdenes/tablaOrdenes.component';
 import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/tablaDocumentos.component';
+import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/valores-entrada.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/ta
     FinalizarTrabajoComponent,
     TablaTrabajosComponent,
     TablaOrdenesComponent,
-    TablaDocumentosComponent
+    TablaDocumentosComponent,
+    ValoresEntradaComponent
   ],
   imports: [
     BrowserModule,

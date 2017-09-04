@@ -1,0 +1,54 @@
+
+<div class="col-lg-8">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      Trabajo Seleccionado
+    </div>
+    <div class="panel-body">
+      <label >Num. Orden : {{ordenSeleccionada.numOrden}}</label>
+      <br>
+      <label >Num. Trabajo : {{trabajoSeleccionado.numTrabajo}}</label>
+      <br>
+      <label >Fecha Trabajo : {{trabajoSeleccionado.fechaRealizacion | date:'dd/MM/yyyy'}}</label>
+      <br>
+      <label >ID. Documento : {{documentoSeleccionado.idDocumento}}</label>
+      <br>
+      <label >Nombre Documento : {{documentoSeleccionado.nombreArchivo}}</label>
+    </div>
+</div>
+</div>
+
+<div>
+  <div class="form-group">
+    <label for="">Valor X</label>
+    <input type="text" name="" value="">
+  </div>
+
+  <div class="form-group">
+    <label for="">Valor Y</label>
+    <input type="text" name="" value="">
+  </div>
+
+  <div class="form-group">
+    <label for="">Valor Z</label>
+    <input type="text" name="" value="">
+  </div>
+
+
+  <div class="modal-footer">
+
+    <button class="btn btn-danger" (click)='cancelar()'>
+      Cancelar
+    </button>
+
+    <button class="btn btn-primary"  (click)='enviar()'>
+      Enviar
+    </button>
+
+  </div>
+</div>
+
+
+<div class="alert alert-success" *ngIf="saveSuccess">
+    <strong>Success!</strong>
+</div>
