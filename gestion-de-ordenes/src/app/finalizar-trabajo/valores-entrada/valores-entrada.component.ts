@@ -12,13 +12,16 @@ export class ValoresEntradaComponent implements OnInit {
   @Input() ordenSeleccionada;
   private saveSuccess = false;
   constructor() { }
-
+  public model = {};
   ngOnInit() {
   }
 
 
   enviar(){
     this.saveSuccess = true;
+  }
+  cancelar(){
+    this.model = {};
   }
 
 }
