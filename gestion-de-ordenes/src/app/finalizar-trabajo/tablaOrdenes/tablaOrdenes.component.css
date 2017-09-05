@@ -43,3 +43,19 @@
 .isSpecial{
   background-color: #f5f5f5;
 }
+
+md-table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid #f5f5f5;
+}
+
+/*md-cell, md-row {
+    border: 1px solid #f5f5f5;
+    text-align: left;
+    padding: 8px;
+}*/
+
+/*md-row:nth-child(even) {
+    background-color: #f5f5f5;
+}*/

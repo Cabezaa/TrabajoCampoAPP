@@ -26,26 +26,26 @@
   <md-table class='hoverTable'
   selectable-rows="true"
   table-card="{title: Nutrition, actionIcons: true}"
-  #table [dataSource]="dataSource">
+  #table [dataSource]="dataSource" mdSort>
 
   <!--- Note that these columns can be defined in any order.
   The actual rendered columns are set as a property on the row definition" -->
 
   <!-- ID Column -->
   <ng-container mdColumnDef="numTrabajo">
-    <md-header-cell *mdHeaderCellDef> Num. Trabajo </md-header-cell>
+    <md-header-cell *mdHeaderCellDef md-sort-header> Num. Trabajo </md-header-cell>
     <md-cell *mdCellDef="let row"> {{row.numTrabajo}} </md-cell>
   </ng-container>
 
   <!-- Progress Column -->
   <ng-container mdColumnDef="fechaRealizacion">
-    <md-header-cell *mdHeaderCellDef> Fecha Realizacion </md-header-cell>
+    <md-header-cell *mdHeaderCellDef md-sort-header> Fecha Realizacion </md-header-cell>
     <md-cell *mdCellDef="let row"> {{row.fechaRealizacion | date:'dd/MM/yyyy'}} </md-cell>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container mdColumnDef="cuilSupervisor">
-    <md-header-cell *mdHeaderCellDef> Cuil Supervisor </md-header-cell>
+    <md-header-cell *mdHeaderCellDef md-sort-header> Cuil Supervisor </md-header-cell>
     <md-cell *mdCellDef="let row"> {{row.cuilSupervisor}} </md-cell>
   </ng-container>
 
@@ -54,6 +54,12 @@
   <!-- <md-row [ngClass]="{'isSpecial':  row.seleccionada == true}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row> -->
   <md-row [ngClass]="{'isSpecial':  row.numTrabajo == seleccionado.numTrabajo}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row>
 </md-table>
+<md-paginator #paginator
+[length]="exampleDatabase.data.length"
+[pageIndex]="0"
+[pageSize]="25"
+[pageSizeOptions]="[5, 10, 25, 100]">
+</md-paginator>
 </div>
 <br>
 <button type="button" class="btn btn-lg btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.numTrabajo =='' " >Siguiente</button>

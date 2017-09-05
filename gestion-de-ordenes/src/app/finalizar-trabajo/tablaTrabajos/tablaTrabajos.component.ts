@@ -12,6 +12,9 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
+//Para ordenar la tabla
+import {MdSort} from '@angular/material';
+
 @Component({
   selector: 'app-tabla-trabajos',
   templateUrl: './tablaTrabajos.component.html',
@@ -31,6 +34,7 @@ export class TablaTrabajosComponent implements OnInit {
   };
 
   @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MdSort) sort: MdSort;
 
   rowClick(row){
     // console.log('Tocaron!!!');
@@ -50,7 +54,7 @@ export class TablaTrabajosComponent implements OnInit {
       'id' : ''
     };
     console.log(this.seleccionado);
-    this.dataSource = new ExampleDataSource(this.exampleDatabase);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
     .debounceTime(150)
     .distinctUntilChanged()
@@ -60,13 +64,6 @@ export class TablaTrabajosComponent implements OnInit {
     });
   }
 }
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
 
 export interface Trabajo {
  numTrabajo: string;
@@ -83,6 +80,8 @@ export class ExampleDatabase {
   /** Stream that emits whenever the data has been modified. */
   dataChange: BehaviorSubject<Trabajo[]> = new BehaviorSubject<Trabajo[]>([]);
   get data(): Trabajo[] { return this.dataChange.value; }
+
+
 
   constructor() {
     // Fill up the database with 100 users.
@@ -140,20 +139,6 @@ Trabajo
   }
 
 
-  /** Builds and returns a new User. */
-  private createNewUser() {
-    const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-    return {
-      id: (this.data.length + 1).toString(),
-      name: name,
-      progress: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))],
-      seleccionada:false
-    };
-  }
 }
 
 /**
@@ -168,7 +153,7 @@ export class ExampleDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-  constructor(private _exampleDatabase: ExampleDatabase) {
+  constructor(private _exampleDatabase: ExampleDatabase,  private _sort: MdSort) {
     super();
   }
 
@@ -177,9 +162,12 @@ export class ExampleDataSource extends DataSource<any> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
       this._filterChange,
+      this._sort.mdSortChange
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
+      console.log(displayDataChanges);
+      // return this.getSortedData();
       return this._exampleDatabase.data.slice().filter((item: Trabajo) => {
         let searchStr = (item.numTrabajo + item.fechaRealizacion).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
@@ -188,5 +176,27 @@ export class ExampleDataSource extends DataSource<any> {
   }
 
   disconnect() {}
+
+  /** Returns a sorted copy of the database data. */
+  getSortedData(): Trabajo[] {
+    const data = this._exampleDatabase.data.slice();
+    if (!this._sort.active || this._sort.direction == '') { return data; }
+
+    return data.sort((a, b) => {
+      let propertyA: number|string = '';
+      let propertyB: number|string = '';
+
+      switch (this._sort.active) {
+        case 'numTrabajo': [propertyA, propertyB] = [a.numTrabajo, b.numTrabajo]; break;
+        case 'fechaRealizacion': [propertyA, propertyB] = [a.fechaRealizacion.toString(), b.fechaRealizacion.toString()]; break;
+        case 'cuilSupervisor': [propertyA, propertyB] = [a.cuilSupervisor, b.cuilSupervisor]; break;
+      }
+
+      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+
+      return (valueA < valueB ? -1 : 1) * (this._sort.direction == 'asc' ? 1 : -1);
+    });
+  }
 
 }
