@@ -92,7 +92,7 @@ export class ExampleDatabase {
   public trabajos = [
 {
   numTrabajo: '1',
-  fechaRealizacion: new Date('01-09-2017'),
+  fechaRealizacion:(new Date(2017,8,1)),
   Evaluacion: '',
   observaciones: '',
   numOrden: '1',
@@ -101,7 +101,7 @@ export class ExampleDatabase {
 },
 {
   numTrabajo: '2',
-  fechaRealizacion: new Date('01-09-2017'),
+  fechaRealizacion: (new Date(2017,6,15)),
   Evaluacion: '',
   observaciones: '',
   numOrden: '1',
@@ -110,7 +110,7 @@ export class ExampleDatabase {
 },
 {
   numTrabajo: '3',
-  fechaRealizacion: new Date('01-09-2017'),
+  fechaRealizacion: (new Date(2017,8,8)),
   Evaluacion: '',
   observaciones: '',
   numOrden: '2',
@@ -119,7 +119,7 @@ export class ExampleDatabase {
 },
 {
   numTrabajo: '4',
-  fechaRealizacion: new Date('01-09-2017'),
+  fechaRealizacion: (new Date(2017,5,4)),
   Evaluacion: '',
   observaciones: '',
   numOrden: '3',

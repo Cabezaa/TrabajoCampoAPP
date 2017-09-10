@@ -93,21 +93,21 @@ export class ExampleDatabase {
   public ordenesDefault = [
   {
     numOrden: '1',
-    fechaIngreso: new Date('10-08-2017'),
+    fechaIngreso: (new Date()),
     progresoTrabajo: '50',
     observaciones: ''
   },
   {
     numOrden: '2',
-    fechaIngreso: new Date('10-08-2017'),
+    fechaIngreso: (new Date(2017,7,8)),
     progresoTrabajo: '20',
     observaciones: ''
   },
   {
     numOrden: '3',
-    fechaIngreso: new Date('10-08-2017'),
+    fechaIngreso: (new Date(2017,5,5)),
     progresoTrabajo: '0',
-    observaciones: '',
+    observaciones: ''
   }
   ]
 
