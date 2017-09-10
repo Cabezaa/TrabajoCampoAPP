@@ -31,35 +31,61 @@
   <!--- Note that these columns can be defined in any order.
   The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- ID Column -->
-  <ng-container mdColumnDef="numTrabajo">
-    <md-header-cell *mdHeaderCellDef md-sort-header> Num. Trabajo </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.numTrabajo}} </md-cell>
-  </ng-container>
+  <!-- Checkbox Column -->
+  <!-- <ng-container mdColumnDef="select">
+  <md-header-cell *mdHeaderCellDef>
+  <md-checkbox (change)="$event ? masterToggle() : null"
+  [checked]="isAllSelected()"
+  [indeterminate]="selection.hasValue() && !isAllSelected()">
+</md-checkbox>
+</md-header-cell>
+<md-cell *mdCellDef="let row">
+<md-checkbox (click)="$event.stopPropagation()"
+(change)="$event ? selection.toggle(row.id) : null"
+[checked]="selection.isSelected(row.id)">
+</md-checkbox>
+</md-cell>
+</ng-container> -->
 
-  <!-- Progress Column -->
-  <ng-container mdColumnDef="fechaRealizacion">
-    <md-header-cell *mdHeaderCellDef md-sort-header> Fecha Realizacion </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.fechaRealizacion | date:'dd/MM/yyyy'}} </md-cell>
-  </ng-container>
+<!-- ID Column -->
+<ng-container mdColumnDef="numTrabajo">
+  <md-header-cell *mdHeaderCellDef md-sort-header> Num. Trabajo </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.numTrabajo}} </md-cell>
+</ng-container>
 
-  <!-- Name Column -->
-  <ng-container mdColumnDef="cuilSupervisor">
-    <md-header-cell *mdHeaderCellDef md-sort-header> Cuil Supervisor </md-header-cell>
-    <md-cell *mdCellDef="let row"> {{row.cuilSupervisor}} </md-cell>
-  </ng-container>
+<!-- Progress Column -->
+<ng-container mdColumnDef="fechaRealizacion">
+  <md-header-cell *mdHeaderCellDef md-sort-header> Fecha Realizacion </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.fechaRealizacion | date:'dd/MM/yyyy'}} </md-cell>
+</ng-container>
+
+<!-- Name Column -->
+<ng-container mdColumnDef="cuilSupervisor">
+  <md-header-cell *mdHeaderCellDef md-sort-header> Cuil Supervisor </md-header-cell>
+  <md-cell *mdCellDef="let row"> {{row.cuilSupervisor}} </md-cell>
+</ng-container>
 
 
-  <md-header-row  *mdHeaderRowDef="displayedColumns"></md-header-row>
-  <!-- <md-row [ngClass]="{'isSpecial':  row.seleccionada == true}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row> -->
-  <md-row [ngClass]="{'isSpecial':  row.numTrabajo == seleccionado.numTrabajo}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row>
+<md-header-row  *mdHeaderRowDef="displayedColumns"></md-header-row>
+<md-row [ngClass]="{'isSpecial':  row.numTrabajo == seleccionado.numTrabajo}" *mdRowDef="let row; columns: displayedColumns;" (click)="rowClick(row)"></md-row>
+<!-- <md-row  *mdRowDef="let row; columns: displayedColumns;"
+[class.example-selected-row]="selection.isSelected(row.id)"
+(click)="selection.toggle(row.id)">
+></md-row> -->
 </md-table>
+
+<div class="example-no-results"
+[style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+  No se encuentran trabajos que coincidan con la búsqueda!
+</div>
+
 <md-paginator #paginator
 [length]="exampleDatabase.data.length"
 [pageIndex]="0"
-[pageSize]="25"
+[pageSize]="5"
 [pageSizeOptions]="[5, 10, 25, 100]">
 </md-paginator>
+
 </div>
 <br>
 <button type="button" class="btn btn-lg btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.numTrabajo =='' " >Siguiente</button>

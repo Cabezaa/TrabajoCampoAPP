@@ -48,6 +48,8 @@ import { TablaOrdenesComponent } from './finalizar-trabajo/tablaOrdenes/tablaOrd
 import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/tablaDocumentos.component';
 import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/valores-entrada.component';
 
+import { TrabajosService } from './servicios/trabajos.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,7 +98,9 @@ import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/val
   MdToolbarModule,
   MdTooltipModule
   ],
-  providers: [],
+  providers: [
+    TrabajosService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
