@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+import { WizardModule } from 'ng2-archwizard';
 import 'hammerjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdFormFieldModule} from '@angular/material';
@@ -49,6 +49,7 @@ import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/ta
 import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/valores-entrada.component';
 
 import { TrabajosService } from './servicios/trabajos.service';
+import { WizardComponent } from './wizard/wizard.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { TrabajosService } from './servicios/trabajos.service';
     TablaTrabajosComponent,
     TablaOrdenesComponent,
     TablaDocumentosComponent,
-    ValoresEntradaComponent
+    ValoresEntradaComponent,
+    WizardComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +98,8 @@ import { TrabajosService } from './servicios/trabajos.service';
   MdTableModule,
   MdTabsModule,
   MdToolbarModule,
-  MdTooltipModule
+  MdTooltipModule,
+  WizardModule
   ],
   providers: [
     TrabajosService

@@ -1,6 +1,6 @@
 
 <br>
-<div class="col-lg-8">
+<div class="col-lg-8" *ngIf="ordenSeleccionada!=null">
   <div class="panel panel-info">
     <div class="panel-heading">
       Orden de Servicio
@@ -28,24 +28,6 @@
   table-card="{title: Nutrition, actionIcons: true}"
   #table [dataSource]="dataSource" mdSort>
 
-  <!--- Note that these columns can be defined in any order.
-  The actual rendered columns are set as a property on the row definition" -->
-
-  <!-- Checkbox Column -->
-  <!-- <ng-container mdColumnDef="select">
-  <md-header-cell *mdHeaderCellDef>
-  <md-checkbox (change)="$event ? masterToggle() : null"
-  [checked]="isAllSelected()"
-  [indeterminate]="selection.hasValue() && !isAllSelected()">
-</md-checkbox>
-</md-header-cell>
-<md-cell *mdCellDef="let row">
-<md-checkbox (click)="$event.stopPropagation()"
-(change)="$event ? selection.toggle(row.id) : null"
-[checked]="selection.isSelected(row.id)">
-</md-checkbox>
-</md-cell>
-</ng-container> -->
 
 <!-- ID Column -->
 <ng-container mdColumnDef="numTrabajo">
@@ -88,4 +70,5 @@
 
 </div>
 <br>
-<button type="button" class="btn btn-lg btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.numTrabajo =='' " >Siguiente</button>
+<button type="button" class="btn btn-secondary btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.numTrabajo ==''&& seleccionado.numTrabajo ==null " nextStep>Siguiente</button>
+<button type="button" class="btn btn-secondary btn-warning " previousStep>Volver</button>

@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <br>
+  <wizard #wizard navBarLayout="large-empty-symbols">
+
+    <!--  PASO 1 -->
+
+    <div class="centered-content margin-top">
+      <div class="row">
+        <app-tabla-ordenes
+          wizardStep
+          title="Seleccionar orden"
+          navigationSymbol="1"
+          (ordenSeleccionada) = 'OnOrdenSeleccionada($event)'
+        >
+      </app-tabla-ordenes>
+
+      </div>
+
+    </div>
+
+
+    <!--  PASO 2 -->
+
+    <div class="centered-content margin-top">
+      <div class="row">
+        <app-tabla-trabajos
+          wizardStep
+          title="Seleccionar Trabajo"
+          navigationSymbol="2"
+          [ordenSeleccionada] = 'ordenSeleccionada'
+          (trabajoSeleccionado) = 'OnTrabajoSeleccionado($event)'
+        >
+        </app-tabla-trabajos>
+      </div>
+    </div>
+
+    <!--  PASO 3 -->
+
+    <div class="centered-content margin-top">
+      <div class="row">
+        <app-tabla-documentos
+          wizardStep
+          title="Seleccionar Documento"
+          navigationSymbol="3"
+          [trabajoSeleccionado] = 'trabajoSeleccionado'
+          [ordenSeleccionada] = 'ordenSeleccionada'
+          (documentoSeleccionado) = 'OnDocumentoSeleccionado($event)'
+        >
+        </app-tabla-documentos>
+      </div>
+    </div>
+
+    <!--  PASO 4 -->
+
+    <div class="centered-content margin-top">
+      <div class="row">
+        <app-valores-entrada
+          wizardStep
+          title="Seleccionar Instrumento"
+          navigationSymbol="4"
+          [trabajoSeleccionado] = 'trabajoSeleccionado'
+          [ordenSeleccionada] = 'ordenSeleccionada'
+          [documentoSeleccionado] = 'documentoSeleccionado'
+        ></app-valores-entrada>
+      </div>
+    </div>
+
+  </wizard>
+</div>
