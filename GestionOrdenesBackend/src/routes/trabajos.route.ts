@@ -11,7 +11,19 @@ class TrabajosRoute {
       Evaluacion: '',
       observaciones: '',
       numOrden: '1',
-      idTipoTrabajo: '1',
+      tipoTrabajo: {
+        idTipoTrabajo: '1',
+        nombre: 'Inspeccion particulas magnetizables',
+        descripcion: 'Inspeccion por magnetizacion de particulas de las piezas.'
+      },
+      pieza:{
+        numeroPieza: '1',
+        tipoPieza: {
+          codigoTipoPieza: 'tp1',
+          nombre: 'caño curvo',
+          descripcion: 'Un caño que tiene una seccion curva'
+        }
+      },
       cuilSupervisor: '400'
     },
     {
@@ -20,7 +32,19 @@ class TrabajosRoute {
       Evaluacion: '',
       observaciones: '',
       numOrden: '1',
-      idTipoTrabajo: '2',
+      tipoTrabajo: {
+        idTipoTrabajo: '2',
+        nombre: 'Inspeccion por ultrasonido',
+        descripcion: 'Inspeccion por ultrasonido de piezas.'
+      },
+      pieza:{
+        numeroPieza: '2',
+        tipoPieza: {
+          codigoTipoPieza: 'tp1',
+          nombre: 'caño curvo',
+          descripcion: 'Un caño que tiene una seccion curva'
+        }
+      },
       cuilSupervisor: '400'
     },
     {
@@ -29,7 +53,19 @@ class TrabajosRoute {
       Evaluacion: '',
       observaciones: '',
       numOrden: '2',
-      idTipoTrabajo: '1',
+      tipoTrabajo: {
+        idTipoTrabajo: '1',
+        nombre: 'Inspeccion particulas magnetizables',
+        descripcion: 'Inspeccion por magnetizacion de particulas de las piezas.'
+      },
+      pieza:{
+        numeroPieza: '3',
+        tipoPieza: {
+          codigoTipoPieza: 'tp3',
+          nombre: 'Valvula de apertura',
+          descripcion: 'Una valvula encargada de controlar la presion de los caños'
+        }
+      },
       cuilSupervisor: '500'
     },
     {
@@ -38,7 +74,19 @@ class TrabajosRoute {
       Evaluacion: '',
       observaciones: '',
       numOrden: '3',
-      idTipoTrabajo: '2',
+      tipoTrabajo: {
+        idTipoTrabajo: '2',
+        nombre: 'Inspeccion por ultrasonido',
+        descripcion: 'Inspeccion por ultrasonido de piezas.'
+      },
+      pieza:{
+        numeroPieza: '4',
+        tipoPieza: {
+          codigoTipoPieza: 'tp2',
+          nombre: 'caño recto',
+          descripcion: 'Un caño que normalmente transporta fluidos espesos corrosivos.'
+        }
+      },
       cuilSupervisor: '400'
     }
   ];
