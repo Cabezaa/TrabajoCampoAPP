@@ -4,66 +4,67 @@
 
     <!--  PASO 1 -->
 
-    <div class="centered-content margin-top">
-      <div class="row">
-        <app-tabla-ordenes
-          wizardStep
-          title="Seleccionar orden"
-          navigationSymbol="1"
-          (ordenSeleccionada) = 'OnOrdenSeleccionada($event)'
-        >
-      </app-tabla-ordenes>
-
-      </div>
-
+    <div #step1 id='step1' style="width: 100%">
+      <app-tabla-ordenes
+        wizardStep
+        title="Seleccionar orden"
+        navigationSymbol="1"
+        (ordenSeleccionada) = 'OnOrdenSeleccionada($event)'
+      >
+    </app-tabla-ordenes>
     </div>
 
 
     <!--  PASO 2 -->
 
-    <div class="centered-content margin-top">
-      <div class="row">
-        <app-tabla-trabajos
-          wizardStep
-          title="Seleccionar Trabajo"
-          navigationSymbol="2"
-          [ordenSeleccionada] = 'ordenSeleccionada'
-          (trabajoSeleccionado) = 'OnTrabajoSeleccionado($event)'
-        >
-        </app-tabla-trabajos>
-      </div>
+    <div #step2 id='step2' >
+      <app-tabla-trabajos
+        wizardStep
+        title="Seleccionar Trabajo"
+        navigationSymbol="2"
+        [ordenSeleccionada] = 'ordenSeleccionada'
+        (trabajoSeleccionado) = 'OnTrabajoSeleccionado($event)'
+        (volverStep) = 'OnVolverStep1($event)'
+      >
+      </app-tabla-trabajos>
     </div>
+
+
 
     <!--  PASO 3 -->
 
-    <div class="centered-content margin-top">
-      <div class="row">
-        <app-tabla-documentos
-          wizardStep
-          title="Seleccionar Documento"
-          navigationSymbol="3"
-          [trabajoSeleccionado] = 'trabajoSeleccionado'
-          [ordenSeleccionada] = 'ordenSeleccionada'
-          (documentoSeleccionado) = 'OnDocumentoSeleccionado($event)'
-        >
-        </app-tabla-documentos>
-      </div>
+    <div #step3 id='step3'>
+      <app-tabla-documentos
+        wizardStep
+        title="Seleccionar Documento"
+        navigationSymbol="3"
+        [trabajoSeleccionado] = 'trabajoSeleccionado'
+        [ordenSeleccionada] = 'ordenSeleccionada'
+        (documentoSeleccionado) = 'OnDocumentoSeleccionado($event)'
+        (volverStep) = 'OnVolverStep2($event)'
+      >
+      </app-tabla-documentos>
     </div>
+
+    <div #step4 id='step4'>
+      <app-valores-entrada
+        wizardStep
+        title="Seleccionar Instrumento"
+        navigationSymbol="4"
+        [trabajoSeleccionado] = 'trabajoSeleccionado'
+        [ordenSeleccionada] = 'ordenSeleccionada'
+        [documentoSeleccionado] = 'documentoSeleccionado'
+        (volverStep) = 'OnVolverStep3($event)'
+      ></app-valores-entrada>
+    </div>
+
+
 
     <!--  PASO 4 -->
 
-    <div class="centered-content margin-top">
-      <div class="row">
-        <app-valores-entrada
-          wizardStep
-          title="Seleccionar Instrumento"
-          navigationSymbol="4"
-          [trabajoSeleccionado] = 'trabajoSeleccionado'
-          [ordenSeleccionada] = 'ordenSeleccionada'
-          [documentoSeleccionado] = 'documentoSeleccionado'
-        ></app-valores-entrada>
-      </div>
-    </div>
+
+
+
 
   </wizard>
 </div>

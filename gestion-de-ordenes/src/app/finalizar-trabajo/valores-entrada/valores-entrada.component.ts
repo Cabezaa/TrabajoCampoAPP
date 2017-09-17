@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-valores-entrada',
@@ -10,6 +10,9 @@ export class ValoresEntradaComponent implements OnInit {
   @Input() documentoSeleccionado;
   @Input() trabajoSeleccionado;
   @Input() ordenSeleccionada;
+
+  @Output() volverStep = new EventEmitter();
+
   private saveSuccess = false;
   constructor() { }
   public model = {};
@@ -22,6 +25,7 @@ export class ValoresEntradaComponent implements OnInit {
   }
   cancelar(){
     this.model = {};
+    this.volverStep.next();
   }
 
 }

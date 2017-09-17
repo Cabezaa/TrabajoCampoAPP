@@ -20,6 +20,7 @@ import 'rxjs/add/observable/fromEvent';
 export class TablaDocumentosComponent implements OnInit {
 
   @Output() documentoSeleccionado = new EventEmitter();
+  @Output() volverStep = new EventEmitter();
   @Input() trabajoSeleccionado;
   @Input() ordenSeleccionada;
 
@@ -44,6 +45,10 @@ export class TablaDocumentosComponent implements OnInit {
   siguiente(){
     console.log(this.seleccionado);
     this.documentoSeleccionado.next(this.seleccionado);
+  }
+
+  volver(){
+    this.volverStep.next();
   }
 
   ngOnInit() {
