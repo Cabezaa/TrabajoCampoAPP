@@ -7,6 +7,7 @@ import TrabajosRoute from './routes/trabajos.route';
 import OrdenesRoute from './routes/ordenes.route';
 import DocumentosRoute from './routes/documentos.route';
 import ResultadosRoute from './routes/resultados.route';
+import TipoParametroRoute from './routes/tiposParametro.route';
 
 class App {
   public express

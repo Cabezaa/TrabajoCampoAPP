@@ -104,7 +104,36 @@ class TrabajosRoute {
         message: 'Estas son los trabajos!',
         obj: this.trabajosStub
       })
-    })
+    });
+
+    this.router.get('/:numOrden',(req,res)=>{
+      let numOrden = req.params.numOrden;
+      if(numOrden != null){
+        let trabajosFiltrados = [];
+        for (let i = 0; i < this.trabajosStub.length; i++) {
+            //Si el trabajo tiene el numero de orden solicitado, entonces se lo agrega a los resultados
+            if(this.trabajosStub[i].numOrden === numOrden){
+              console.log("agregado un trabajo");
+              trabajosFiltrados.push(this.trabajosStub[i]);
+            }
+        }
+        //Retornamos los trabajos filtrados como resultado de la consulta.
+        res.status(200).json({
+          message: 'Trabajos filtrados con exito!',
+          obj: trabajosFiltrados
+        });
+      }
+      else{
+        //En caso de error en el valor de entrada, devolvemos un error.
+        return res.status(400).json({
+          title: 'Error',
+          error: 'El valor de entrada de numOrden no es correcto!'
+        });
+      }
+
+
+
+    });
   }
 }
 
