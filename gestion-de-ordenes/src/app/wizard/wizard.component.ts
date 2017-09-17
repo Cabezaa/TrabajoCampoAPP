@@ -25,6 +25,52 @@ export class WizardComponent implements OnInit {
     this.stepActivo = 1;
   }
 
+  enterPrimerStep(algo){
+    // console.log('enter primer');
+    // console.log(algo);
+
+    this.OnStep1();
+  }
+
+  exitPrimerStep(algo){
+    // console.log('exit primer');
+    // console.log(algo);
+
+  }
+
+  enterSegundoStep(algo){
+    // console.log('enter segundo');
+    // console.log(algo);
+    this.OnStep2();
+  }
+
+  exitSegundoStep(algo){
+    // console.log('exit segundo');
+    // console.log(algo);
+  }
+
+  enterTercerStep(algo){
+    // console.log('enter tercer');
+    // console.log(algo);
+    this.OnStep3();
+  }
+
+  exitTercerStep(algo){
+    // console.log('exit tercer');
+    // console.log(algo);
+  }
+
+  enterCuartoStep(algo){
+    // console.log('enter cuarto');
+    // console.log(algo);
+    this.OnStep4();
+  }
+
+  exitCuartoStep(algo){
+    // console.log('exit cuarto');
+    // console.log(algo);
+  }
+
   OnTrabajoSeleccionado(trabajo){
     // console.log('trabajo: ');
     // console.log(trabajo);

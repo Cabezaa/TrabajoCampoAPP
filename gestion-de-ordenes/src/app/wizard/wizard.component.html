@@ -10,6 +10,8 @@
         title="Seleccionar orden"
         navigationSymbol="1"
         (ordenSeleccionada) = 'OnOrdenSeleccionada($event)'
+        (stepEnter)="enterPrimerStep($event)"
+        (stepExit)="exitPrimerStep($event)"
       >
     </app-tabla-ordenes>
     </div>
@@ -24,7 +26,8 @@
         navigationSymbol="2"
         [ordenSeleccionada] = 'ordenSeleccionada'
         (trabajoSeleccionado) = 'OnTrabajoSeleccionado($event)'
-        (volverStep) = 'OnVolverStep1($event)'
+        (stepEnter)="enterSegundoStep($event)"
+        (stepExit)="exitSegundoStep($event)"
       >
       </app-tabla-trabajos>
     </div>
@@ -41,7 +44,8 @@
         [trabajoSeleccionado] = 'trabajoSeleccionado'
         [ordenSeleccionada] = 'ordenSeleccionada'
         (documentoSeleccionado) = 'OnDocumentoSeleccionado($event)'
-        (volverStep) = 'OnVolverStep2($event)'
+        (stepEnter)="enterTercerStep($event)"
+        (stepExit)="exitTercerStep($event)"
       >
       </app-tabla-documentos>
     </div>
@@ -54,7 +58,8 @@
         [trabajoSeleccionado] = 'trabajoSeleccionado'
         [ordenSeleccionada] = 'ordenSeleccionada'
         [documentoSeleccionado] = 'documentoSeleccionado'
-        (volverStep) = 'OnVolverStep3($event)'
+        (stepEnter)="enterCuartoStep($event)"
+        (stepExit)="exitCuartoStep($event)"
       ></app-valores-entrada>
     </div>
 
