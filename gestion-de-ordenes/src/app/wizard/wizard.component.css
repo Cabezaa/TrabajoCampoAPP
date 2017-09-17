@@ -1,0 +1,60 @@
+.centered-content {
+  margin: auto;
+  text-align: center;
+}
+
+.table tr.selected td {
+  background-color: #b2c2bf !important;
+  color: #3b3a30;
+}
+
+.table th {
+  background-color: #3b3a30 !important;
+  color: white;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: default;
+  padding: 10px;
+}
+
+.table thead {
+  background-color: #3b3a30!important;
+}
+
+.table td {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.table tr:hover {
+  background-color: #c0ded9 !important;
+}
+
+button {
+  cursor: pointer;
+  cursor: hand;
+  color: #3b3a30;
+}
+
+button:hover {
+  background-color: #c0ded9;
+  color: #3b3a30;
+}
+
+.margin-top {
+  margin-top: 30px;
+}
+
+.asig {
+  padding-top: 10px;
+}
+
+.margin-bottom {
+  margin-bottom: 20px;
+}
+
+.boton {
+  margin: 5px;
+  background-color: #b2c2bf;
+}

@@ -1,5 +1,5 @@
 <br>
-<div class="col-lg-8">
+<div class="col-lg-8" *ngIf="ordenSeleccionada!=null && trabajoSeleccionado!=null && documentoSeleccionado!=null">
   <div class="panel panel-info">
     <div class="panel-heading">
       Trabajo Seleccionado
@@ -67,10 +67,10 @@
 
 <div class="modal-footer">
 
-  <button class="btn btn-danger" (click)='cancelar()'>
+  <button class="btn btn-secondary btn-warning "  (click)='cancelar()' previousStep>
     Cancelar
   </button>
-
+  
   <button class="btn btn-primary"  (click)='enviar()'  data-toggle="modal" data-target="#myModal">
     Enviar
   </button>

@@ -32,6 +32,8 @@ import { Trabajo } from '../../modelos/trabajo';
 export class TablaTrabajosComponent implements OnInit {
 
   @Output() trabajoSeleccionado = new EventEmitter();
+  @Output() volverStep = new EventEmitter();
+
   @Input() ordenSeleccionada;
 
   displayedColumns = ['numTrabajo', 'fechaRealizacion', 'cuilSupervisor'];
@@ -52,6 +54,7 @@ export class TablaTrabajosComponent implements OnInit {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild(MdPaginator) paginator: MdPaginator;
 
+
   rowClick(row){
     // console.log('Tocaron!!!');
     // console.log(row);
@@ -63,6 +66,10 @@ export class TablaTrabajosComponent implements OnInit {
   siguiente(){
     // console.log(this.seleccionado);
     this.trabajoSeleccionado.next(this.seleccionado);
+  }
+
+  volver(){
+    this.volverStep.next();
   }
 
   ngOnInit() {

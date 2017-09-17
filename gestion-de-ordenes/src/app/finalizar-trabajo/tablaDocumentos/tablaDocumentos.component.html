@@ -1,5 +1,5 @@
 <br>
-<div class="col-lg-8">
+<div class="col-lg-8" *ngIf="ordenSeleccionada!=null && trabajoSeleccionado!=null">
   <div class="panel panel-info">
     <div class="panel-heading">
       Trabajo Seleccionado
@@ -51,4 +51,5 @@
 </div>
 <br>
 <br>
-<button type="button" class="btn btn-lg btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.idDocumento =='' " >Siguiente</button>
+<button type="button" class="btn btn-secondary btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.idDocumento =='' " nextStep>Siguiente</button>
+<button type="button" class="btn btn-secondary btn-warning " (click)='volver()' previousStep>Volver</button>
