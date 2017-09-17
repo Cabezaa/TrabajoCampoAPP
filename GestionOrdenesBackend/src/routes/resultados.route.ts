@@ -58,11 +58,6 @@ class ResultadosRoute {
         })
 
       }
-
-      res.status(200).json({
-        message: 'Estas son los resultados!',
-        obj: this.resultadosStub
-      })
     });
 
   }
