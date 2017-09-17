@@ -32,8 +32,28 @@ class DocumentosRoute {
       res.status(200).json({
         message: 'Estas son los documentos!',
         obj: this.documentosStub
-      })
-    })
+      });
+    });
+
+    this.router.get('/:idDocumento',(req,res)=>{
+      let idDocumento = req.params.idDocumento;
+      if(idDocumento != null){
+        for (let i = 0; i < this.documentosStub.length; i++) {
+            if(this.documentosStub[i].idDocumento===idDocumento){
+              res.status(200).json({
+                message: 'El documento seleccionado es el siguiente!',
+                obj: this.documentosStub[i]
+              });
+            }
+        }
+      }
+      else{
+        return res.status(400).json({
+          title: 'Error',
+          error: 'El idDocumento brindado no es correcto!'
+        });
+      }
+    });
   }
 }
 
