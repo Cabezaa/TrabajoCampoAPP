@@ -32,6 +32,7 @@ class App {
     this.express.use('/ordenes', OrdenesRoute);
     this.express.use('/documentos', DocumentosRoute);
     this.express.use('/resultados', ResultadosRoute);
+    this.express.use('/tipoparametro', TipoParametroRoute);
   }
 }
 

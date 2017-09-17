@@ -102,7 +102,49 @@ class TipoParametroRoute {
         message: 'Estos son los tipoParametros admitidos!',
         obj: this.tipoParametroStub
       })
-    })
+    });
+
+    this.router.get('/:idTipoTrabajo/:codigoTipoPieza',(req,res)=>{
+
+      let idTipoTrabajo = req.params.idTipoTrabajo;
+      let codigoTipoPieza = req.params.codigoTipoPieza;
+      let resultado = [];
+      if(idTipoTrabajo != null && codigoTipoPieza != null){
+        for (let i = 0; i < this.tipoParametroStub.length; i++) {
+            if(this.tipoParametroStub[i].idTipoTrabajo === idTipoTrabajo && this.tipoParametroStub[i].codigoTipoPieza === codigoTipoPieza){
+              resultado.push(this.tipoParametroStub[i]);
+            }
+        }
+
+        //Retornamos los tipoParametro que cumplen con el idTipoTrabajo e idTipoPieza requerido.
+        res.status(200).json({
+          message: 'TipoParametros filtrados con exito!',
+          obj: resultado
+        });
+      }
+      else{
+        //Buscamos los posibles casos de errores...
+        if(idTipoTrabajo == null){
+          return res.status(400).json({
+            title: 'Error',
+            error: 'El valor de entrada de idTipoTrabajo no es correcto!'
+          });
+        }
+        if(codigoTipoPieza == null){
+          return res.status(400).json({
+            title: 'Error',
+            error: 'El valor de entrada de idTipoPieza no es correcto!'
+          });
+        }
+        if(idTipoTrabajo == null && codigoTipoPieza == null){
+          return res.status(400).json({
+            title: 'Error',
+            error: 'Ninguno de los 2 valores de entradas son correctos!!'
+          });
+        }
+      }
+
+    });
   }
 }
 
