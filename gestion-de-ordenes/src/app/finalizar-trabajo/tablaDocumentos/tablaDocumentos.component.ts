@@ -42,11 +42,7 @@ export class TablaDocumentosComponent implements OnInit {
   }
 
   ngOnChanges(){
-    console.log("Cambieee");
-
-    if (this.ordenSeleccionada!=null) {
-      this.exampleDatabase.obtenerTrabajosOrden(this.ordenSeleccionada.numOrden);
-    }
+    console.log("On Change en documentos");
   }
 
   rowClick(row){
