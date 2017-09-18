@@ -3,6 +3,9 @@ import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
+
+
 
 import { OrdenServicio } from '../modelos/orden';
 import { VariablesGlobales } from '../utiles/variablesGlobales';
@@ -21,8 +24,9 @@ export class OrdenesService {
 		return this.http.get(this.ordenesURL)
 		.toPromise()
 		.then(response => {
-			////console.log(response.json());
-			return response.json() as OrdenServicio[];
+			// console.log("Lo que devolvio el getOrdenes es...");
+			// console.log(response.json());
+			return response.json().obj as OrdenServicio[];
 		})
 		.catch(this.handleError);
 	}

@@ -21,8 +21,19 @@ export class TrabajosService {
 		return this.http.get(this.trabajosURL)
 		.toPromise()
 		.then(response => {
+			console.log("Trabajos recibidos");
+			console.log(response.json());
+			return response.json().obj as Trabajo[];
+		})
+		.catch(this.handleError);
+	}
+
+	getTrabajosDeOrden(idOrden):Promise<Trabajo[]>{
+		return this.http.get(this.trabajosURL+'/'+idOrden)
+		.toPromise()
+		.then(response => {
 			////console.log(response.json());
-			return response.json() as Trabajo[];
+			return response.json().obj as Trabajo[];
 		})
 		.catch(this.handleError);
 	}

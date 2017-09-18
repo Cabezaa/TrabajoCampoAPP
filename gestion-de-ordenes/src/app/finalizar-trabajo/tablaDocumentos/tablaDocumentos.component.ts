@@ -41,6 +41,14 @@ export class TablaDocumentosComponent implements OnInit {
     this.exampleDatabase = new ExampleDatabase(documentosService);
   }
 
+  ngOnChanges(){
+    console.log("Cambieee");
+
+    if (this.ordenSeleccionada!=null) {
+      this.exampleDatabase.obtenerTrabajosOrden(this.ordenSeleccionada.numOrden);
+    }
+  }
+
   rowClick(row){
     // console.log('Tocaron!!!');
     // console.log(row);
@@ -85,6 +93,10 @@ export class ExampleDatabase {
     this.documentosService.getDocumentosStub().then(documentosStub => {
       this.setDocumentos(documentosStub);
     }).catch(err => console.log(err));
+  }
+
+  obtenerDocumentosTrabajo(idTipoTrabajo,codigoTipoPieza){
+    //Aca hacer algo
   }
 
   setDocumentos(documentos) {

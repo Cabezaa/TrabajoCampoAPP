@@ -75,7 +75,7 @@ export class ExampleDatabase {
 
   constructor(private ordenesService: OrdenesService) {
 
-    this.ordenesService.getOrdenesStub().then(ordenesStub =>{
+    this.ordenesService.getOrdenes().then(ordenesStub =>{
       this.setOrdenes(ordenesStub);
     }).catch(err => console.log(err));
   }

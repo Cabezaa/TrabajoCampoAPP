@@ -1,5 +1,7 @@
 import * as express from 'express';
 var bodyParser = require('body-parser')
+var cors = require('cors')
+
 
 // Importamos las rutas
 import ObrasRoute from './routes/obras.route';
@@ -11,9 +13,9 @@ import TipoParametroRoute from './routes/tiposParametro.route';
 
 class App {
   public express
-
   constructor () {
     this.express = express();
+    this.express.use(cors());
     this.express.use(bodyParser.json());
     this.mountRoutes();
   }

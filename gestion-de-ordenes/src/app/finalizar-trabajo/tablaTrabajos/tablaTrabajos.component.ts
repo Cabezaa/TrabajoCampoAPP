@@ -46,14 +46,22 @@ export class TablaTrabajosComponent implements OnInit {
     'id' : ''
   };
 
-  constructor(private trabajosService: TrabajosService){
-        this.exampleDatabase = new ExampleDatabase(trabajosService);
-  }
-
   @ViewChild('filter') filter: ElementRef;
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild(MdPaginator) paginator: MdPaginator;
 
+  constructor(private trabajosService: TrabajosService){
+        this.exampleDatabase = new ExampleDatabase(trabajosService);
+  }
+
+
+  ngOnChanges(){
+    console.log("Cambieee");
+
+    if (this.ordenSeleccionada!=null) {
+      this.exampleDatabase.obtenerTrabajosOrden(this.ordenSeleccionada.numOrden);
+    }
+  }
 
   rowClick(row){
     // console.log('Tocaron!!!');
@@ -144,23 +152,30 @@ export class TablaTrabajosComponent implements OnInit {
   */
   export class ExampleDatabase {
     /** Stream that emits whenever the data has been modified. */
-    dataChange: BehaviorSubject<Trabajo[]> = new BehaviorSubject<Trabajo[]>([]);
-    get data(): Trabajo[] { return this.dataChange.value; }
+    dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    get data(): any[] { return this.dataChange.value; }
 
 
     constructor(private trabajoService: TrabajosService) {
-      this.trabajoService.getTrabajosExample().then(
+      // this.trabajoService.getTrabajos().then(
+      //   trabajos =>{
+      //     this.setTrabajos(trabajos);
+      //   }
+      // ).catch(err => {console.log(err)})
+    }
+
+    obtenerTrabajosOrden(numOrden){
+      this.trabajoService.getTrabajosDeOrden(numOrden).then(
         trabajos =>{
           this.setTrabajos(trabajos);
         }
       ).catch(err => {console.log(err)})
     }
 
-
     /**
       Pasamos nuestros trabajos al observer
     */
-    setTrabajos(trabajosExample: Trabajo[]) {
+    setTrabajos(trabajosExample: any[]) {
       let copiedData = trabajosExample;
       this.dataChange.next(trabajosExample);
 
@@ -207,18 +222,20 @@ export class TablaTrabajosComponent implements OnInit {
         this.filteredData =   this._exampleDatabase.data.slice().filter((item: Trabajo) => {
 
           // Filtro de la fecha
-          let dia = item.fechaRealizacion.getDate();
+          // console.log(item.fechaRealizacion);
+          let nDate = new Date(item.fechaRealizacion);
+          let dia = nDate.getDate();
           let diaString = dia.toString();
           if(dia < 10){
             diaString = '0'+ dia.toString();
           }
-          let mes = item.fechaRealizacion.getMonth()+1;
+          let mes = nDate.getMonth()+1;
           let mesString = mes.toString();
           if(mes < 10){
             mesString = '0'+ mes.toString();
           }
 
-          let filtroFecha = diaString + '/' + mesString +  '/' + item.fechaRealizacion.getFullYear();
+          let filtroFecha = diaString + '/' + mesString +  '/' + nDate.getFullYear();
 
           // Concatenamos los filtros para armar el string de busqueda
           let searchStr = (item.numTrabajo + filtroFecha + item.cuilSupervisor).toLowerCase();
