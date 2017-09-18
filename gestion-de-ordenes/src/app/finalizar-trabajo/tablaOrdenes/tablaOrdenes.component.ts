@@ -12,6 +12,9 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
+import { OrdenesService } from '../../servicios/ordenes.service';
+import { OrdenServicio } from '../../modelos/orden';
+
 @Component({
   selector: 'app-tabla-ordenes',
   templateUrl: './tablaOrdenes.component.html',
@@ -22,8 +25,7 @@ export class TablaOrdenesComponent implements OnInit {
   @Output() ordenSeleccionada = new EventEmitter();
 
   displayedColumns = ['numOrden', 'fechaIngreso', 'progresoTrabajo'];
-
-  exampleDatabase = new ExampleDatabase();
+  exampleDatabase : ExampleDatabase;
   dataSource: ExampleDataSource | null;
 
   seleccionado = {
@@ -31,6 +33,10 @@ export class TablaOrdenesComponent implements OnInit {
   };
 
   @ViewChild('filter') filter: ElementRef;
+
+  constructor(private ordenesService: OrdenesService){
+      this.exampleDatabase = new ExampleDatabase(ordenesService);
+  }
 
   rowClick(row){
     // console.log('Tocaron!!!');
@@ -60,29 +66,6 @@ export class TablaOrdenesComponent implements OnInit {
     });
   }
 }
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-  seleccionada: boolean;
-}
-
-export interface OrdenServicio {
- numOrden: string;
- fechaIngreso: Date;
- progresoTrabajo: string;
- observaciones: string;
-}
-
-
 
 /** An example database that the data source uses to retrieve data for the table. */
 export class ExampleDatabase {
@@ -90,64 +73,17 @@ export class ExampleDatabase {
   dataChange: BehaviorSubject<OrdenServicio[]> = new BehaviorSubject<OrdenServicio[]>([]);
   get data(): OrdenServicio[] { return this.dataChange.value; }
 
-  public ordenesDefault = [
-  {
-    numOrden: '1',
-    fechaIngreso: (new Date()),
-    progresoTrabajo: '50',
-    observaciones: ''
-  },
-  {
-    numOrden: '2',
-    fechaIngreso: (new Date(2017,7,8)),
-    progresoTrabajo: '20',
-    observaciones: ''
-  },
-  {
-    numOrden: '3',
-    fechaIngreso: (new Date(2017,5,5)),
-    progresoTrabajo: '0',
-    observaciones: ''
-  }
-  ]
+  constructor(private ordenesService: OrdenesService) {
 
-  getOrdenes(){
-    return this.ordenesDefault;
+    this.ordenesService.getOrdenesStub().then(ordenesStub =>{
+      this.setOrdenes(ordenesStub);
+    }).catch(err => console.log(err));
   }
 
-  constructor() {
-    // Fill up the database with 100 users.
-    // for (let i = 0; i < 5; i++) { this.addUser(); }
-    // this.data = this.getOrdenes();
-    this.setOrdenes();
-  }
+  setOrdenes(ordenes) {
+    let copiedData = ordenes;
+    this.dataChange.next(copiedData);
 
-  /** Adds a new user to the database. */
-  // addUser() {
-  //   const copiedData = this.data.slice();
-  //   copiedData.push(this.createNewUser());
-  //   this.dataChange.next(copiedData);
-  // }
-  setOrdenes() {
-    let copiedData = this.ordenesDefault;
-    for (let i = 0; i < copiedData.length; i++) {
-          this.dataChange.next(<OrdenServicio[]>this.ordenesDefault);
-    }
-  }
-
-  /** Builds and returns a new User. */
-  private createNewUser() {
-    const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-    return {
-      id: (this.data.length + 1).toString(),
-      name: name,
-      progress: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))],
-      seleccionada:false
-    };
   }
 }
 

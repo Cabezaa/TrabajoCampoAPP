@@ -49,6 +49,9 @@ import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/ta
 import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/valores-entrada.component';
 
 import { TrabajosService } from './servicios/trabajos.service';
+import { OrdenesService } from './servicios/ordenes.service';
+import { DocumentosService } from './servicios/documentos.service';
+
 import { WizardComponent } from './wizard/wizard.component';
 
 @NgModule({
@@ -102,7 +105,9 @@ import { WizardComponent } from './wizard/wizard.component';
   WizardModule
   ],
   providers: [
-    TrabajosService
+    TrabajosService,
+    OrdenesService,
+    DocumentosService
   ],
   bootstrap: [AppComponent]
 })
