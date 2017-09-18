@@ -22,7 +22,17 @@ export class DocumentosService {
 		.toPromise()
 		.then(response => {
 			////console.log(response.json());
-			return response.json() as Documento[];
+			return response.json().obj as Documento[];
+		})
+		.catch(this.handleError);
+	}
+
+	getDocumentosFiltro(idDocumento): Promise<Documento[]>{
+		return this.http.get(this.documentosURL+'/'+idDocumento)
+		.toPromise()
+		.then(response => {
+			////console.log(response.json());
+			return response.json().obj as Documento[];
 		})
 		.catch(this.handleError);
 	}

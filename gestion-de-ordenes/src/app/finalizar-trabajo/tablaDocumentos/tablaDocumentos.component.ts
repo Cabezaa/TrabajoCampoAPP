@@ -13,6 +13,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromEvent';
 
 import { DocumentosService } from '../../servicios/documentos.service';
+import { TipoParametroService } from '../../servicios/tipoParametro.service';
 import { Documento } from '../../modelos/documento';
 
 @Component({
@@ -37,12 +38,16 @@ export class TablaDocumentosComponent implements OnInit {
 
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private documentosService: DocumentosService){
-    this.exampleDatabase = new ExampleDatabase(documentosService);
+  constructor(private documentosService: DocumentosService,private tipoParametroService: TipoParametroService){
+    this.exampleDatabase = new ExampleDatabase(documentosService,tipoParametroService);
   }
 
   ngOnChanges(){
     console.log("On Change en documentos");
+    if (this.trabajoSeleccionado != null) {
+      this.exampleDatabase.obtenerDocumentosTrabajo(this.trabajoSeleccionado.tipoTrabajo.idTipoTrabajo,this.trabajoSeleccionado.pieza.tipoPieza.codigoTipoPieza);
+
+    }
   }
 
   rowClick(row){
@@ -84,7 +89,7 @@ export class ExampleDatabase {
   dataChange: BehaviorSubject<Documento[]> = new BehaviorSubject<Documento[]>([]);
   get data(): Documento[] { return this.dataChange.value; }
 
-  constructor(private documentosService: DocumentosService) {
+  constructor(private documentosService: DocumentosService, private tipoParametroService: TipoParametroService) {
 
     this.documentosService.getDocumentosStub().then(documentosStub => {
       this.setDocumentos(documentosStub);
@@ -93,6 +98,36 @@ export class ExampleDatabase {
 
   obtenerDocumentosTrabajo(idTipoTrabajo,codigoTipoPieza){
     //Aca hacer algo
+
+    //Primero obtenemos los tipoTrabajos para ese posible trabajo.
+
+    this.tipoParametroService.getTipoParametroFiltrado(idTipoTrabajo,codigoTipoPieza).then((resultados) => {
+      console.log("Los resultados obtenidos por el get Filtrado son");
+      console.log(resultados);
+
+      let docTemp = [];
+      for (let i = 0; i < resultados.length; i++) {
+          if(docTemp.indexOf(resultados[i].idDocumento) == -1){
+            //Esto significa que el documento no existe en el arreglo.
+            //Entonces lo agregamos
+            docTemp.push(resultados[i].idDocumento);
+          }
+      }
+      console.log("Los documentos filtrados son");
+      console.log(docTemp);
+
+      //Obtenemos los datos de esos documentos:
+      let documentos = [];
+      for (let i = 0; i < docTemp.length; i++) {
+        this.documentosService.getDocumentosFiltro(docTemp[i]).then((doc)=>{
+          console.log("Llego un documento");
+          documentos.push(doc);
+          //Llamamos a actualizar la vista.
+          this.setDocumentos(documentos);
+        })
+      }
+
+    }).catch(err => console.log(err));
   }
 
   setDocumentos(documentos) {

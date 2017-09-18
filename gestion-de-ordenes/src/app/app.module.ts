@@ -51,6 +51,7 @@ import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/val
 import { TrabajosService } from './servicios/trabajos.service';
 import { OrdenesService } from './servicios/ordenes.service';
 import { DocumentosService } from './servicios/documentos.service';
+import { TipoParametroService } from './servicios/tipoParametro.service';
 
 import { WizardComponent } from './wizard/wizard.component';
 
@@ -107,7 +108,8 @@ import { WizardComponent } from './wizard/wizard.component';
   providers: [
     TrabajosService,
     OrdenesService,
-    DocumentosService
+    DocumentosService,
+    TipoParametroService
   ],
   bootstrap: [AppComponent]
 })

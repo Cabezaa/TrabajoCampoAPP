@@ -1,4 +1,5 @@
 import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+import { TipoParametroService } from '../../servicios/tipoParametro.service';
 
 @Component({
   selector: 'app-valores-entrada',
@@ -14,11 +15,21 @@ export class ValoresEntradaComponent implements OnInit {
   @Output() volverStep = new EventEmitter();
 
   private saveSuccess = false;
-  constructor() { }
+  private parametros = [];
+  constructor(private tipoParametroService: TipoParametroService) { }
   public model = {};
   ngOnInit() {
   }
 
+  ngOnChanges(){
+    if(this.documentoSeleccionado != null){
+      this.tipoParametroService.getTipoParametroDocumento(this.documentoSeleccionado.idDocumento).then((resultados)=>{
+        console.log("Parametros actualizadosss");
+        this.parametros = resultados;
+        console.log(this.parametros);
+      })
+    }
+  }
 
   enviar(){
     this.saveSuccess = true;

@@ -145,6 +145,31 @@ class TipoParametroRoute {
       }
 
     });
+
+    this.router.get('/:idDocumento',(req,res)=>{
+      //Obtenemos todos los tipos parametros para ese documento.
+      let idDocumento = req.params.idDocumento;
+      let resultado = [];
+      if(idDocumento != null){
+        for (let i = 0; i < this.tipoParametroStub.length; i++) {
+            if(this.tipoParametroStub[i].idDocumento === idDocumento){
+              resultado.push(this.tipoParametroStub[i]);
+            }
+        }
+        res.status(200).json({
+          message: 'TipoParametros filtrados con exito!',
+          obj: resultado
+        });
+      }
+      else{
+        return res.status(400).json({
+          title: 'Error',
+          error: 'El valor de entrada de idDocumento no es correcto!'
+        });
+      }
+
+    });
+
   }
 }
 
