@@ -1,95 +1,13 @@
 import * as express from 'express';
 
+var Trabajo = require('../models/trabajo.model');
+var TipoTrabajo = require('../models/tipoTrabajo.model');
+var TipoPieza = require('../models/tipoPieza.model');
+var Pieza = require('../models/pieza.model');
+
 class TrabajosRoute {
   public express;
   public router;
-
-  private trabajosStub = [
-    {
-      numTrabajo: '1',
-      fechaRealizacion:(new Date(2017,8,1)),
-      Evaluacion: '',
-      observaciones: '',
-      numOrden: '1',
-      tipoTrabajo: {
-        idTipoTrabajo: '1',
-        nombre: 'Inspeccion particulas magnetizables',
-        descripcion: 'Inspeccion por magnetizacion de particulas de las piezas.'
-      },
-      pieza:{
-        numeroPieza: '1',
-        tipoPieza: {
-          codigoTipoPieza: 'tp1',
-          nombre: 'caño curvo',
-          descripcion: 'Un caño que tiene una seccion curva'
-        }
-      },
-      cuilSupervisor: '400'
-    },
-    {
-      numTrabajo: '2',
-      fechaRealizacion: (new Date(2017,6,15)),
-      Evaluacion: '',
-      observaciones: '',
-      numOrden: '1',
-      tipoTrabajo: {
-        idTipoTrabajo: '2',
-        nombre: 'Inspeccion por ultrasonido',
-        descripcion: 'Inspeccion por ultrasonido de piezas.'
-      },
-      pieza:{
-        numeroPieza: '2',
-        tipoPieza: {
-          codigoTipoPieza: 'tp1',
-          nombre: 'caño curvo',
-          descripcion: 'Un caño que tiene una seccion curva'
-        }
-      },
-      cuilSupervisor: '400'
-    },
-    {
-      numTrabajo: '3',
-      fechaRealizacion: (new Date(2017,8,8)),
-      Evaluacion: '',
-      observaciones: '',
-      numOrden: '2',
-      tipoTrabajo: {
-        idTipoTrabajo: '1',
-        nombre: 'Inspeccion particulas magnetizables',
-        descripcion: 'Inspeccion por magnetizacion de particulas de las piezas.'
-      },
-      pieza:{
-        numeroPieza: '3',
-        tipoPieza: {
-          codigoTipoPieza: 'tp3',
-          nombre: 'Valvula de apertura',
-          descripcion: 'Una valvula encargada de controlar la presion de los caños'
-        }
-      },
-      cuilSupervisor: '500'
-    },
-    {
-      numTrabajo: '4',
-      fechaRealizacion: (new Date(2017,5,4)),
-      Evaluacion: '',
-      observaciones: '',
-      numOrden: '3',
-      tipoTrabajo: {
-        idTipoTrabajo: '2',
-        nombre: 'Inspeccion por ultrasonido',
-        descripcion: 'Inspeccion por ultrasonido de piezas.'
-      },
-      pieza:{
-        numeroPieza: '4',
-        tipoPieza: {
-          codigoTipoPieza: 'tp2',
-          nombre: 'caño recto',
-          descripcion: 'Un caño que normalmente transporta fluidos espesos corrosivos.'
-        }
-      },
-      cuilSupervisor: '400'
-    }
-  ];
 
   constructor () {
     this.express = express()
@@ -99,29 +17,114 @@ class TrabajosRoute {
   private mountRoutes (): void {
     this.router = express.Router();
 
-    this.router.get('/', (req, res) => {
+    this.router.get('/seedTipoTrabajo', (req, res) => {
+      let tipoTrabajoAux = new TipoTrabajo({
+        idTipoTrabajo: '1',
+        nombre: 'Inspeccion particulas magnetizables',
+        descripcion: 'Inspeccion por magnetizacion de particulas de las piezas.'
+      });
+
+      tipoTrabajoAux.save().then(documentoNuevo => {
+        console.log('Documento guardado con exito!!');
+        console.log(documentoNuevo);
+      }, err => {
+        console.log('Error al guardar el documento!!');
+        console.log(err);
+      });
+
+      let tipoTrabajoAux2 = new TipoTrabajo({
+        idTipoTrabajo: '2',
+        nombre: 'Inspeccion por ultrasonido',
+        descripcion: 'Inspeccion por ultrasonido de piezas.'
+      });
+
+      tipoTrabajoAux2.save().then(documentoNuevo => {
+        console.log('Documento guardado con exito!!');
+        console.log(documentoNuevo);
+      }, err => {
+        console.log('Error al guardar el documento!!');
+        console.log(err);
+      });
+
       res.status(200).json({
-        message: 'Estas son los trabajos!',
-        obj: this.trabajosStub
+        message: 'Se han guardado documentos en la base de datos!'
+      });
+    });
+
+    this.router.get('/seed', (req, res) => {
+      let tipoTrabajoAux = new TipoTrabajo({
+        idTipoTrabajo: '1',
+        nombre: 'Inspeccion particulas magnetizables',
+        descripcion: 'Inspeccion por magnetizacion de particulas de las piezas.'
+      });
+
+      tipoTrabajoAux.save().then(documentoNuevo => {
+        console.log('Documento guardado con exito!!');
+        console.log(documentoNuevo);
+      }, err => {
+        console.log('Error al guardar el documento!!');
+        console.log(err);
+      });
+
+      let tipoTrabajoAux2 = new TipoTrabajo({
+        idTipoTrabajo: '2',
+        nombre: 'Inspeccion por ultrasonido',
+        descripcion: 'Inspeccion por ultrasonido de piezas.'
+      });
+
+      tipoTrabajoAux2.save().then(documentoNuevo => {
+        console.log('Documento guardado con exito!!');
+        console.log(documentoNuevo);
+      }, err => {
+        console.log('Error al guardar el documento!!');
+        console.log(err);
+      });
+
+      res.status(200).json({
+        message: 'Se han guardado documentos en la base de datos!'
+      });
+    });
+
+    this.router.get('/', (req, res) => {
+
+      Trabajo.find()
+      .populate('pieza tipoTrabajo ordenServicio')
+      .exec( (err,trabajos) => {
+        if(err){
+          return res.status(404).json({
+            title: 'Error al buscar trabajos!',
+            error: err
+          });
+        }
+        else{
+          res.status(200).json({
+            message: 'Estas son los trabajos!',
+            obj: trabajos
+          });
+        }
       })
     });
 
     this.router.get('/:numOrden',(req,res)=>{
       let numOrden = req.params.numOrden;
       if(numOrden != null){
-        let trabajosFiltrados = [];
-        for (let i = 0; i < this.trabajosStub.length; i++) {
-            //Si el trabajo tiene el numero de orden solicitado, entonces se lo agrega a los resultados
-            if(this.trabajosStub[i].numOrden === numOrden){
-              console.log("agregado un trabajo");
-              trabajosFiltrados.push(this.trabajosStub[i]);
-            }
-        }
-        //Retornamos los trabajos filtrados como resultado de la consulta.
-        res.status(200).json({
-          message: 'Trabajos filtrados con exito!',
-          obj: trabajosFiltrados
-        });
+        Trabajo.find({'ordenServicio': numOrden})
+        .populate('pieza tipoTrabajo ordenServicio')
+        .exec( (err,trabajos) => {
+          if(err){
+            return res.status(404).json({
+              title: 'Error al buscar trabajos!',
+              error: err
+            });
+          }
+          else{
+            //Retornamos los trabajos filtrados como resultado de la consulta.
+            res.status(200).json({
+              message: 'Estas son los trabajos!',
+              obj: trabajos
+            });
+          }
+        })
       }
       else{
         //En caso de error en el valor de entrada, devolvemos un error.
@@ -130,9 +133,6 @@ class TrabajosRoute {
           error: 'El valor de entrada de numOrden no es correcto!'
         });
       }
-
-
-
     });
   }
 }
