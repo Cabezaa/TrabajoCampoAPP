@@ -134,6 +134,55 @@ class TrabajosRoute {
         });
       }
     });
+
+    this.router.put('/:idTrabajo', (req,res)=>{
+      if(!req.body.evaluacion){
+        return res.status(400).json({
+          title: 'Error',
+          error: 'Falta enviar la evaluacion.'
+        });
+      }
+
+      var query = Trabajo.findOne({'_id':req.params.idTrabajo});
+
+      query.exec(function(err,trabajo){
+        if (err) {
+          return res.status(400).json({
+            title: 'An error occurred',
+            error: err
+          });
+        }
+
+
+        if(!trabajo){
+          return res.status(400).json({
+            title: 'Error',
+            error: 'Trabajo no encontrado'
+          });
+        }
+
+        trabajo.evaluacion = req.body.evaluacion;
+        trabajo.fechaRealizacion = req.body.fechaRealizacion;
+
+        trabajo.save().then(function(t){
+          console.log('SE ACTUALIZO EL CHABON!!!!!!');
+          console.log(t);
+          res.status(200).json({
+            message: 'Success',
+            obj: trabajo
+          });
+        }, function(err){
+          return res.status(400).json({
+            title: 'Error',
+            error: err
+          });
+        });
+
+      });
+
+    });
+
+
   }
 }
 

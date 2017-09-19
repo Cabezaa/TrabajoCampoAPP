@@ -38,6 +38,18 @@ export class TrabajosService {
 		.catch(this.handleError);
 	}
 
+	updateTrabajo(idTrabajo, evaluacion, fechaRealizacion){
+		return this.http
+        .put(this.trabajosURL+'/'+idTrabajo, JSON.stringify(
+            { evaluacion: evaluacion, fechaRealizacion: fechaRealizacion}),
+            {headers: this.headers})
+        .toPromise()
+        .then(res =>{
+            return res.json().obj;
+        })
+        .catch(this.handleError);
+	}
+
   getTrabajosExample():  Promise<Trabajo[]>{
     return new Promise( (resolve,reject) => resolve([
       {

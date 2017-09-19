@@ -2,6 +2,7 @@ import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 
 import { TipoParametroService } from '../../servicios/tipoParametro.service';
 import { ResultadosService } from '../../servicios/resultados.service';
+import { TrabajosService } from '../../servicios/trabajos.service';
 
 import {default as swal} from 'sweetalert2';
 
@@ -20,7 +21,7 @@ export class ValoresEntradaComponent implements OnInit {
 
   private saveSuccess = false;
   private parametros = [];
-  constructor(private tipoParametroService: TipoParametroService, private resultadosService: ResultadosService) { }
+  constructor(private tipoParametroService: TipoParametroService, private resultadosService: ResultadosService, private trabajosService: TrabajosService) { }
   public model = {};
   ngOnInit() {
   }
@@ -64,6 +65,15 @@ export class ValoresEntradaComponent implements OnInit {
         }
       ).catch(err => {console.log(err)})
     });
+
+    let evaluacion = 'aprobado';
+    let fechaRealizacion = new Date();
+
+    this.trabajosService.updateTrabajo(trabajo,evaluacion, fechaRealizacion).then(res =>{
+      console.log('Se actualzipo el trabajo!');
+      console.log(res);
+    }).catch(err => {console.log(err)});
+
     this.saveSuccess = true;
 
     let texto = '';
