@@ -52,5 +52,5 @@
 </div>
 <br>
 <br>
-<button type="button" class="btn btn-secondary btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.numOrden =='' " nextStep>Siguiente</button>
+<button type="button" class="btn btn-secondary btn-success pull-right" (click)='siguiente()'[disabled]="!seleccionado.numOrden " nextStep>Siguiente</button>
 <button type="button" class="btn btn-secondary btn-warning " disabled>Volver</button>

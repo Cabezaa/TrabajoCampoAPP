@@ -70,5 +70,5 @@
 
 </div>
 <br>
-<button type="button" class="btn btn-secondary btn-success pull-right" (click)='siguiente()'[disabled]="seleccionado.numTrabajo ==''&& seleccionado.numTrabajo ==null " nextStep>Siguiente</button>
+<button type="button" class="btn btn-secondary btn-success pull-right" (click)='siguiente()'[disabled]="!seleccionado.numTrabajo" nextStep>Siguiente</button>
 <button type="button" class="btn btn-secondary btn-warning " (click)='volver()' previousStep>Volver</button>
