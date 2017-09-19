@@ -1,93 +1,10 @@
 import * as express from 'express';
 
+var TipoParametro = require('../models/tipoParametro.model');
+
 class TipoParametroRoute {
   public express;
   public router;
-
-  private tipoParametroStub = [
-    {
-      idTipoParametro: '1',
-      valorMinimo: 2,
-      valorMaximo: 10,
-      nombreAtributo: 'x',
-      idTipoTrabajo: '1',
-      codigoTipoPieza: 'tp1',
-      idDocumento: '1'
-    },
-    {
-      idTipoParametro: '2',
-      valorMinimo: 3,
-      valorMaximo: 7,
-      nombreAtributo: 'y',
-      idTipoTrabajo: '1',
-      codigoTipoPieza: 'tp1',
-      idDocumento: '1'
-    },
-    {
-      idTipoParametro: '3',
-      valorMinimo: 0,
-      valorMaximo: 2,
-      nombreAtributo: 'z',
-      idTipoTrabajo: '1',
-      codigoTipoPieza: 'tp1',
-      idDocumento: '1'
-    },
-    {
-      idTipoParametro: '4',
-      valorMinimo: 2,
-      valorMaximo: 23,
-      nombreAtributo: 'x',
-      idTipoTrabajo: '2',
-      codigoTipoPieza: 'tp1',
-      idDocumento: '2'
-    },
-    {
-      idTipoParametro: '5',
-      valorMinimo: 5,
-      valorMaximo: 9,
-      nombreAtributo: 'h',
-      idTipoTrabajo: '2',
-      codigoTipoPieza: 'tp1',
-      idDocumento: '2'
-    },
-    {
-      idTipoParametro: '6',
-      valorMinimo: 200,
-      valorMaximo: 600,
-      nombreAtributo: 'partciulasToma',
-      idTipoTrabajo: '1',
-      codigoTipoPieza: 'tp3',
-      idDocumento: '3'
-    },
-    {
-      idTipoParametro: '7',
-      valorMinimo: 100,
-      valorMaximo: 300,
-      nombreAtributo: 'particulasSalida',
-      idTipoTrabajo: '1',
-      codigoTipoPieza: 'tp3',
-      idDocumento: '3'
-    },
-    {
-      idTipoParametro: '8',
-      valorMinimo: 50,
-      valorMaximo: 70,
-      nombreAtributo: 'tope',
-      idTipoTrabajo: '2',
-      codigoTipoPieza: 'tp2',
-      idDocumento: '4'
-    },
-    {
-      idTipoParametro: '9',
-      valorMinimo: 2,
-      valorMaximo: 10,
-      nombreAtributo: 'entrada',
-      idTipoTrabajo: '2',
-      codigoTipoPieza: 'tp2',
-      idDocumento: '4'
-    },
-  ];
-
 
   constructor () {
     this.express = express()
@@ -98,9 +15,21 @@ class TipoParametroRoute {
     this.router = express.Router();
 
     this.router.get('/', (req, res) => {
-      res.status(200).json({
-        message: 'Estos son los tipoParametros admitidos!',
-        obj: this.tipoParametroStub
+      TipoParametro.find()
+      .populate('tipoTrabajo tipoPieza documento')
+      .exec( (err,tiposParametro) => {
+        if(err){
+          return res.status(404).json({
+            title: 'Error al buscar tiposParametro!',
+            error: err
+          });
+        }
+        else{
+          res.status(200).json({
+            message: 'Estas son los tiposParametro!',
+            obj: tiposParametro
+          });
+        }
       })
     });
 
@@ -110,17 +39,25 @@ class TipoParametroRoute {
       let codigoTipoPieza = req.params.codigoTipoPieza;
       let resultado = [];
       if(idTipoTrabajo != null && codigoTipoPieza != null){
-        for (let i = 0; i < this.tipoParametroStub.length; i++) {
-            if(this.tipoParametroStub[i].idTipoTrabajo === idTipoTrabajo && this.tipoParametroStub[i].codigoTipoPieza === codigoTipoPieza){
-              resultado.push(this.tipoParametroStub[i]);
-            }
-        }
 
-        //Retornamos los tipoParametro que cumplen con el idTipoTrabajo e idTipoPieza requerido.
-        res.status(200).json({
-          message: 'TipoParametros filtrados con exito!',
-          obj: resultado
-        });
+        TipoParametro.find({'tipoTrabajo': idTipoTrabajo, 'tipoPieza': codigoTipoPieza })
+        .populate('tipoTrabajo tipoPieza documento')
+        .exec( (err,tiposParametro) => {
+          if(err){
+            return res.status(404).json({
+              title: 'Error al buscar tiposParametro!',
+              error: err
+            });
+          }
+          else{
+            //Retornamos los tipoParametro que cumplen con el idTipoTrabajo e idTipoPieza requerido.
+            res.status(200).json({
+              message: 'Estas son los tiposParametro filtrados con exito!',
+              obj: tiposParametro
+            });
+          }
+        })
+
       }
       else{
         //Buscamos los posibles casos de errores...
@@ -150,16 +87,26 @@ class TipoParametroRoute {
       //Obtenemos todos los tipos parametros para ese documento.
       let idDocumento = req.params.idDocumento;
       let resultado = [];
+
+
       if(idDocumento != null){
-        for (let i = 0; i < this.tipoParametroStub.length; i++) {
-            if(this.tipoParametroStub[i].idDocumento === idDocumento){
-              resultado.push(this.tipoParametroStub[i]);
-            }
-        }
-        res.status(200).json({
-          message: 'TipoParametros filtrados con exito!',
-          obj: resultado
-        });
+        TipoParametro.find({'documento': idDocumento})
+        .populate('tipoTrabajo tipoPieza documento')
+        .exec( (err,tiposParametro) => {
+          if(err){
+            return res.status(404).json({
+              title: 'Error al buscar tiposParametro!',
+              error: err
+            });
+          }
+          else{
+            //Retornamos los tipoParametro que cumplen con el idTipoTrabajo e idTipoPieza requerido.
+            res.status(200).json({
+              message: 'Estas son los tiposParametro filtrados con exito!',
+              obj: tiposParametro
+            });
+          }
+        })
       }
       else{
         return res.status(400).json({
