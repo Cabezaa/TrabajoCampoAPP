@@ -45,8 +45,7 @@ export class TablaDocumentosComponent implements OnInit {
   ngOnChanges(){
     console.log("On Change en documentos");
     if (this.trabajoSeleccionado != null) {
-      this.exampleDatabase.obtenerDocumentosTrabajo(this.trabajoSeleccionado.tipoTrabajo.idTipoTrabajo,this.trabajoSeleccionado.pieza.tipoPieza.codigoTipoPieza);
-
+      this.exampleDatabase.obtenerDocumentosTrabajo(this.trabajoSeleccionado.tipoTrabajo._id,this.trabajoSeleccionado.pieza.tipoPieza);
     }
   }
 
