@@ -59,7 +59,7 @@ export class TablaTrabajosComponent implements OnInit {
     console.log("Cambieee");
 
     if (this.ordenSeleccionada!=null) {
-      this.exampleDatabase.obtenerTrabajosOrden(this.ordenSeleccionada.numOrden);
+      this.exampleDatabase.obtenerTrabajosOrden(this.ordenSeleccionada._id);
     }
   }
 

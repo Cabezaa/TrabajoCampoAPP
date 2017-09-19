@@ -1,4 +1,5 @@
 export interface Trabajo {
+   _id: string;
   numTrabajo: string;
   fechaRealizacion: Date;
   evaluacion: string;
