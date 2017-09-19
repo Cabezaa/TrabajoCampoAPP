@@ -90,9 +90,9 @@ export class ExampleDatabase {
 
   constructor(private documentosService: DocumentosService, private tipoParametroService: TipoParametroService) {
 
-    this.documentosService.getDocumentosStub().then(documentosStub => {
-      this.setDocumentos(documentosStub);
-    }).catch(err => console.log(err));
+    // this.documentosService.getDocumentos().then(documentosStub => {
+    //   this.setDocumentos(documentosStub);
+    // }).catch(err => console.log(err));
   }
 
   obtenerDocumentosTrabajo(idTipoTrabajo,codigoTipoPieza){
@@ -106,25 +106,28 @@ export class ExampleDatabase {
 
       let docTemp = [];
       for (let i = 0; i < resultados.length; i++) {
-          if(docTemp.indexOf(resultados[i].idDocumento) == -1){
+          if(docTemp.indexOf(resultados[i].documento) == -1){
             //Esto significa que el documento no existe en el arreglo.
             //Entonces lo agregamos
-            docTemp.push(resultados[i].idDocumento);
+            console.log(docTemp);
+            console.log(resultados[i].documento);
+            docTemp.push(resultados[i].documento);
           }
       }
       console.log("Los documentos filtrados son");
       console.log(docTemp);
+      this.setDocumentos(docTemp);
 
       //Obtenemos los datos de esos documentos:
       let documentos = [];
-      for (let i = 0; i < docTemp.length; i++) {
-        this.documentosService.getDocumentosFiltro(docTemp[i]).then((doc)=>{
-          console.log("Llego un documento");
-          documentos.push(doc);
-          //Llamamos a actualizar la vista.
-          this.setDocumentos(documentos);
-        })
-      }
+      // for (let i = 0; i < docTemp.length; i++) {
+      //   this.documentosService.getDocumentosFiltro(docTemp[i]).then((doc)=>{
+      //     console.log("Llego un documento");
+      //     documentos.push(doc);
+      //     //Llamamos a actualizar la vista.
+      //     this.setDocumentos(documentos);
+      //   })
+      // }
 
     }).catch(err => console.log(err));
   }
@@ -160,7 +163,7 @@ export class ExampleDataSource extends DataSource<any> {
 
     return Observable.merge(...displayDataChanges).map(() => {
       return this._exampleDatabase.data.slice().filter((item: Documento) => {
-        let searchStr = (item.idDocumento + item.nombreArchivo).toLowerCase();
+        let searchStr = (item._id + item.nombreArchivo).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
     });

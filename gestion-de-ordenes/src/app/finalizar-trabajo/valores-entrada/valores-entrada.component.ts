@@ -25,7 +25,7 @@ export class ValoresEntradaComponent implements OnInit {
 
   ngOnChanges(){
     if(this.documentoSeleccionado != null){
-      this.tipoParametroService.getTipoParametroDocumento(this.documentoSeleccionado.idDocumento).then((resultados)=>{
+      this.tipoParametroService.getTipoParametroDocumento(this.documentoSeleccionado._id).then((resultados)=>{
         console.log("Parametros actualizadosss");
         this.parametros = resultados;
         console.log(this.parametros);
