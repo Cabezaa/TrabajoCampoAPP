@@ -59,9 +59,20 @@ class OrdenesRoute {
     });
 
     this.router.get('/', (req, res) => {
-      res.status(200).json({
-        message: 'Estas son las ordenes!',
-        obj: this.ordenesStub
+      OrdenServicio.find()
+      .exec( (err,ordenes) => {
+        if(err){
+          return res.status(404).json({
+            title: 'Error al buscar ordenes!',
+            error: err
+          });
+        }
+        else{
+          res.status(200).json({
+            message: 'Estas son los ordenes!',
+            obj: ordenes
+          });
+        }
       })
     })
   }
