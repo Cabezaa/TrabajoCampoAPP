@@ -1,5 +1,7 @@
 import * as express from 'express';
 
+var OrdenServicio = require('../models/orden.model');
+
 class OrdenesRoute {
   public express;
   public router;
@@ -32,6 +34,29 @@ class OrdenesRoute {
 
   private mountRoutes (): void {
     this.router = express.Router();
+
+    this.router.get('/seed', (req, res) => {
+
+      for (let i = 0; i < this.ordenesStub.length; i++) {
+          let docAux = new OrdenServicio({
+            numOrden:  this.ordenesStub[i].numOrden,
+            fechaIngreso:   this.ordenesStub[i].fechaIngreso,
+            progresoTrabajo:   this.ordenesStub[i].progresoTrabajo,
+            observaciones:   this.ordenesStub[i].observaciones
+          });
+
+          docAux.save().then(ordenNueva => {
+            console.log('Orden de Servicio guardada con exito!!');
+            console.log(ordenNueva);
+          }, err => {
+            console.log('Error al guardar el orden!!');
+            console.log(err);
+          })
+      }
+      res.status(200).json({
+        message: 'Se han guardado ordenes en la base de datos!'
+      });
+    });
 
     this.router.get('/', (req, res) => {
       res.status(200).json({
