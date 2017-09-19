@@ -4,6 +4,7 @@ var Trabajo = require('../models/trabajo.model');
 var TipoTrabajo = require('../models/tipoTrabajo.model');
 var TipoPieza = require('../models/tipoPieza.model');
 var Pieza = require('../models/pieza.model');
+var Asignacion = require('../models/asignacion.model');
 
 class TrabajosRoute {
   public express;
@@ -167,6 +168,44 @@ class TrabajosRoute {
         trabajo.save().then(function(t){
           console.log('SE ACTUALIZO EL CHABON!!!!!!');
           console.log(t);
+
+
+          if(t.evaluacion == 'aprobado'){
+            let progreso = 100;
+
+            let query2 = Asignacion.find({'trabajo':t._id});
+
+            query2.exec(function(err,asignacion){
+              if (err) {
+                return res.status(400).json({
+                  title: 'An error occurred',
+                  error: err
+                });
+              }
+
+              if(!asignacion){
+                return res.status(400).json({
+                  title: 'Error',
+                  error: 'Asignacion no encontrado'
+                });
+              }
+
+              if(asignacion[0]){
+                asignacion[0].progreso = progreso;
+
+                asignacion[0].save().then(function(a){
+
+                }).catch(err => {console.log(err)});
+              }
+
+
+
+            });
+          }
+          else{
+
+          }
+
           res.status(200).json({
             message: 'Success',
             obj: trabajo
