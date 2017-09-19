@@ -2,6 +2,14 @@ import * as express from 'express';
 var bodyParser = require('body-parser')
 var cors = require('cors')
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/BM');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Error en la conexion con Mongo:'));
+db.once('open', function() {
+  console.log('Base de datos Mongo: BM conectada');
+});
 
 // Importamos las rutas
 import ObrasRoute from './routes/obras.route';
