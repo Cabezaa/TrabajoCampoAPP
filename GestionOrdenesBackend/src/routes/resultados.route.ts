@@ -1,5 +1,7 @@
 import * as express from 'express';
 
+var Resultado = require('../models/resultado.model');
+
 class ResultadosRoute {
   public express;
   public router;
@@ -23,6 +25,9 @@ class ResultadosRoute {
 
     this.router.post('/', (req, res) => {
 
+      console.log('ESTE ES EL POST De resultados');
+      console.log(req.body);
+      // console.log(req);
       /*
       Controlamos los casos de error
       */
@@ -46,17 +51,24 @@ class ResultadosRoute {
 
         // Guardamos el nuevo resultado
 
-        let nuevoResultado = {
-          valor: req.body.valor
-        }
+        let nuevoResultado = new Resultado({
+          valor: req.body.valor,
+          trabajo: req.body.trabajo,
+          tipoParametro: req.body.tipoParametro
+        });
 
-        this.resultadosStub.push(nuevoResultado);
-
-        res.status(200).json({
-          message: 'Este es el nuevo resultado!',
-          obj: this.resultadosStub[this.resultadosStub.length -1]
+        nuevoResultado.save().then(resultadoNuevo =>{
+          console.log('Resultado guardado con exito!!');
+          console.log(resultadoNuevo);
+          res.status(200).json({
+            message: 'Se ha guardado un resultado en la base de datos!',
+            obj: resultadoNuevo
+          });
+        }, err =>{
+          console.log('Error al guardar el resultado!!');
+          console.log(err);
         })
-
+        // this.resultadosStub.push(nuevoResultado);
       }
     });
 

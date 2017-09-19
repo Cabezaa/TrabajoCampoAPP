@@ -1,5 +1,7 @@
 import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+
 import { TipoParametroService } from '../../servicios/tipoParametro.service';
+import { ResultadosService } from '../../servicios/resultados.service';
 
 import {default as swal} from 'sweetalert2';
 
@@ -18,7 +20,7 @@ export class ValoresEntradaComponent implements OnInit {
 
   private saveSuccess = false;
   private parametros = [];
-  constructor(private tipoParametroService: TipoParametroService) { }
+  constructor(private tipoParametroService: TipoParametroService, private resultadosService: ResultadosService) { }
   public model = {};
   ngOnInit() {
   }
@@ -38,18 +40,30 @@ export class ValoresEntradaComponent implements OnInit {
     // Registramos los resultados ingresados por cada parametro
     let resultadosIngresados = [];
     this.parametros.forEach(function(elem,index){
+      console.log('elem asdasdasdasd');
+      console.log(elem);
       resultadosIngresados.push({
-          'valor': elem.valor,
-          'idTipoParametro': elem.idTipoParametro
+          'valor': parseInt(elem.valor),
+          'tipoParametro': elem._id
       });
     });
 
+    console.log('ACA ESTAN LOS PARAMETROS');
+    console.log(resultadosIngresados);
 
     // Registramos los resultados obtendios
-    let trabajo = this.trabajoSeleccionado.numTrabajo; // NumTrabajo esta bien? o hace falta tipoTrabajo tmb?
+    let trabajo = this.trabajoSeleccionado._id; // NumTrabajo esta bien? o hace falta tipoTrabajo tmb?
 
+    let yo = this;
     // ACA LO GUARDAMOS
-
+    resultadosIngresados.forEach(function(elem,index){
+      yo.resultadosService.createResultado(elem.valor, trabajo, elem.tipoParametro).then(
+        (resultadoGuardado) =>{
+          console.log('Se guardo el resultado correctamente');
+          console.log(resultadoGuardado);
+        }
+      ).catch(err => {console.log(err)})
+    });
     this.saveSuccess = true;
 
     let texto = '';

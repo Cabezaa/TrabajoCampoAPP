@@ -52,6 +52,7 @@ import { TrabajosService } from './servicios/trabajos.service';
 import { OrdenesService } from './servicios/ordenes.service';
 import { DocumentosService } from './servicios/documentos.service';
 import { TipoParametroService } from './servicios/tipoParametro.service';
+import { ResultadosService } from './servicios/resultados.service';
 
 import { WizardComponent } from './wizard/wizard.component';
 
@@ -109,7 +110,8 @@ import { WizardComponent } from './wizard/wizard.component';
     TrabajosService,
     OrdenesService,
     DocumentosService,
-    TipoParametroService
+    TipoParametroService,
+    ResultadosService
   ],
   bootstrap: [AppComponent]
 })
