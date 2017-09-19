@@ -106,13 +106,20 @@ export class ExampleDatabase {
 
       let docTemp = [];
       for (let i = 0; i < resultados.length; i++) {
-          if(docTemp.indexOf(resultados[i].documento) == -1){
-            //Esto significa que el documento no existe en el arreglo.
-            //Entonces lo agregamos
-            console.log(docTemp);
-            console.log(resultados[i].documento);
-            docTemp.push(resultados[i].documento);
+
+        //Esto significa que el documento no existe en el arreglo.
+        //Entonces lo agregamos
+        let encontrado = false;
+        for (let j = 0; j < docTemp.length; j++) {
+          if(docTemp[j]._id.toString() == resultados[i].documento._id.toString()){
+            encontrado = true;
           }
+        }
+        if(!encontrado){
+          console.log(docTemp);
+          console.log(resultados[i].documento);
+          docTemp.push(resultados[i].documento);
+        }
       }
       console.log("Los documentos filtrados son");
       console.log(docTemp);
