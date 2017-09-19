@@ -28,9 +28,9 @@
       <th>Parámetro</th>
       <th>Valor</th>
     </tr>
-    <tr *ngFor="let parametro of parametros">
+    <tr *ngFor="let parametro of parametros; let parametroIndex = index; trackBy: trackByIndex">
       <td><label class="control-label" for="">{{parametro.nombreAtributo}}</label></td>
-      <td><input class="form-control" style="width:20%"></td>
+      <td><input class="form-control" style="width:20%" [(ngModel)]="parametros[parametroIndex].valor"></td>
     </tr>
 
 

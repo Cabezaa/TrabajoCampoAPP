@@ -32,6 +32,22 @@ export class ValoresEntradaComponent implements OnInit {
   }
 
   enviar(){
+
+    // Registramos los resultados ingresados por cada parametro
+    let resultadosIngresados = [];
+    this.parametros.forEach(function(elem,index){
+      resultadosIngresados.push({
+          'valor': elem.valor,
+          'idTipoParametro': elem.idTipoParametro
+      });
+    });
+
+
+    // Registramos los resultados obtendios
+    let trabajo = this.trabajoSeleccionado.numTrabajo; // NumTrabajo esta bien? o hace falta tipoTrabajo tmb?
+
+    // ACA LO GUARDAMOS
+
     this.saveSuccess = true;
   }
   cancelar(){
