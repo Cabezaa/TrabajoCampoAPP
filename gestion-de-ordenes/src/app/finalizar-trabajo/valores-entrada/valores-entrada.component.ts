@@ -3,6 +3,7 @@ import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { TipoParametroService } from '../../servicios/tipoParametro.service';
 import { ResultadosService } from '../../servicios/resultados.service';
 import { TrabajosService } from '../../servicios/trabajos.service';
+import { FinalizarTrabajoService } from '../../movimientos/finalizarTrabajo.service';
 
 import {default as swal} from 'sweetalert2';
 
@@ -21,7 +22,13 @@ export class ValoresEntradaComponent implements OnInit {
 
   private saveSuccess = false;
   private parametros = [];
-  constructor(private tipoParametroService: TipoParametroService, private resultadosService: ResultadosService, private trabajosService: TrabajosService) { }
+  constructor(
+    private tipoParametroService: TipoParametroService,
+    private resultadosService: ResultadosService,
+    private trabajosService: TrabajosService,
+    private finalizarTrabajoService: FinalizarTrabajoService,
+
+  ) { }
   public model = {};
   ngOnInit() {
   }
@@ -45,7 +52,8 @@ export class ValoresEntradaComponent implements OnInit {
       console.log(elem);
       resultadosIngresados.push({
           'valor': parseInt(elem.valor),
-          'tipoParametro': elem._id
+          'trabajo': trabajo,
+          'tipoParametro': elem
       });
     });
 
@@ -56,23 +64,21 @@ export class ValoresEntradaComponent implements OnInit {
     let trabajo = this.trabajoSeleccionado._id; // NumTrabajo esta bien? o hace falta tipoTrabajo tmb?
 
     let yo = this;
-    // ACA LO GUARDAMOS
-    resultadosIngresados.forEach(function(elem,index){
-      yo.resultadosService.createResultado(elem.valor, trabajo, elem.tipoParametro).then(
-        (resultadoGuardado) =>{
-          console.log('Se guardo el resultado correctamente');
-          console.log(resultadoGuardado);
-        }
-      ).catch(err => {console.log(err)})
-    });
 
-    let evaluacion = 'aprobado';
+
+
     let fechaRealizacion = new Date();
 
-    this.trabajosService.updateTrabajo(trabajo,evaluacion, fechaRealizacion).then(res =>{
-      console.log('Se actualzipo el trabajo!');
+    this.finalizarTrabajoService.finalizar(trabajo, fechaRealizacion, resultadosIngresados)
+    .then(res => {
+      console.log('### Finalice el trabajo');
       console.log(res);
-    }).catch(err => {console.log(err)});
+    })
+    .catch(err => {
+      console.log('Error en valores-entrada');
+      console.log(err);
+    });
+
 
     this.saveSuccess = true;
 

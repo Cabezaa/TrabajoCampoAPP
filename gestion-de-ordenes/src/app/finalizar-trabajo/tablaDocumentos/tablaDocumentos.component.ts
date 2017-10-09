@@ -95,14 +95,17 @@ export class ExampleDatabase {
     // }).catch(err => console.log(err));
   }
 
+  /*
+    Este metodo obtiene los documentos que formaran la tabla.
+    Para hacer esto, busca los tipo de parametros del trabajo elegido anteriormente ( su tipo de trabajo y su tipo de pieza asociada).
+    Luego, simplemente seleccionamos los documentos asociados a ese tipo de parametro.
+  */
   obtenerDocumentosTrabajo(idTipoTrabajo,codigoTipoPieza){
-    //Aca hacer algo
 
-    //Primero obtenemos los tipoTrabajos para ese posible trabajo.
-
+    // Aca buscamos los tipo Parametros segun el trabajo elegido (que tiene un tipo y un tipo de pieza)
     this.tipoParametroService.getTipoParametroFiltrado(idTipoTrabajo,codigoTipoPieza).then((resultados) => {
-      console.log("Los resultados obtenidos por el get Filtrado son");
-      console.log(resultados);
+      // console.log("Los resultados obtenidos por el get Filtrado son");
+      // console.log(resultados);
 
       let docTemp = [];
       for (let i = 0; i < resultados.length; i++) {
