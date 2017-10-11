@@ -1,4 +1,8 @@
 import * as express from 'express';
+import { RUTAS } from '../config/rutas.config';
+
+var http = require("http");
+
 
 var Documento = require('../models/documento.model');
 var Trabajo = require('../models/trabajo.model');
@@ -9,6 +13,13 @@ class FinalizarTrabajo {
   public express;
   public router;
 
+  private dominio = "localhost";
+  private url_ordenes = RUTAS.ORDENES_URL;
+  private url_trabajos = RUTAS.TRABAJOS_URL;
+  private url_documentos = RUTAS.DOCUMENTOS_URL;
+  private url_tiposParametros = RUTAS.TIPOS_PARAMETROS_URL;
+  private url_resultados = RUTAS.RESULTADOS_URL;
+
   constructor () {
     this.express = express()
     this.mountRoutes()
@@ -18,119 +29,121 @@ class FinalizarTrabajo {
     this.router = express.Router();
 
     // Cargamos los pasos del movimiento
-    this.getOrdenes();
-    this.getTrabajosOrden();
-    this.getTiposParametros();
-    this.finalizar();
+    this.getOrdenes(this.url_ordenes);
+    this.getTrabajosOrden(this.url_trabajos);
+    this.getTiposParametros(this.url_tiposParametros);
+    this.finalizar(this.url_resultados, this.url_trabajos);
 
   }
 
-  private getOrdenes(){
+  private getOrdenes(urlOrdenes){
     this.router.get('/ordenes', (req, res) => {
 
-      Orden.find()
-      .exec( (err,ordenes) => {
-        if(err){
-          return res.status(404).json({
-            title: 'Error al buscar ordenes!',
-            error: err
+      let getOptions = this.getOption(this.url_ordenes);
+
+      http.get(getOptions, (responseOrdenes) => {
+
+        const error = this.checkErrors(responseOrdenes);
+        if (error) {
+          console.error(error.message);
+          responseOrdenes.resume();
+          return;
+        }else{
+          let rawOrdenes = '';
+          responseOrdenes.setEncoding('utf8');
+          responseOrdenes.on('data', (chunk) => { rawOrdenes += chunk; });
+          responseOrdenes.on('end', () => {
+            try {
+              const parsedOrdenes = JSON.parse(rawOrdenes);
+              // console.log(parsedOrdenes);
+
+              return res.status(200).json(parsedOrdenes);
+
+            } catch (e) {
+              console.error(e.message);
+            }
           });
         }
-        else{
-          res.status(200).json({
-            message: 'Estas son los ordenes!',
-            obj: ordenes
-          });
-        }
-      })
+      }).on('error', (e) => {
+        console.error(`Got error: ${e.message}`);
+      });;
+
     });
   }
 
-  private getTrabajosOrden(){
+  private getTrabajosOrden(url_trabajos){
     this.router.get('/trabajos/:numOrden',(req,res)=>{
-      let numOrden = req.params.numOrden;
-      if(numOrden != null){
-        Trabajo.find({'ordenServicio': numOrden})
-        .populate('pieza tipoTrabajo ordenServicio')
-        .exec( (err,trabajos) => {
-          if(err){
-            return res.status(404).json({
-              title: 'Error al buscar trabajos!',
-              error: err
+
+        let id_orden = req.params.numOrden;
+
+        let getOptions = this.getOption(this.url_trabajos + '/' + id_orden);
+
+        http.get(getOptions, (responseTrabajos) => {
+
+          const error = this.checkErrors(responseTrabajos);
+          if (error) {
+            console.error(error.message);
+            responseTrabajos.resume();
+            return;
+          }else{
+            let rawTrabajos = '';
+            responseTrabajos.setEncoding('utf8');
+            responseTrabajos.on('data', (chunk) => { rawTrabajos += chunk; });
+            responseTrabajos.on('end', () => {
+              try {
+                const parsedTrabajos = JSON.parse(rawTrabajos);
+                // console.log(parsedTrabajos);
+
+                return res.status(200).json(parsedTrabajos);
+
+              } catch (e) {
+                console.error(e.message);
+              }
             });
           }
-          else{
-            //Retornamos los trabajos filtrados como resultado de la consulta.
-            res.status(200).json({
-              message: 'Estas son los trabajos!',
-              obj: trabajos
-            });
-          }
-        })
-      }
-      else{
-        //En caso de error en el valor de entrada, devolvemos un error.
-        return res.status(400).json({
-          title: 'Error',
-          error: 'El valor de entrada de numOrden no es correcto!'
-        });
-      }
+        }).on('error', (e) => {
+          console.error(`Got error: ${e.message}`);
+        });;
     });
   }
 
-  private getTiposParametros(){
+  private getTiposParametros(url_tiposParametros){
     this.router.get('/tiposParametro/tiposTrabajo/:idTipoTrabajo/tiposPieza/:codigoTipoPieza',(req,res)=>{
 
-      let idTipoTrabajo = req.params.idTipoTrabajo;
-      let codigoTipoPieza = req.params.codigoTipoPieza;
-      let resultado = [];
-      if(idTipoTrabajo != null && codigoTipoPieza != null){
+      let id_tipoTrabajo = req.params.idTipoTrabajo;
+      let id_tipoPieza = req.params.codigoTipoPieza;
 
-        TipoParametro.find({'tipoTrabajo': idTipoTrabajo, 'tipoPieza': codigoTipoPieza })
-        .populate('tipoTrabajo tipoPieza documento')
-        .exec( (err,tiposParametro) => {
-          if(err){
-            return res.status(404).json({
-              title: 'Error al buscar tiposParametro!',
-              error: err
-            });
-          }
-          else{
-            //Retornamos los tipoParametro que cumplen con el idTipoTrabajo e idTipoPieza requerido.
-            res.status(200).json({
-              message: 'Estas son los tiposParametro filtrados con exito!',
-              obj: tiposParametro
-            });
-          }
-        })
+      let getOptions = this.getOption( url_tiposParametros + '/' + id_tipoTrabajo + '/' + id_tipoPieza);
 
-      }
-      else{
-        //Buscamos los posibles casos de errores...
-        if(idTipoTrabajo == null){
-          return res.status(400).json({
-            title: 'Error',
-            error: 'El valor de entrada de idTipoTrabajo no es correcto!'
+      http.get(getOptions, (responseTiposParametros) => {
+
+        const error = this.checkErrors(responseTiposParametros);
+        if (error) {
+          console.error(error.message);
+          responseTiposParametros.resume();
+          return;
+        }else{
+          let rawTiposParametros = '';
+          responseTiposParametros.setEncoding('utf8');
+          responseTiposParametros.on('data', (chunk) => { rawTiposParametros += chunk; });
+          responseTiposParametros.on('end', () => {
+            try {
+              const parsedTiposParametros = JSON.parse(rawTiposParametros);
+              return res.status(200).json(parsedTiposParametros);
+
+            } catch (e) {
+              console.error(e.message);
+            }
           });
         }
-        if(codigoTipoPieza == null){
-          return res.status(400).json({
-            title: 'Error',
-            error: 'El valor de entrada de idTipoPieza no es correcto!'
-          });
-        }
-        if(idTipoTrabajo == null && codigoTipoPieza == null){
-          return res.status(400).json({
-            title: 'Error',
-            error: 'Ninguno de los 2 valores de entradas son correctos!!'
-          });
-        }
-      }
+      }).on('error', (e) => {
+        console.error(`Got error: ${e.message}`);
+      });;
 
     });
   }
 
-  private finalizar(){
+  private finalizar(url_resultados, url_trabajos){
     this.router.post('/resultados', (req, res) => {
 
       console.log('ESTE ES EL POST De resultados');
@@ -276,6 +289,30 @@ class FinalizarTrabajo {
 
       }
     })
+  }
+
+  private checkErrors(response){
+    const { statusCode } = response;
+    const contentType = response.headers['content-type'];
+
+    let error;
+    if (statusCode !== 200) {
+      error = new Error('Request Failed.\n' +
+      `Status Code: ${statusCode}`);
+    } else if (!/^application\/json/.test(contentType)) {
+      error = new Error('Invalid content-type.\n' +
+      `Expected application/json but received ${contentType}`);
+    }
+    return error;
+  }
+
+  private getOption(url){
+    return {
+      hostname: this.dominio,
+      port: 3000,
+      path: url,
+      agent: false  // create a new agent just for this one request
+    }
   }
 
 }
