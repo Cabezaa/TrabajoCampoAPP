@@ -56,6 +56,7 @@ import { ResultadosService } from './servicios/resultados.service';
 import { FinalizarTrabajoService } from './movimientos/finalizarTrabajo.service';
 
 import { WizardComponent } from './wizard/wizard.component';
+import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedido.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { WizardComponent } from './wizard/wizard.component';
     TablaOrdenesComponent,
     TablaDocumentosComponent,
     ValoresEntradaComponent,
-    WizardComponent
+    WizardComponent,
+    TrabajoMasPedidoComponent
   ],
   imports: [
     BrowserModule,

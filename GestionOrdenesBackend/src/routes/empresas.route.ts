@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-var Empresas = require('../models/empresas.model');
+var Empresas = require('../models/empresa.model');
 
 class EmpresasRoute {
   public express;
