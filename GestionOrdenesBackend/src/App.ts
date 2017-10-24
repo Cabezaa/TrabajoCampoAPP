@@ -18,7 +18,9 @@ import OrdenesRoute from './routes/ordenes.route';
 import DocumentosRoute from './routes/documentos.route';
 import ResultadosRoute from './routes/resultados.route';
 import TipoParametroRoute from './routes/tiposParametro.route';
+import AsignacionesRoute from './routes/asignaciones.route';
 import FinalizarTrabajo from './movimientos/finalizarTrabajo';
+import EmpleadoMasTrabajos from './movimientos/empleadoMasTrabajos';
 
 class App {
   public express
@@ -44,7 +46,9 @@ class App {
     this.express.use('/documentos', DocumentosRoute);
     this.express.use('/resultados', ResultadosRoute);
     this.express.use('/tipoparametro', TipoParametroRoute);
+    this.express.use('/asignaciones', AsignacionesRoute);
     this.express.use('/movimientos/finalizarTrabajo', FinalizarTrabajo);
+    this.express.use('/movimientos/empleadoMasTrabajos', EmpleadoMasTrabajos);
   }
 }
 
