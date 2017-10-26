@@ -1,3 +1,9 @@
-<p>
-  trabajo-mas-pedido works!
-</p>
+<div class="form-group col-lg-6">
+    <label>Seleccionar empresa a consultar</label>
+    <select class="form-control">
+        <option *ngFor="let empresa of empresas">{{empresa.Nombre}}</option>
+    </select>
+
+    <button type="button" class="btn btn-success btn-circle btn-lg" (click)="empresaElegida(empresa)"><i class="fa fa-check"></i></button>
+    <button type="button" class="btn btn-danger btn-circle btn-lg" ><i class="fa fa-times"></i></button>
+</div>

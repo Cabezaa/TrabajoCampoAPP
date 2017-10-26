@@ -4,35 +4,25 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { Documento } from '../modelos/documento';
+
 import { VariablesGlobales } from '../utiles/variablesGlobales';
 
 @Injectable()
-export class FinalizarTrabajoService {
+export class TrabajoMasPedidoService {
 
 	private headers = new Headers({'Content-Type': 'application/json'});
-	private finalizarTrabajoURL = VariablesGlobales.BASE_API_URL+'/movimientos/finalizarTrabajo';  // URL to web api
+	private trabajoMasPedidoURL = VariablesGlobales.BASE_API_URL+'/movimientos/TrabajoMasPedido';  // URL to web api
 
 	constructor(private http: Http) {
 
 	}
 
-	finalizar(trabajoId, fechaRealizacion, resultados){
-
-    let trabajoFinalizar = {
-      "trabajo": trabajoId,
-      "fechaRealizacion": fechaRealizacion,
-      "resultados": resultados
-    };
-
-    return this.http
-    .post(this.finalizarTrabajoURL + '/resultados', JSON.stringify(trabajoFinalizar), {headers: this.headers})
-     .toPromise()
+  public consultarEmpresas(){
+    return this.http.get(this.trabajoMasPedidoURL + '/empresas', {headers: this.headers}).toPromise()
     .then(res => {
       return res.json() as any;
     })
   }
-
 
 
 

@@ -58,6 +58,7 @@ import { DocumentosService } from './servicios/documentos.service';
 import { TipoParametroService } from './servicios/tipoParametro.service';
 import { ResultadosService } from './servicios/resultados.service';
 import { FinalizarTrabajoService } from './movimientos/finalizarTrabajo.service';
+import { TrabajoMasPedidoService } from './movimientos/trabajoMasPedido.service';
 
 import { WizardComponent } from './wizard/wizard.component';
 import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedido.component';
@@ -120,7 +121,8 @@ import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedi
     DocumentosService,
     TipoParametroService,
     ResultadosService,
-    FinalizarTrabajoService
+    FinalizarTrabajoService,
+    TrabajoMasPedidoService
   ],
   bootstrap: [AppComponent]
 })

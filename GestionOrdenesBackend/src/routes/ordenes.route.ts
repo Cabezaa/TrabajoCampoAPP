@@ -74,6 +74,29 @@ class OrdenesRoute {
           });
         }
       })
+    });
+
+    this.router.get('/:idSector',(req,res)=>{
+
+      let id_sector = req.params.idSector;
+      OrdenServicio.find(
+        {
+          encargadaPor: id_sector
+        }
+      ).exec((err,ordenes)=>{
+        if(err){
+          return res.status(404).json({
+            title: 'Error al buscar las ordenes!',
+            error: err
+          });
+        }
+        else{
+          res.status(200).json({
+            message: 'Estas son las ordenes!',
+            obj: ordenes
+          });
+        }
+      })
     })
   }
 }
