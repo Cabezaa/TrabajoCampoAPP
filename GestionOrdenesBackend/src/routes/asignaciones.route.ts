@@ -94,12 +94,11 @@ class AsignacionesRoute {
           }
         },
         { "$group": {
-          _id: { personal: "$personal._id", progreso: '$progreso'},
+          _id: { personal: "$personal", progreso: '$progreso'},
           asignaciones: { $push:
             {
               idAsignacion: "$idAsignacion",
               instrumento: "$instrumento",
-              personalAsignado: "$personal",
             }
           },
           count: { $sum: 1 }

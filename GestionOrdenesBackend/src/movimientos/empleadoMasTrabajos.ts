@@ -38,32 +38,62 @@ class EmpleadoMasTrabajos {
         resultado = JSON.parse(<any>resultado);
         console.log('######## Obtuve las asignaciones');
         console.log(resultado);
-
         let asignaciones= (<any>resultado).obj;
-        asignaciones.forEach(function(asignacion, indexAsignacion){
-          console.log('Asignacion:');
-          console.log(asignacion);
+        if(asignaciones && asignaciones.length > 0){
+          this.obtenerMaxEmpleado(asignaciones)
+          .then(empleadoMax =>{
+            return res.status(200).json({
+              message: 'Este es el emplado con mas asginaciones en el periodo!',
+              obj: empleadoMax
+            });
+          })
+          .catch(err => {
+            console.log('### Error');
+            return res.status(400).json({
+              title: 'Error el empleado con mas trabajos en un periodo!',
+              error: err
+            });
+          })
+        }
+        else{
+          let err = new Error('No existen asignaciones en ese periodo');
+          return res.status(400).json({
+            title: 'Error el empleado con mas trabajos en un periodo!',
+            error: err
+          });
+        }
+
+      }).catch(err => {
+        console.log('ERROR', err);
+        return res.status(400).json({
+          title: 'Error el empleado con mas trabajos en un periodo!',
+          error: err
         });
+      });
 
-      }).catch(err => console.log('ERROR', err));
 
 
-      return res.status(200);
     });
   }
 
 
   // -------------------- Metodos privados--------------------------------------
 
+
+  /*
+  Retorna las asignaciones de un periodo
+  */
   private obtenerAsignaciones(fechaInicio, fechaFin){
     return new Promise((resolve, reject) => {
 
       let getAsignaciones = this.getOption(RUTAS.ASIGNACIONES_URL+'?expandirTrabajos=true&&expandirPersonal=true&&fechaInicio='+fechaInicio+'&&fechaFin='+fechaFin);
-
+      console.log('###### Aca 1');
       this.getRaw(getAsignaciones)
       .then(asignaciones => {
+        console.log('###### Aca 2');
         resolve(asignaciones);
       }).catch(err => {
+        console.log('###### Aca 3');
         console.log('Error al buscar las asignaciones');
         console.error(err);
         reject(err)
@@ -73,7 +103,32 @@ class EmpleadoMasTrabajos {
 
   }
 
-  private contarTrabajosFinalizados(){
+  /*
+  Devuelve el emplado con mas asignaciones
+  */
+  private obtenerMaxEmpleado(asignaciones){
+    return new Promise((resolve, reject) => {
+      let empleadoMax = {
+        count: -99
+      };
+      asignaciones.forEach(function(asignacion, indexAsignacion){
+        console.log('Asignacion:');
+        console.log(asignacion);
+
+        if(asignacion._id.progreso == 'finalizado'){
+          if(asignacion.count > empleadoMax.count){
+            empleadoMax = asignacion;
+          }
+        }
+      });
+
+      if(empleadoMax.count > -1){
+        resolve(empleadoMax);
+      }else{
+        reject(new Error('Error al buscar el empleado con mas asignaciones en el periodo!'))
+      }
+
+    });
 
   }
 
