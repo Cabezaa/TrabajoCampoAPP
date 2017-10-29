@@ -57,7 +57,8 @@ import { OrdenesService } from './servicios/ordenes.service';
 import { DocumentosService } from './servicios/documentos.service';
 import { TipoParametroService } from './servicios/tipoParametro.service';
 import { ResultadosService } from './servicios/resultados.service';
-import { FinalizarTrabajoService } from './movimientos/finalizarTrabajo.service';
+import { FinalizarTrabajoService } from './servicios/movimientos/finalizarTrabajo.service';
+import { EmpleadoMasTrabajosService } from './servicios/movimientos/empleadoMasTrabajos.service';
 
 import { WizardComponent } from './wizard/wizard.component';
 
@@ -118,7 +119,8 @@ import { WizardComponent } from './wizard/wizard.component';
     DocumentosService,
     TipoParametroService,
     ResultadosService,
-    FinalizarTrabajoService
+    FinalizarTrabajoService,
+    EmpleadoMasTrabajosService
   ],
   bootstrap: [AppComponent]
 })

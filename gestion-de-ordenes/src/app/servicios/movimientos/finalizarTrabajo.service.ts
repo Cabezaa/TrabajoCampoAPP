@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { Documento } from '../modelos/documento';
-import { VariablesGlobales } from '../utiles/variablesGlobales';
+import { Documento } from '../../modelos/documento';
+import { VariablesGlobales } from '../../utiles/variablesGlobales';
 
 @Injectable()
 export class FinalizarTrabajoService {
