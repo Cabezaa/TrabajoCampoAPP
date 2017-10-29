@@ -52,6 +52,9 @@ import { TablaOrdenesComponent } from './finalizar-trabajo/tablaOrdenes/tablaOrd
 import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/tablaDocumentos.component';
 import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/valores-entrada.component';
 
+import { EmpleadoMasTrabajosComponent } from './movimientos/empleadoMasTrabajos/empleadoMasTrabajos.component';
+
+
 import { TrabajosService } from './servicios/trabajos.service';
 import { OrdenesService } from './servicios/ordenes.service';
 import { DocumentosService } from './servicios/documentos.service';
@@ -70,7 +73,8 @@ import { WizardComponent } from './wizard/wizard.component';
     TablaOrdenesComponent,
     TablaDocumentosComponent,
     ValoresEntradaComponent,
-    WizardComponent
+    WizardComponent,
+    EmpleadoMasTrabajosComponent
   ],
   imports: [
     BrowserModule,

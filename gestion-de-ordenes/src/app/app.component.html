@@ -57,7 +57,8 @@
                     </div>
                 </li> -->
                 <li>
-                    <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Principal</a>
+                    <a [routerLink]="['/movimiento1']"><i class="fa fa-dashboard fa-fw"></i> Principal</a>
+                    <a [routerLink]="['/movimiento2']"><i class="fa fa-dashboard fa-fw"></i> Consulta 1</a>
                 </li>
                 <!-- <li>
                     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
@@ -154,7 +155,8 @@
     <!-- /.col-lg-12 -->
   </div>
   <!-- <app-finalizar-trabajo></app-finalizar-trabajo> -->
-  <app-wizard></app-wizard>
+  <!-- <app-wizard></app-wizard> -->
+  <router-outlet></router-outlet>
 </div>
 <!-- /#page-wrapper -->
 
