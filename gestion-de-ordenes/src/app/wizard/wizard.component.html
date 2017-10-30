@@ -1,34 +1,26 @@
 <div class="container-fluid">
   <br>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Finalizar Trabajo </h1>
+    </div>
+  </div>
   <wizard #wizard navBarLayout="large-empty-symbols">
 
     <!--  PASO 1 -->
 
     <div #step1 id='step1' style="width: 100%">
-      <app-tabla-ordenes
-        wizardStep
-        title="Seleccionar orden"
-        navigationSymbol="1"
-        (ordenSeleccionada) = 'OnOrdenSeleccionada($event)'
-        (stepEnter)="enterPrimerStep($event)"
-        (stepExit)="exitPrimerStep($event)"
-      >
-    </app-tabla-ordenes>
+      <app-tabla-ordenes wizardStep title="Seleccionar orden" navigationSymbol="1" (ordenSeleccionada)='OnOrdenSeleccionada($event)'
+        (stepEnter)="enterPrimerStep($event)" (stepExit)="exitPrimerStep($event)">
+      </app-tabla-ordenes>
     </div>
 
 
     <!--  PASO 2 -->
 
-    <div #step2 id='step2' >
-      <app-tabla-trabajos
-        wizardStep
-        title="Seleccionar Trabajo"
-        navigationSymbol="2"
-        [ordenSeleccionada] = 'ordenSeleccionada'
-        (trabajoSeleccionado) = 'OnTrabajoSeleccionado($event)'
-        (stepEnter)="enterSegundoStep($event)"
-        (stepExit)="exitSegundoStep($event)"
-      >
+    <div #step2 id='step2'>
+      <app-tabla-trabajos wizardStep title="Seleccionar Trabajo" navigationSymbol="2" [ordenSeleccionada]='ordenSeleccionada' (trabajoSeleccionado)='OnTrabajoSeleccionado($event)'
+        (stepEnter)="enterSegundoStep($event)" (stepExit)="exitSegundoStep($event)">
       </app-tabla-trabajos>
     </div>
 
@@ -37,30 +29,16 @@
     <!--  PASO 3 -->
 
     <div #step3 id='step3'>
-      <app-tabla-documentos
-        wizardStep
-        title="Seleccionar Documento"
-        navigationSymbol="3"
-        [trabajoSeleccionado] = 'trabajoSeleccionado'
-        [ordenSeleccionada] = 'ordenSeleccionada'
-        (documentoSeleccionado) = 'OnDocumentoSeleccionado($event)'
-        (stepEnter)="enterTercerStep($event)"
-        (stepExit)="exitTercerStep($event)"
-      >
+      <app-tabla-documentos wizardStep title="Seleccionar Documento" navigationSymbol="3" [trabajoSeleccionado]='trabajoSeleccionado'
+        [ordenSeleccionada]='ordenSeleccionada' (documentoSeleccionado)='OnDocumentoSeleccionado($event)' (stepEnter)="enterTercerStep($event)"
+        (stepExit)="exitTercerStep($event)">
       </app-tabla-documentos>
     </div>
 
     <div #step4 id='step4'>
-      <app-valores-entrada
-        wizardStep
-        title="Cargar Resultados"
-        navigationSymbol="4"
-        [trabajoSeleccionado] = 'trabajoSeleccionado'
-        [ordenSeleccionada] = 'ordenSeleccionada'
-        [documentoSeleccionado] = 'documentoSeleccionado'
-        (stepEnter)="enterCuartoStep($event)"
-        (stepExit)="exitCuartoStep($event)"
-      ></app-valores-entrada>
+      <app-valores-entrada wizardStep title="Cargar Resultados" navigationSymbol="4" [trabajoSeleccionado]='trabajoSeleccionado'
+        [ordenSeleccionada]='ordenSeleccionada' [documentoSeleccionado]='documentoSeleccionado' (stepEnter)="enterCuartoStep($event)"
+        (stepExit)="exitCuartoStep($event)"></app-valores-entrada>
     </div>
 
 

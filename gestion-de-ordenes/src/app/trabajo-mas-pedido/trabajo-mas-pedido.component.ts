@@ -10,7 +10,10 @@ import { TrabajoMasPedidoService } from '../movimientos/trabajoMasPedido.service
 export class TrabajoMasPedidoComponent implements OnInit {
 
   public empresas = [];
-
+  public nombreEmpresa = null;
+  public nombreTrabajoMasPedido = null;
+  public cantidadTrabajoMasPedido = null;
+  
   constructor(private trabajoMasPedidoService: TrabajoMasPedidoService ) { }
 
   ngOnInit() {
@@ -22,8 +25,37 @@ export class TrabajoMasPedidoComponent implements OnInit {
     });
   }
 
-  public empresaElegida(empresa){
-    console.log("La empresa elegida es..." , empresa)
+  public empresaElegida(idEmpresa){
+    console.log("La empresa elegida es..." , idEmpresa);
+  
+    this.trabajoMasPedidoService.obtenerTrabajoMasPedido(idEmpresa).then(trabajo => {
+      console.log("Lo que me llego por parametro es....", trabajo);
+
+      let empresa = this.retornarEmpresa(idEmpresa);
+      if(empresa!=null){
+        console.log("la empresa q me devolvio fue.... ", empresa);
+        this.nombreEmpresa = empresa.Nombre;
+        this.nombreTrabajoMasPedido = trabajo.obj.nombre;
+        this.cantidadTrabajoMasPedido = trabajo.obj.cantidad;
+      }
+    })
+  
+  
+  }
+
+
+  private retornarEmpresa(idEmpresa){
+
+    for (var index = 0; index < this.empresas.length; index++) {
+      var element = this.empresas[index];
+      
+      if(element._id === idEmpresa){
+        return element;
+      }
+    }
+
+    return null;
+
   }
 
 

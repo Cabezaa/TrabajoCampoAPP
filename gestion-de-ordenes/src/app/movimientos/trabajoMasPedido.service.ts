@@ -22,7 +22,14 @@ export class TrabajoMasPedidoService {
     .then(res => {
       return res.json() as any;
     })
-  }
+	}
+	
+	public obtenerTrabajoMasPedido(idEmpresa){
+		return this.http.get(this.trabajoMasPedidoURL + '/calcular/'+idEmpresa, {headers: this.headers}).toPromise()
+    .then(res => {
+      return res.json() as any;
+    })
+	}
 
 
 

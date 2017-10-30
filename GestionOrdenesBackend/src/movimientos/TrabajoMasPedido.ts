@@ -87,20 +87,27 @@ class TrabajoMasPedido {
 
 
       this.consultaCompleja(id_empresa).then((respuestaFinalTrabajos) => {
-        let arregloTemp:[any] = <[any]>respuestaFinalTrabajos;
+        let arregloTemp: [any] = <[any]>respuestaFinalTrabajos;
         let diccionario = {};
 
+
+
+        console.log("La respuesta final es deeeeeeeeeeee: ", respuestaFinalTrabajos);
         for (var index = 0; index < arregloTemp.length; index++) {
-          this.sumarTipoTrabajo(arregloTemp[index].tipoTrabajo.nombre,diccionario);
+          if(arregloTemp[index] != null ){
+            this.sumarTipoTrabajo(arregloTemp[index].tipoTrabajo.nombre, diccionario);
+          }
         }
 
 
         let resultadoMayor = this.obtenerMayor(diccionario);
 
-        // console.log("El resultado final es.... ",resultadoMayor)
+        console.log("El resultado final es.... ",resultadoMayor)
         let respuesta = {
-          msg : "El trabajo mas pedido de la empresa es: ",
-          obj : {resultadoMayor : diccionario[resultadoMayor]}
+          msg: "El trabajo mas pedido de la empresa es: ",
+          obj: { nombre: resultadoMayor,
+                 cantidad : diccionario[resultadoMayor]
+          }
         };
 
 
@@ -130,6 +137,7 @@ class TrabajoMasPedido {
 
         let sectores = resultado.obj;
 
+        // console.log("Los sectores de la empresa son! ",sectores);
         //For Each de cada sector, le busco todas sus ordenes.
         /* for (let i = 0; i < sectores.length; i++) {
           let id_sector = sectores[i]._id;
@@ -138,15 +146,16 @@ class TrabajoMasPedido {
         var yo = this;
         var funcion1 = function funcion1Async(sector) {
           return new Promise(resolve => {
-            // console.log("Entre a la funcion 1 asdasdasdsadasda");
+            console.log("Entre a la funcion 1 asdasdasdsadasda");
             let id_sector = sector._id;
             // console.log("----------D ",id_sector);
             return yo.getTrabajosDeUnSector(id_sector).then(trabajosDeUnSector => { //TODO: quizas el retorno no es necesario.
               // trabajosArray.push(trabajosDeUnSector);
               // resolve(trabajosArray);
+              // console.log("funcion 111111111");
               resolve(trabajosDeUnSector);
             });
-            
+
           })
         }
         let promesasSector = sectores.map(funcion1);
@@ -154,12 +163,19 @@ class TrabajoMasPedido {
         return ejecutarSectores.then(listaFinalTrabajos => { //TODO: quizas el retorno no es necesario.
           //Aca entra el resultado final
 
+          // console.log("ANTES DE QUE EXPLOTE TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+
           let listaAux1 = [];
           for (var index = 0; index < listaFinalTrabajos.length; index++) {
             var element = listaFinalTrabajos[index];
             listaAux1 = listaAux1.concat(element);
           }
+          // console.log("Antes de resolver en lista finaltrabajos");
+          
           resolve(listaAux1);
+        }).catch(err=>{
+          console.log("Error en consulta compleja!");
+          console.log(err);
         })
       });
     });
@@ -177,7 +193,8 @@ class TrabajoMasPedido {
         let resultadoOrdenes = JSON.parse(<any>ordenesDeSectorRaw);
 
         let ordenes = resultadoOrdenes.obj;
-
+        // console.log("Las ordenes del sector son! ",ordenes);
+        
         /* if (ordenes.length > 0) {
           //Si existen ordenes pedidas por ese sector de la empresa.
           for (let j = 0; j < ordenes.length; j++) {
@@ -190,9 +207,10 @@ class TrabajoMasPedido {
           return new Promise(resolve => {
             let id_orden = orden._id;
             return yo.getTrabajosDeOrden(id_orden).then(trabajos => { //TODO: quizas el retorno no es necesario.
-            
+              console.log("Estoy en la funcion 2!");
               // listaTrabajosCompartida.push(trabajos);
               // resolve(listaTrabajosCompartida);
+              
               resolve(trabajos);
             })
           })
@@ -206,10 +224,14 @@ class TrabajoMasPedido {
             for (var index = 0; index < listaFinal.length; index++) {
               var element = listaFinal[index];
               listaAux = listaAux.concat(element);
-              
+
             }
+            // console.log("Antes de resolver en ultimo metodo");
             resolve(listaAux);
           })
+        }
+        else{
+          resolve(null);
         }
       });
     });
@@ -225,7 +247,8 @@ class TrabajoMasPedido {
         let resultadoTrabajos = JSON.parse(<any>trabajosDeOrdenRaw);
 
         let trabajos = resultadoTrabajos.obj;
-
+        // console.log("Los trabajos de la orden son! ! ",trabajos);
+        
         resolve(trabajos);
         // trabajosArray.push(trabajos);
 
@@ -234,32 +257,32 @@ class TrabajoMasPedido {
 
   }
 
-private sumarTipoTrabajo(tipoTrabajo,diccionario){
+  private sumarTipoTrabajo(tipoTrabajo, diccionario) {
 
-  if(diccionario.hasOwnProperty(tipoTrabajo)){
-    diccionario[tipoTrabajo] += 1;
-  }
-  else{
-    diccionario[tipoTrabajo] = 1;
-  }
-
-}
-
-private obtenerMayor(diccionario){
-
-  let keyMayor;
-  let valueMayor = -1;
-  for (var propiedad in diccionario) {
-    if(diccionario.hasOwnProperty(propiedad)){
-      if(diccionario[propiedad]>= valueMayor){
-        keyMayor = propiedad;
-        valueMayor = diccionario[propiedad];
-      }
+    if (diccionario.hasOwnProperty(tipoTrabajo)) {
+      diccionario[tipoTrabajo] += 1;
     }
-    
+    else {
+      diccionario[tipoTrabajo] = 1;
+    }
+
   }
-  return keyMayor;
-}
+
+  private obtenerMayor(diccionario) {
+
+    let keyMayor;
+    let valueMayor = -1;
+    for (var propiedad in diccionario) {
+      if (diccionario.hasOwnProperty(propiedad)) {
+        if (diccionario[propiedad] >= valueMayor) {
+          keyMayor = propiedad;
+          valueMayor = diccionario[propiedad];
+        }
+      }
+
+    }
+    return keyMayor;
+  }
 
 
   private getRaw(url) {
