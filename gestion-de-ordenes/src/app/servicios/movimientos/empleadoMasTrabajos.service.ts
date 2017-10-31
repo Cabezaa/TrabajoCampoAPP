@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { VariablesGlobales } from '../../utiles/variablesGlobales';
+import {default as swal} from 'sweetalert2';
+
 
 @Injectable()
 export class EmpleadoMasTrabajosService {
@@ -41,7 +43,12 @@ export class EmpleadoMasTrabajosService {
 
 	private handleError(error: any): Promise<any> {
 		console.error('Ocurrio un error en servicio de EmpleadoMasTrabajos: ', error);
-		alert(error.json().error);
+		// alert(error.json().error);
+		swal(
+			'Disculpe!',
+			'No existe un empleado que haya trabajado en ese periodo de tiempo',
+			'info'
+		)
 		return Promise.reject(error.message || error);
 	}
 
