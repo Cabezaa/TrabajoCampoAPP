@@ -57,9 +57,10 @@ class EmpleadoMasTrabajos {
         }
         else{
           let err = new Error('No existen asignaciones en ese periodo');
+          console.error(err);
           return res.status(400).json({
             title: 'Error el empleado con mas trabajos en un periodo!',
-            error: err
+            error: err.message
           });
         }
 
@@ -85,6 +86,10 @@ class EmpleadoMasTrabajos {
   */
   private obtenerAsignaciones(fechaInicio, fechaFin){
     return new Promise((resolve, reject) => {
+      console.log('----------------------------------------- obtenerAsignaciones');
+      console.log(fechaInicio);
+      console.log(fechaFin);
+
 
       let getAsignaciones = this.getOption(RUTAS.ASIGNACIONES_URL+'?expandirTrabajos=true&&expandirPersonal=true&&fechaInicio='+fechaInicio+'&&fechaFin='+fechaFin);
       console.log('###### Aca 1');
@@ -107,6 +112,10 @@ class EmpleadoMasTrabajos {
   Devuelve el emplado con mas asignaciones
   */
   private obtenerMaxEmpleado(asignaciones){
+
+    console.log('----------------------------------- obtenerMaxEmpleado');
+    console.log(asignaciones);
+
     return new Promise((resolve, reject) => {
       let empleadoMax = {
         count: -99

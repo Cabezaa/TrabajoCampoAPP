@@ -1,14 +1,66 @@
 <div class="row">
-<div class="col-lg-12">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      Empleado que mas trabajo Realizo
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Empleado que mas trabajo Realizo
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+
+        <div id="formularioConsulta" class="col-lg-6 example-container">
+          <form  class="customForm">
+
+            <h4>Ingrese los valores de los resultados</h4>
+            <br>
+
+
+            <table>
+              <tr>
+                <th>Fecha</th>
+                <th>Valor</th>
+              </tr>
+              <tr >
+                <td><label class="control-label" for="">Fecha Inicio</label></td>
+                <td><input name="fechaInicio" type="Date" class="form-control" style="width:100%" [(ngModel)]="consulta.fechaInicio" ></td>
+              </tr>
+              <tr >
+                <td><label class="control-label" for="">Fecha Fin</label></td>
+                <td><input  name="fechaFin" type="Date" class="form-control" style="width:100%" [(ngModel)]="consulta.fechaFin"></td>
+              </tr>
+            </table>
+
+          </form>
+          <button type="submit" (click)='consultar()' class="btn btn-primary pull-right">Consultar</button>
+        </div>
+
+        <div *ngIf='exitoRespuesta' id="respuestaConsulta" class="col-lg-6 example-container">
+
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              Empleado Ganador
+            </div>
+            <div class="panel-body">
+              <label >Nombre : {{ respuesta.empleado.nombre }}</label>
+              <br>
+              <label >Apellido : {{ respuesta.empleado.apellido }}</label>
+              <br>
+              <label >Puesto : {{ respuesta.empleado.puesto }}</label>
+              <br>
+              <label >Cuil : {{ respuesta.empleado.cuil }}</label>
+              <br>
+              <label >Cantidad de trabajos : {{ respuesta.cantidad }}</label>
+              <br>
+              <label >Desde : {{consulta.fechaInicio  | date:'dd/MM/yyyy' }}</label>
+              <br>
+              <label >Hasta : {{consulta.fechaFin  | date:'dd/MM/yyyy' }}</label>
+            </div>
+          </div>
+
+
+
+        </div>
+
+
+        <!-- /.panel -->
+      </div>
     </div>
-    <!-- /.panel-heading -->
-    <div class="panel-body">
-  
-
-
-  <!-- /.panel -->
-</div>
-</div>

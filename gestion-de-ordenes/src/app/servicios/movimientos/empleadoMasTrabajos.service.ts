@@ -22,7 +22,7 @@ export class EmpleadoMasTrabajosService {
 		console.log('Fecha inicio: ',fechaInicio);
 		console.log('Fecha fin: ',fechaFin);
 
-		return this.http.get(this.empleadoMasTrabajos+'/empleado?fechaInicio=01-01-2005&&fechaFin=02-02-2005')
+		return this.http.get(this.empleadoMasTrabajos+'/empleado?fechaInicio=' + fechaInicio + '&&fechaFin=' + fechaFin)
 		.toPromise()
 		.then(empleadoAsignaciones => {
 			console.log('### Obtuve el empleado con mas trabajos en un periodo');

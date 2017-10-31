@@ -25,16 +25,30 @@ class AsignacionesRoute {
     this.router.get('/', (req, res) => {
 
       let periodo = null;
+      console.log('### --------------------')
 
       // fechaInicio=01-01-2005&&fechaFin=02-02-2005
       if(req.query.fechaInicio && req.query.fechaFin){
         // console.log('TENGO LAS FECHAS!!');
         // console.log(req.query.fechaInicio);
         // console.log(req.query.fechaFin);
-        let fechaInicio = new Date(req.query.fechaInicio);
-        let fechaFin = new Date(req.query.fechaFin);
+        let fechaInicioAux = req.query.fechaInicio.split('-');
+
+        let fechaInicio = new Date();
+        fechaInicio.setDate(fechaInicioAux[0]);
+        fechaInicio.setMonth(fechaInicioAux[1]-1);
+        fechaInicio.setFullYear(fechaInicioAux[2]);
+
+        let fechaFinAux  = req.query.fechaFin.split('-');
+
+        let fechaFin = new Date();
+        fechaFin.setDate(fechaFinAux[0]);
+        fechaFin.setMonth(fechaFinAux[1]-1);
+        fechaFin.setFullYear(fechaFinAux[2]);
 
         periodo = [fechaInicio, fechaFin];
+
+        console.log(periodo)
 
       }
 
@@ -74,7 +88,11 @@ class AsignacionesRoute {
       //   }
       // },
       let resultado = Asignacion.collection.aggregate([
-
+        {
+          $match: {
+            fechaAsignacion: (<any>consulta).fechaAsignacion
+          }
+        },
         {
           $lookup:
           {
