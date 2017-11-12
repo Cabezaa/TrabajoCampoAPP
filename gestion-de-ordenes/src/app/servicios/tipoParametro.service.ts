@@ -11,7 +11,7 @@ import { VariablesGlobales } from '../utiles/variablesGlobales';
 export class TipoParametroService {
 
 	private headers = new Headers({'Content-Type': 'application/json'});
-	private tipoParametroURL = VariablesGlobales.BASE_API_URL+'/tipoparametro';  // URL to web api
+	private tipoParametroURL = VariablesGlobales.BASE_API_URL+'/tiposparametro';  // URL to web api
 
 	constructor(private http: Http) {
 

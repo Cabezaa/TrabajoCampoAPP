@@ -48,7 +48,7 @@ class App {
     this.express.use('/ordenes', OrdenesRoute);
     this.express.use('/documentos', DocumentosRoute);
     this.express.use('/resultados', ResultadosRoute);
-    this.express.use('/tipoparametro', TipoParametroRoute);
+    this.express.use('/tiposparametro', TipoParametroRoute);
     this.express.use('/empresas', EmpresasRoute);
     this.express.use('/sectores', SectoresRoute);
     this.express.use('/asignaciones', AsignacionesRoute);

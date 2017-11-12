@@ -116,7 +116,6 @@ class FinalizarTrabajo {
       let getOptions = this.getOption( url_tiposParametros + '/' + id_tipoTrabajo + '/' + id_tipoPieza);
 
       http.get(getOptions, (responseTiposParametros) => {
-
         const error = this.checkErrors(responseTiposParametros);
         if (error) {
           console.error(error.message);

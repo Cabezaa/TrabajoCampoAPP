@@ -38,6 +38,10 @@ class TipoParametroRoute {
       let idTipoTrabajo = req.params.idTipoTrabajo;
       let codigoTipoPieza = req.params.codigoTipoPieza;
       let resultado = [];
+
+      console.log("llegue a tipoParametro");
+      console.log(idTipoTrabajo);
+      console.log(codigoTipoPieza);
       if(idTipoTrabajo != null && codigoTipoPieza != null){
 
         TipoParametro.find({'tipoTrabajo': idTipoTrabajo, 'tipoPieza': codigoTipoPieza })
