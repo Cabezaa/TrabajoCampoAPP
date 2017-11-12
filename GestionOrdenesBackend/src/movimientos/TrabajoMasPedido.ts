@@ -30,21 +30,17 @@ class TrabajoMasPedido {
     this.express = express()
     this.mountRoutes()
   }
+
   private mountRoutes(): void {
     this.router = express.Router();
 
     // Cargamos los pasos del movimiento
     this.getEmpresas(this.url_empresas);
     this.obtenerCantidadTrabajos();
-    // this.getTrabajosOrden(this.url_trabajos);
-    // this.getTiposParametros(this.url_tiposParametros);
-    // this.finalizar(this.url_resultados, this.url_trabajos);
-
   }
 
   private getEmpresas(urlEmpresas) {
     this.router.get('/empresas', (req, res) => {
-      console.log("Entre a empresas");
       let getOptions = this.getOption(this.url_empresas);
 
       http.get(getOptions, (responseEmpresas) => {
@@ -61,8 +57,6 @@ class TrabajoMasPedido {
           responseEmpresas.on('end', () => {
             try {
               const parsedEmpresas = JSON.parse(rawEmpresas);
-              // console.log(parsedEmpresas);
-
               return res.status(200).json(parsedEmpresas);
 
             } catch (e) {
@@ -81,28 +75,21 @@ class TrabajoMasPedido {
 
     let trabajosArray = [];
     this.router.get('/calcular/:idEmpresa', (req, res) => {
-      console.log("Entre a calcular");
 
       let id_empresa = req.params.idEmpresa;
-
 
       this.consultaCompleja(id_empresa).then((respuestaFinalTrabajos) => {
         let arregloTemp: [any] = <[any]>respuestaFinalTrabajos;
         let diccionario = {};
 
-
-
-        console.log("La respuesta final es deeeeeeeeeeee: ", respuestaFinalTrabajos);
         for (var index = 0; index < arregloTemp.length; index++) {
           if(arregloTemp[index] != null ){
             this.sumarTipoTrabajo(arregloTemp[index].tipoTrabajo.nombre, diccionario);
           }
         }
 
-
         let resultadoMayor = this.obtenerMayor(diccionario);
 
-        console.log("El resultado final es.... ",resultadoMayor)
         let respuesta = {
           msg: "El trabajo mas pedido de la empresa es: ",
           obj: { nombre: resultadoMayor,
@@ -110,15 +97,11 @@ class TrabajoMasPedido {
           }
         };
 
-
         return res.status(200).json(respuesta);
 
       }).catch(err => {
-        console.log("Exploto el back end en la consulta compleja.")
-        console.log(err);
+        console.error(err);
       })
-
-
     }
 
     );
@@ -126,33 +109,22 @@ class TrabajoMasPedido {
 
 
   private consultaCompleja(idEmpresa) {
-    //Funcion primera.
+    // Funcion primera.
     return new Promise((resolve, reject) => {
       let trabajosArray = [];
       let getSectoresOptions = this.getOption(this.url_sectores + '/' + idEmpresa);
 
       this.getRaw(getSectoresOptions).then(sectoresDeEmpresaRaw => {
         let resultado = JSON.parse(<any>sectoresDeEmpresaRaw);
-        // console.log("el resultadoSector es deee ####", resultado);
 
         let sectores = resultado.obj;
 
-        // console.log("Los sectores de la empresa son! ",sectores);
-        //For Each de cada sector, le busco todas sus ordenes.
-        /* for (let i = 0; i < sectores.length; i++) {
-          let id_sector = sectores[i]._id;
-          this.getOrdenesDeUnSector(id_sector);
-        } */
         var yo = this;
         var funcion1 = function funcion1Async(sector) {
           return new Promise(resolve => {
-            console.log("Entre a la funcion 1 asdasdasdsadasda");
+
             let id_sector = sector._id;
-            // console.log("----------D ",id_sector);
             return yo.getTrabajosDeUnSector(id_sector).then(trabajosDeUnSector => { //TODO: quizas el retorno no es necesario.
-              // trabajosArray.push(trabajosDeUnSector);
-              // resolve(trabajosArray);
-              // console.log("funcion 111111111");
               resolve(trabajosDeUnSector);
             });
 
@@ -163,15 +135,12 @@ class TrabajoMasPedido {
         return ejecutarSectores.then(listaFinalTrabajos => { //TODO: quizas el retorno no es necesario.
           //Aca entra el resultado final
 
-          // console.log("ANTES DE QUE EXPLOTE TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-
           let listaAux1 = [];
           for (var index = 0; index < listaFinalTrabajos.length; index++) {
             var element = listaFinalTrabajos[index];
             listaAux1 = listaAux1.concat(element);
           }
-          // console.log("Antes de resolver en lista finaltrabajos");
-          
+
           resolve(listaAux1);
         }).catch(err=>{
           console.log("Error en consulta compleja!");
@@ -193,24 +162,12 @@ class TrabajoMasPedido {
         let resultadoOrdenes = JSON.parse(<any>ordenesDeSectorRaw);
 
         let ordenes = resultadoOrdenes.obj;
-        // console.log("Las ordenes del sector son! ",ordenes);
-        
-        /* if (ordenes.length > 0) {
-          //Si existen ordenes pedidas por ese sector de la empresa.
-          for (let j = 0; j < ordenes.length; j++) {
-            this.getTrabajosDeOrden(ordenes[j]._id);
-          }
-  
-        } */
+
         var yo = this;
         var funcion2 = function funcion2Async(orden) {
           return new Promise(resolve => {
             let id_orden = orden._id;
             return yo.getTrabajosDeOrden(id_orden).then(trabajos => { //TODO: quizas el retorno no es necesario.
-              console.log("Estoy en la funcion 2!");
-              // listaTrabajosCompartida.push(trabajos);
-              // resolve(listaTrabajosCompartida);
-              
               resolve(trabajos);
             })
           })
@@ -226,7 +183,6 @@ class TrabajoMasPedido {
               listaAux = listaAux.concat(element);
 
             }
-            // console.log("Antes de resolver en ultimo metodo");
             resolve(listaAux);
           })
         }
@@ -247,11 +203,7 @@ class TrabajoMasPedido {
         let resultadoTrabajos = JSON.parse(<any>trabajosDeOrdenRaw);
 
         let trabajos = resultadoTrabajos.obj;
-        // console.log("Los trabajos de la orden son! ! ",trabajos);
-        
         resolve(trabajos);
-        // trabajosArray.push(trabajos);
-
       });
     })
 
