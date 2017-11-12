@@ -3,14 +3,14 @@ import {Routes, RouterModule} from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { WizardComponent } from './wizard/wizard.component';
-import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedido.component';
+import { TrabajoMasPedidoComponent } from './movimientos/trabajo-mas-pedido/trabajo-mas-pedido.component';
 import { EmpleadoMasTrabajosComponent } from './movimientos/empleadoMasTrabajos/empleadoMasTrabajos.component';
 
 
 const appRoutes: Routes =  [
 	{
 		path:'',
-		component: AppComponent
+		component: WizardComponent
 	},
 	{
 		path:'FinalizarTrabajo',

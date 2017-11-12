@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TrabajoMasPedidoService } from '../movimientos/trabajoMasPedido.service';
+import { TrabajoMasPedidoService } from '../../servicios/movimientos/trabajoMasPedido.service';
 
 @Component({
   selector: 'app-trabajo-mas-pedido',

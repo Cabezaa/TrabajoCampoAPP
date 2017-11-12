@@ -15,11 +15,27 @@
 </div>
 
 
-<div class="form-group col-lg-6">
+<!-- <div class="form-group col-lg-6">
     <h3 *ngIf="nombreEmpresa != null" >Resultados consulta </h3>
     <label *ngIf="nombreEmpresa != null">Nombre de la empresa: {{nombreEmpresa}}</label>
     <br>
     <label *ngIf="nombreTrabajoMasPedido != null">Nombre trabajo mas pedido: {{nombreTrabajoMasPedido}}</label>
     <br>
     <label *ngIf="cantidadTrabajoMasPedido != null">Cantidad de veces que pidio el trabajo: {{cantidadTrabajoMasPedido}}</label>
-</div>
+</div> -->
+
+<div *ngIf="nombreEmpresa != null"  class="col-lg-6 example-container">
+    
+              <div class="panel panel-success">
+                <div class="panel-heading">
+                    Resultados consulta
+                </div>
+                <div class="panel-body">
+                    <label *ngIf="nombreEmpresa != null">Nombre de la empresa: {{nombreEmpresa}}</label>
+                    <br>
+                    <label *ngIf="nombreTrabajoMasPedido != null">Nombre trabajo mas pedido: {{nombreTrabajoMasPedido}}</label>
+                    <br>
+                    <label *ngIf="cantidadTrabajoMasPedido != null">Cantidad de veces que pidio el trabajo: {{cantidadTrabajoMasPedido}}</label>
+                </div>
+              </div>
+            </div>

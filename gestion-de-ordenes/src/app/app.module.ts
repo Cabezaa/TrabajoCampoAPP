@@ -60,12 +60,12 @@ import { OrdenesService } from './servicios/ordenes.service';
 import { DocumentosService } from './servicios/documentos.service';
 import { TipoParametroService } from './servicios/tipoParametro.service';
 import { ResultadosService } from './servicios/resultados.service';
-import { FinalizarTrabajoService } from './movimientos/finalizarTrabajo.service';
-import { TrabajoMasPedidoService } from './movimientos/trabajoMasPedido.service';
+import { FinalizarTrabajoService } from './servicios/movimientos/finalizarTrabajo.service';
+import { TrabajoMasPedidoService } from './servicios/movimientos/trabajoMasPedido.service';
 import { EmpleadoMasTrabajosService } from './servicios/movimientos/empleadoMasTrabajos.service';
 
 import { WizardComponent } from './wizard/wizard.component';
-import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedido.component';
+import { TrabajoMasPedidoComponent } from './movimientos/trabajo-mas-pedido/trabajo-mas-pedido.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +76,7 @@ import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedi
     TablaDocumentosComponent,
     ValoresEntradaComponent,
     WizardComponent,
-    TrabajoMasPedidoComponent
+    TrabajoMasPedidoComponent,
     EmpleadoMasTrabajosComponent
   ],
   imports: [
@@ -127,7 +127,7 @@ import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedi
     TipoParametroService,
     ResultadosService,
     FinalizarTrabajoService,
-    TrabajoMasPedidoService
+    TrabajoMasPedidoService,
     EmpleadoMasTrabajosService
   ],
   bootstrap: [AppComponent]
