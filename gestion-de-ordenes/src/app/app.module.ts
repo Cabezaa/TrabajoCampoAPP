@@ -52,6 +52,9 @@ import { TablaOrdenesComponent } from './finalizar-trabajo/tablaOrdenes/tablaOrd
 import { TablaDocumentosComponent } from './finalizar-trabajo/tablaDocumentos/tablaDocumentos.component';
 import { ValoresEntradaComponent } from './finalizar-trabajo/valores-entrada/valores-entrada.component';
 
+import { EmpleadoMasTrabajosComponent } from './movimientos/empleadoMasTrabajos/empleadoMasTrabajos.component';
+
+
 import { TrabajosService } from './servicios/trabajos.service';
 import { OrdenesService } from './servicios/ordenes.service';
 import { DocumentosService } from './servicios/documentos.service';
@@ -59,6 +62,7 @@ import { TipoParametroService } from './servicios/tipoParametro.service';
 import { ResultadosService } from './servicios/resultados.service';
 import { FinalizarTrabajoService } from './movimientos/finalizarTrabajo.service';
 import { TrabajoMasPedidoService } from './movimientos/trabajoMasPedido.service';
+import { EmpleadoMasTrabajosService } from './servicios/movimientos/empleadoMasTrabajos.service';
 
 import { WizardComponent } from './wizard/wizard.component';
 import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedido.component';
@@ -73,6 +77,7 @@ import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedi
     ValoresEntradaComponent,
     WizardComponent,
     TrabajoMasPedidoComponent
+    EmpleadoMasTrabajosComponent
   ],
   imports: [
     BrowserModule,
@@ -123,6 +128,7 @@ import { TrabajoMasPedidoComponent } from './trabajo-mas-pedido/trabajo-mas-pedi
     ResultadosService,
     FinalizarTrabajoService,
     TrabajoMasPedidoService
+    EmpleadoMasTrabajosService
   ],
   bootstrap: [AppComponent]
 })

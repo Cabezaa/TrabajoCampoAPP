@@ -5,6 +5,7 @@ export const RUTAS = Object.freeze({
   TIPOS_PARAMETROS_URL: '/tiposParametro',
   TIPOS_TRABAJOS_URL: '/tiposTrabajo',
   DOCUMENTOS_URL: '/documentos',
+  ASIGNACIONES_URL: '/asignaciones',
   EMPRESAS_URL: '/empresas',
   SECTORES_URL: '/sectores'
 });

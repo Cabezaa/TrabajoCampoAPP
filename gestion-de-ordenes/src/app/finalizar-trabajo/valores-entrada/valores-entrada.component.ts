@@ -3,7 +3,7 @@ import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { TipoParametroService } from '../../servicios/tipoParametro.service';
 import { ResultadosService } from '../../servicios/resultados.service';
 import { TrabajosService } from '../../servicios/trabajos.service';
-import { FinalizarTrabajoService } from '../../movimientos/finalizarTrabajo.service';
+import { FinalizarTrabajoService } from '../../servicios/movimientos/finalizarTrabajo.service';
 
 import {default as swal} from 'sweetalert2';
 

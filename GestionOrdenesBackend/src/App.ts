@@ -20,8 +20,10 @@ import ResultadosRoute from './routes/resultados.route';
 import TipoParametroRoute from './routes/tiposParametro.route';
 import EmpresasRoute from './routes/empresas.route';
 import SectoresRoute from './routes/sectores.route';
+import AsignacionesRoute from './routes/asignaciones.route';
 import FinalizarTrabajo from './movimientos/finalizarTrabajo';
 import TrabajoMasPedido from './movimientos/TrabajoMasPedido';
+import EmpleadoMasTrabajos from './movimientos/empleadoMasTrabajos';
 
 class App {
   public express
@@ -49,8 +51,10 @@ class App {
     this.express.use('/tipoparametro', TipoParametroRoute);
     this.express.use('/empresas', EmpresasRoute);
     this.express.use('/sectores', SectoresRoute);
+    this.express.use('/asignaciones', AsignacionesRoute);
     this.express.use('/movimientos/finalizarTrabajo', FinalizarTrabajo);
     this.express.use('/movimientos/trabajoMasPedido', TrabajoMasPedido);
+    this.express.use('/movimientos/empleadoMasTrabajos', EmpleadoMasTrabajos);
   }
 }
 
