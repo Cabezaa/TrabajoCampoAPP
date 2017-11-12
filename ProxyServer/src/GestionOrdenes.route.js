@@ -93,7 +93,7 @@ function postContent(url, puerto, postData, headers) {
       method: 'post',
       body: postData, // Javascript object
       json: true, // Use,If you are sending JSON data
-      url: "http://localhost:3000"+url,
+      url: "http://localhost:"+puerto+url,
       headers: {
         // Specify headers, If any
         headers
