@@ -3,10 +3,104 @@ var router = express.Router();
 var http = require('http');
 var request = require('request');
 
+
+const puertoTeamFF = ':8080';
+const puertoTeamJE = ':3000';
+
+
 router.get('/', (req, res) => {
 
-  return res.status(200).json({ msg: "Router funcionando" });
+  return res.status(200).json({
+    msg: "Router gestion de ordenes funcionando"
+  });
 });
+
+
+router.get('/movimiento', (req, res) => {
+
+  return res.status(200).json({
+    msg: "asignarPersonal, tipoPiezaInspeccionada, trabajosSupervisadosEmpleado, finalizarTrabajo, empleadoMasTrabajos, trabajoMasPedido"
+  });
+});
+
+
+router.all('/movimiento/asignarPersonal*', (req, res) => {
+
+  var fullUrl = req.protocol + '://' + req.hostname + puertoTeamFF + req.url;
+  var opciones = getOption(fullUrl, req.method, req.body, req.query, req.headers);
+
+  makeRequest(opciones).then((response) => {
+
+    return res.status(200).json(response);
+  })
+  .catch((err) => res.send(err));
+});
+
+
+router.all('/movimiento/tipoPiezaInspeccionada*', (req, res) => {
+
+  var fullUrl = req.protocol + '://' + req.hostname + puertoTeamFF + req.url;
+  var opciones = getOption(fullUrl, req.method, req.body, req.query, req.headers);
+
+  makeRequest(opciones).then((response) => {
+
+    return res.status(200).json(response);
+  })
+  .catch((err) => res.send(err));
+});
+
+
+router.all('/movimiento/trabajosSupervisadosEmpleado*', (req, res) => {
+
+  var fullUrl = req.protocol + '://' + req.hostname + puertoTeamFF + req.url;
+  var opciones = getOption(fullUrl, req.method, req.body, req.query, req.headers);
+
+  makeRequest(opciones).then((response) => {
+
+    return res.status(200).json(response);
+  })
+  .catch((err) => res.send(err));
+});
+
+
+router.all('/movimiento/finalizarTrabajo*', (req, res) => {
+
+  var fullUrl = req.protocol + '://' + req.hostname + puertoTeamJE + req.url;
+  var opciones = getOption(fullUrl, req.method, req.body, req.query, req.headers);
+
+  makeRequest(opciones).then((response) => {
+
+    return res.status(200).json(response);
+  })
+  .catch((err) => res.send(err));
+});
+
+
+router.all('/movimiento/empleadoMasTrabajos*', (req, res) => {
+
+  var fullUrl = req.protocol + '://' + req.hostname + puertoTeamJE + req.url;
+  var opciones = getOption(fullUrl, req.method, req.body, req.query, req.headers);
+
+  makeRequest(opciones).then((response) => {
+    return res.status(200).json(response);
+  })
+  .catch((err) => res.send(err));
+});
+
+
+router.all('/movimiento/trabajoMasPedido*', (req, res) => {
+
+  var fullUrl = req.protocol + '://' + req.hostname + puertoTeamJE + req.url;
+  var opciones = getOption(fullUrl, req.method, req.body, req.query, req.headers);
+
+  makeRequest(opciones).then((response) => {
+
+    return res.status(200).json(response);
+  })
+  .catch((err) => res.send(err));
+});
+
+/*
 
 router.get('/recursos/ordenes', (req, res) => {
   var opciones = getOption("/ordenes", 3000);
@@ -51,9 +145,11 @@ router.get('/movimientos/finalizarTrabajo/tiposParametro/tiposTrabajo/:idTipoTra
 
 router.post('/movimientos/finalizarTrabajo/resultados', (req, res) => {
 
-  postContent('/movimientos/finalizarTrabajo/resultados',3000,req.body,req.headers).then( (response) => {
+  postContent('/movimientos/finalizarTrabajo/resultados', 3000, req.body, req.headers).then((response) => {
     return res.status(200).json(response);
-  }).catch(err=>{console.log(err)});
+  }).catch(err => {
+    console.log(err)
+  });
 
 });
 
@@ -82,31 +178,21 @@ router.get('/movimientos/trabajoMasPedido/calcular/:idEmpresa', (req, res) => {
   });
 });
 
+*/
 
-function postContent(url, puerto, postData, headers) {
-
+const makeRequest = function(options) {
   // return new pending promise
   return new Promise((resolve, reject) => {
-
-    //optiones para request post
-    var options = {
-      method: 'post',
-      body: postData, // Javascript object
-      json: true, // Use,If you are sending JSON data
-      url: "http://localhost:"+puerto+url,
-      headers: {
-        // Specify headers, If any
-        headers
-      }
-    };
 
     request(options, (err, response, body) => {
       // handle http errors
       if (err) {
         reject(err);
       }
-      if (response.statusCode < 200 || response.statusCode > 299) {
-        reject(new Error('Failed to load page, status code: ' + response.statusCode));
+      const error = checkErrors(response);
+      if (error) {
+
+        reject(error);
       }
       //devuelve respuesta post
       resolve(body);
@@ -118,7 +204,14 @@ function postContent(url, puerto, postData, headers) {
 
 
 function checkErrors(response) {
-  const { statusCode } = response;
+
+  if(!response){
+      return new Error('No se ha podido establecer conexión al siguiente servidor');
+  }
+
+  const {
+    statusCode
+  } = response;
   const contentType = response.headers['content-type'];
   let error;
   if (statusCode !== 200) {
@@ -129,15 +222,28 @@ function checkErrors(response) {
   return error;
 }
 
-function getOption(url, puerto) {
+
+
+function getOption(fullUrl, method, postData, queryData, headers) {
   return {
-    hostname: "localhost",
-    port: puerto,
-    path: url,
-    agent: false  // create a new agent just for º one request
+
+    url: fullUrl,
+    method: method,
+    qs: queryData, // Javascript object
+    body: postData, // Javascript object
+
+    agent: false, // create a new agent just for º one request
+    json: true, // Use,If you are sending JSON data
+
+    headers: {
+      // Specify headers, If any
+      headers
+    }
   }
+
 }
 
+/*
 function getRaw(url) {
 
   return new Promise((resolve, reject) => {
@@ -149,7 +255,9 @@ function getRaw(url) {
       } else {
         let rawData = '';
         response.setEncoding('utf8');
-        response.on('data', (chunk) => { rawData += chunk; });
+        response.on('data', (chunk) => {
+          rawData += chunk;
+        });
         response.on('end', () => {
           resolve((rawData))
         });
@@ -157,6 +265,6 @@ function getRaw(url) {
 
     }).on('error', (err) => reject(err))
   })
-};
+};*/
 
 module.exports = router;

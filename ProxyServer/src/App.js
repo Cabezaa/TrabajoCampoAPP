@@ -6,20 +6,18 @@ const http = require('http'),
   path = require('path'),
   env = process.env;
 
-  var gestionOrdenes = require('./GestionOrdenes.route');
 
-
-// Importamos las rutas
-// import ObrasRoute from './routes/obras.route';
+const gestionOrdenes = require('./GestionOrdenes.route');
 
 
 let app = express();
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
 
+  res.setHeader('Access-Control-Allow-Headers', "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
@@ -35,21 +33,44 @@ app.use(function (req, res, next) {
 });
 
 
+app.use(cors());
+
 
 app.use('/public', express.static('public'));
 
 app.use(bodyParser.json()); //para peticiones application/json
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static(__dirname + '/dist'));
-app.use('/gestionOrdenes',gestionOrdenes);
 
-app.get('/', function (req, res, next) {
+
+// Set rutas
+app.use('/gestionOrdenes', gestionOrdenes);
+
+
+app.get('/', function(req, res, next) {
   console.log("Servidor funcionadoooooooooooo");
-  return res.status(200).json({msg:"Server Porxy corriendo correctamente"});
+  return res.status(200).json({
+    msg: "Server Porxy corriendo correctamente"
+  });
 });
+
+app.get('*', (req, res) => {
+  return res.status(200).json({
+    msg: "En gestion de ordenes no esta lo que estas buscando!"
+  });
+});
+/**
+ * Get port from environment and store in Express.
+ */
+const port = process.env.PORT || '4000';
+app.set('port', port);
+
 
 var server = http.createServer(app);
-server.listen(process.env.PORT || 4000, function () {
-  console.log("Servidor corriendo");
-});
 
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port, () => console.log(`Servidor corriendo en localhost:${port}`));
