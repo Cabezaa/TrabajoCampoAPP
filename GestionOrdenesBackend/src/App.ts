@@ -11,6 +11,13 @@ db.once('open', function() {
   console.log('Base de datos Mongo: BM conectada');
 });
 
+// //don't show the log when it is test
+// if(config.util.getEnv('NODE_ENV') !== 'test') {
+//     //use morgan to log at command line
+//     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
+// }
+
+
 // Importamos las rutas
 import ObrasRoute from './routes/obras.route';
 import TrabajosRoute from './routes/trabajos.route';
