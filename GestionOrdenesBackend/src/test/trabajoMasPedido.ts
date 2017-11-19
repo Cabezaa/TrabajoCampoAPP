@@ -48,13 +48,6 @@ function sonEmpresas(empresas){
 
 describe('TrabajoMasPedido', () => {
 
-  // beforeEach((done) => { //Before each test we empty the database
-  //   Documento.remove({}, (err) => {
-  //     done();
-  //   });
-  // });
-
-
   /*
   * Test the /GET route
   */
