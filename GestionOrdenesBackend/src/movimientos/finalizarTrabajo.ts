@@ -76,34 +76,49 @@ class FinalizarTrabajo {
 
         let id_orden = req.params.numOrden;
 
-        let getOptions = this.getOption(this.url_trabajos + '/' + id_orden);
+        if(id_orden){
+          let getOptions = this.getOption(this.url_trabajos + '/' + id_orden);
 
-        http.get(getOptions, (responseTrabajos) => {
+          http.get(getOptions, (responseTrabajos) => {
 
-          const error = this.checkErrors(responseTrabajos);
-          if (error) {
-            console.error(error.message);
-            responseTrabajos.resume();
-            return;
-          }else{
-            let rawTrabajos = '';
-            responseTrabajos.setEncoding('utf8');
-            responseTrabajos.on('data', (chunk) => { rawTrabajos += chunk; });
-            responseTrabajos.on('end', () => {
-              try {
-                const parsedTrabajos = JSON.parse(rawTrabajos);
-                // console.log(parsedTrabajos);
+            const error = this.checkErrors(responseTrabajos);
+            if (error) {
+              console.error(error.message);
+              responseTrabajos.resume();
+              return res.status(404).json({
+                  title: 'Error al buscar trabajos!',
+                  error: error
+              });
+            }else{
+              let rawTrabajos = '';
+              responseTrabajos.setEncoding('utf8');
+              responseTrabajos.on('data', (chunk) => { rawTrabajos += chunk; });
+              responseTrabajos.on('end', () => {
+                try {
+                  const parsedTrabajos = JSON.parse(rawTrabajos);
+                  // console.log(parsedTrabajos);
 
-                return res.status(200).json(parsedTrabajos);
+                  return res.status(200).json(parsedTrabajos);
 
-              } catch (e) {
-                console.error(e.message);
-              }
+                } catch (e) {
+                  console.error(e.message);
+                  return res.status(404).json({
+                      title: 'Error al buscar trabajos!',
+                      error: e
+                  });
+                }
+              });
+            }
+          }).on('error', (e) => {
+            console.error(`Got error: ${e.message}`);
+            return res.status(404).json({
+                title: 'Error al buscar trabajos!',
+                error: e
             });
-          }
-        }).on('error', (e) => {
-          console.error(`Got error: ${e.message}`);
-        });;
+          });;
+        }
+
+
     });
   }
 
@@ -120,7 +135,8 @@ class FinalizarTrabajo {
         if (error) {
           console.error(error.message);
           responseTiposParametros.resume();
-          return;
+
+          return res.send(error);
         }else{
           let rawTiposParametros = '';
           responseTiposParametros.setEncoding('utf8');
@@ -137,6 +153,7 @@ class FinalizarTrabajo {
         }
       }).on('error', (e) => {
         console.error(`Got error: ${e.message}`);
+        return res.send(e);
       });;
 
     });
