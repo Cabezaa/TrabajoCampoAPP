@@ -2,6 +2,8 @@ import * as express from 'express';
 import { RUTAS } from '../config/rutas.config';
 
 import series from 'async/series';
+var ObjectId = require('mongoose').Types.ObjectId;
+
 
 var http = require("http");
 
@@ -10,6 +12,25 @@ var Documento = require('../models/documento.model');
 var Trabajo = require('../models/trabajo.model');
 var Orden = require('../models/orden.model');
 var Resultado = require('../models/resultado.model');
+
+const checkObjectId = function(id) {
+  
+    if (ObjectId.isValid(id)) {
+  
+      var prueba = new ObjectId(id);
+  
+      if (prueba == id) {
+        return true
+  
+      } else {
+        return false
+      }
+  
+    } else {
+      return false
+    }
+  
+};
 
 
 class TrabajoMasPedido {
@@ -40,6 +61,7 @@ class TrabajoMasPedido {
   }
 
   private getEmpresas(urlEmpresas) {
+    //TODO: Revisar este metodo para hacerlo corresponder con el formato de error general q enviamos a todos lados.
     this.router.get('/empresas', (req, res) => {
       let getOptions = this.getOption(this.url_empresas);
 
@@ -78,30 +100,46 @@ class TrabajoMasPedido {
 
       let id_empresa = req.params.idEmpresa;
 
-      this.consultaCompleja(id_empresa).then((respuestaFinalTrabajos) => {
-        let arregloTemp: [any] = <[any]>respuestaFinalTrabajos;
-        let diccionario = {};
-
-        for (var index = 0; index < arregloTemp.length; index++) {
-          if(arregloTemp[index] != null ){
-            this.sumarTipoTrabajo(arregloTemp[index].tipoTrabajo.nombre, diccionario);
+      if (checkObjectId(id_empresa)) {
+        this.consultaCompleja(id_empresa).then((respuestaFinalTrabajos) => {
+          let arregloTemp: [any] = <[any]>respuestaFinalTrabajos;
+          let diccionario = {};
+  
+          for (var index = 0; index < arregloTemp.length; index++) {
+            if(arregloTemp[index] != null ){
+              this.sumarTipoTrabajo(arregloTemp[index].tipoTrabajo.nombre, diccionario);
+            }
           }
-        }
-
-        let resultadoMayor = this.obtenerMayor(diccionario);
-
+  
+          let resultadoMayor = this.obtenerMayor(diccionario);
+  
+          let respuesta = {
+            msg: "El trabajo mas pedido de la empresa es: ",
+            obj: { nombre: resultadoMayor,
+                   cantidad : diccionario[resultadoMayor]
+            }
+          };
+  
+          return res.status(200).json(respuesta);
+  
+        }).catch(err => {
+          console.error(err);
+          return res.status(404).json({
+            title: 'Error al consultar los trabajos mas pedidos por una empresa!',
+            error: err
+        });
+        })
+      }
+      else{
         let respuesta = {
-          msg: "El trabajo mas pedido de la empresa es: ",
-          obj: { nombre: resultadoMayor,
-                 cantidad : diccionario[resultadoMayor]
-          }
+          title: 'Error: El parametro ingresado no corresponde con un id valido ',
+          error: {}
         };
 
-        return res.status(200).json(respuesta);
+        return res.status(404).json(respuesta);
+      }
 
-      }).catch(err => {
-        console.error(err);
-      })
+      
     }
 
     );

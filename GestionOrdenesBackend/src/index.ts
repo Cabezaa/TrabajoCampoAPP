@@ -4,12 +4,15 @@ import app from './App'
 var port = process.env.PORT || (process.argv[2] || 3000); // Fix para mocha
 
 
-app.listen(port, (err) => {
-  if (err) {
-    return console.log(err)
-  }
+if(!module.parent){ 
+  app.listen(port, (err) => {
+    if (err) {
+      return console.log(err)
+    }
+  
+    return console.log(`server is listening on ${port}`)
+  });
+}
 
-  return console.log(`server is listening on ${port}`)
-})
 
 module.exports = app;

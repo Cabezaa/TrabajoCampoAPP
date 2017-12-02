@@ -102,9 +102,8 @@ describe('Movimiento Finalizar Trabajo', () => {
         //   console.log(err);
         //   done()
         // }
-        console.log('Err', err);
-        console.log('Respuesta', res.body);
-        console.log('Respuesta', res.body);
+        // console.log('Err', err);
+        // console.log('Respuesta', res.body);
         res.should.have.status(404);
         res.body.should.be.a('object');
 
