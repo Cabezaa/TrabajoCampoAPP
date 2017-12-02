@@ -34,43 +34,63 @@ class EmpleadoMasTrabajos {
       let fechaInicio = req.query.fechaInicio;
       let fechaFin = req.query.fechaFin;
 
-      this.obtenerAsignaciones(fechaInicio, fechaFin).then(resultado => {
-        resultado = JSON.parse(<any>resultado);
-        console.log('######## Obtuve las asignaciones');
-        console.log(resultado);
-        let asignaciones= (<any>resultado).obj;
-        if(asignaciones && asignaciones.length > 0){
-          this.obtenerMaxEmpleado(asignaciones)
-          .then(empleadoMax =>{
-            return res.status(200).json({
-              message: 'Este es el emplado con mas asginaciones en el periodo!',
-              obj: empleadoMax
-            });
-          })
-          .catch(err => {
-            console.log('### Error');
-            return res.status(400).json({
-              title: 'Error el empleado con mas trabajos en un periodo!',
-              error: err
-            });
-          })
-        }
-        else{
-          let err = new Error('No existen asignaciones en ese periodo');
-          console.error(err);
-          return res.status(400).json({
-            title: 'Error el empleado con mas trabajos en un periodo!',
-            error: err.message
-          });
-        }
-
-      }).catch(err => {
-        console.log('ERROR', err);
+      if(!fechaInicio || !fechaFin){
+        let err = new Error('Error en una de las dos fechas ingresadas.');
+        console.error(err);
         return res.status(400).json({
-          title: 'Error el empleado con mas trabajos en un periodo!',
-          error: err
+          title: 'Error en empleado con mas trabajos en un periodo!',
+          error: err.message
         });
-      });
+      }
+
+      if(fechaFin >= fechaInicio){
+        this.obtenerAsignaciones(fechaInicio, fechaFin).then(resultado => {
+          resultado = JSON.parse(<any>resultado);
+          console.log('######## Obtuve las asignaciones');
+          console.log(resultado);
+          let asignaciones= (<any>resultado).obj;
+          if(asignaciones && asignaciones.length > 0){
+            this.obtenerMaxEmpleado(asignaciones)
+            .then(empleadoMax =>{
+              return res.status(200).json({
+                message: 'Este es el emplado con mas asginaciones en el periodo!',
+                obj: empleadoMax
+              });
+            })
+            .catch(err => {
+              console.log('### Error');
+              return res.status(400).json({
+                title: 'Error en empleado con mas trabajos en un periodo!',
+                error: err
+              });
+            })
+          }
+          else{
+            let err = new Error('No existen asignaciones en ese periodo');
+            console.error(err);
+            return res.status(400).json({
+              title: 'Error en empleado con mas trabajos en un periodo!',
+              error: err.message
+            });
+          }
+  
+        }).catch(err => {
+          console.log('ERROR', err);
+          return res.status(400).json({
+            title: 'Error en empleado con mas trabajos en un periodo!',
+            error: err
+          });
+        });
+      }
+      else{
+        let err = new Error('La fecha fin no puede ser menor a la de inicio');
+        console.error(err);
+        return res.status(400).json({
+          title: 'Error en empleado con mas trabajos en un periodo!',
+          error: err.message
+        });
+      }
+      
 
 
 

@@ -136,7 +136,7 @@ class TrabajoMasPedido {
           error: {}
         };
 
-        return res.status(404).json(respuesta);
+        return res.status(400).json(respuesta);
       }
 
       

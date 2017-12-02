@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var mongoose = require("mongoose");
-var Documento = require('../models/documento.model');
+// var Documento = require('../models/documento.model');
 
 //Require the dev-dependencies
 var chai = require('chai');
@@ -113,7 +113,7 @@ describe('TrabajoMasPedido', () => {
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
       .end((err,res)=> {
-        res.should.have.status(404);
+        res.should.have.status(400);
         res.body.should.be.a('object');
 
         done();
@@ -127,7 +127,7 @@ describe('TrabajoMasPedido', () => {
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
       .end((err,res)=> {
-        res.should.have.status(404);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('title');
         res.body.should.have.property('error');
@@ -143,7 +143,7 @@ describe('TrabajoMasPedido', () => {
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
       .end((err,res)=> {
-        res.should.have.status(404);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('title');
         res.body.should.have.property('error');
@@ -158,7 +158,7 @@ describe('TrabajoMasPedido', () => {
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
       .end((err,res)=> {
-        res.should.have.status(404);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('title');
         res.body.should.have.property('error');
@@ -172,7 +172,7 @@ describe('TrabajoMasPedido', () => {
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
       .end((err,res)=> {
-        res.should.have.status(404);
+        res.should.have.status(400);
         res.body.should.be.a('object');
         res.body.should.have.property('title');
         res.body.should.have.property('error');
