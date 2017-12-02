@@ -21,7 +21,7 @@ const appRoutes: Routes =  [
 		component: TrabajoMasPedidoComponent
 	},
 	{
-		path:'movimiento2',
+		path:'EmpleadoMasTrabajos',
 		component: EmpleadoMasTrabajosComponent
 	}
 ];
