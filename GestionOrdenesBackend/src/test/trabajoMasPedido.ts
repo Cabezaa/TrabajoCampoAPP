@@ -37,7 +37,7 @@ function sonEmpresas(empresas){
       expect(empresa).to.have.property('CUIT');
       expect(empresa.CUIT).to.be.a('string');
     }catch(error){
-      console.log(error);
+      // console.log(error);
       todoPerfecto = false;
 
     }
@@ -59,7 +59,7 @@ function comprobarError(objetoResultado){
 
     return true;
   }catch(error){
-    console.log(error);
+    // console.log(error);
     return false;
   }
 }
@@ -108,7 +108,7 @@ describe('TrabajoMasPedido', () => {
     });
 
     it('Deberia devolver un error, pues envio cadena vacia', (done)=> {
-      
+
       let id_empresa = '';
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
@@ -122,7 +122,7 @@ describe('TrabajoMasPedido', () => {
     });
 
     it('Deberia devolver un error, pues envio otro tipo de dato', (done)=> {
-      
+
       let id_empresa = 202135;
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
@@ -138,7 +138,7 @@ describe('TrabajoMasPedido', () => {
     });
 
     it('Deberia devolver un error, pues envio un dato de 12bytes que no es objectID', (done)=> {
-      
+
       let id_empresa = '1234567890123';
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
@@ -153,7 +153,7 @@ describe('TrabajoMasPedido', () => {
 
     });
     it('Deberia devolver un error, pues envio un dato de 11bytes', (done)=> {
-      
+
       let id_empresa = '59c093aa1ddb97486e27a15';
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)

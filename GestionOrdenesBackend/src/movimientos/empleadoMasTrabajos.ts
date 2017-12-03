@@ -32,11 +32,10 @@ class EmpleadoMasTrabajos {
     this.router.get('/empleado', (req,res) => {
 
       let fechaInicio = req.query.fechaInicio;
-      let fechaFin = req.query.fechaFin;
-
+      let fechaFin = req.query.fechaFin;      
       if(!fechaInicio || !fechaFin){
         let err = new Error('Error en una de las dos fechas ingresadas.');
-        console.error(err);
+        // console.error(err);
         return res.status(400).json({
           title: 'Error en empleado con mas trabajos en un periodo!',
           error: err.message
@@ -67,13 +66,13 @@ class EmpleadoMasTrabajos {
           }
           else{
             let err = new Error('No existen asignaciones en ese periodo');
-            console.error(err);
+            // console.error(err);
             return res.status(400).json({
               title: 'Error en empleado con mas trabajos en un periodo!',
               error: err.message
             });
           }
-  
+
         }).catch(err => {
           console.log('ERROR', err);
           return res.status(400).json({
@@ -84,13 +83,13 @@ class EmpleadoMasTrabajos {
       }
       else{
         let err = new Error('La fecha fin no puede ser menor a la de inicio');
-        console.error(err);
+        // console.error(err);
         return res.status(400).json({
           title: 'Error en empleado con mas trabajos en un periodo!',
           error: err.message
         });
       }
-      
+
 
 
 
@@ -120,7 +119,7 @@ class EmpleadoMasTrabajos {
       }).catch(err => {
         console.log('###### Aca 3');
         console.log('Error al buscar las asignaciones');
-        console.error(err);
+        // console.error(err);
         reject(err)
       })
     });
@@ -134,7 +133,7 @@ class EmpleadoMasTrabajos {
   private obtenerMaxEmpleado(asignaciones){
 
     console.log('----------------------------------- obtenerMaxEmpleado');
-    console.log(asignaciones);
+    // console.log(asignaciones);
 
     return new Promise((resolve, reject) => {
       let empleadoMax = {
