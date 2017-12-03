@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "tsc --watch & nodemon dist",
     "test": "tsc && mocha dist/**/*.spec.js",
-    "test-mocha": "tsc && mocha --timeout 10000 dist/test/*.js",
+    "test-mocha": "mocha --timeout 10000 dist/test/*.js",
     "lint": "eslint src --ext ts",
     "tsc": "tsc"
   },

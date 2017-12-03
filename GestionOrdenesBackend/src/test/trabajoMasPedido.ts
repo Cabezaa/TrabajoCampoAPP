@@ -113,7 +113,7 @@ describe('TrabajoMasPedido', () => {
       chai.request(server)
       .get(`/movimientos/trabajoMasPedido/calcular/${id_empresa}`)
       .end((err,res)=> {
-        res.should.have.status(400);
+        res.should.have.status(404);
         res.body.should.be.a('object');
 
         done();
