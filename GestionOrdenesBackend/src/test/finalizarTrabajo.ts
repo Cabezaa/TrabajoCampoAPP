@@ -2,6 +2,11 @@ process.env.NODE_ENV = 'test';
 
 var mongoose = require("mongoose");
 
+// Modelos
+var Orden = require('../models/orden.model');
+var Trabajo = require('../models/trabajo.model');
+var TipoParametro = require('../models/tipoParametro.model')
+
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../index');
@@ -549,6 +554,274 @@ describe('Movimiento Finalizar Trabajo', () => {
       });
 
     });
+
+  })
+
+  describe('Grafo criterio todos los estados: camino completo', () => {
+
+    describe('/GET ordenes', () => {
+
+      it('Deberia devolver las ordenes', (done)=> {
+
+        chai.request(server)
+        .get('/movimientos/finalizarTrabajo/ordenes')
+        .end((err,res) => {
+
+          res.should.have.status(200);
+          res.body.obj.should.be.a('array');
+
+          sonOrdenes(res.body.obj);
+          done();
+        });
+
+      });
+
+    })
+
+    describe('/GET /trabajos/:numOrden' , () => {
+
+
+      it('Deberia devolver los trabajos asociados a la orden de servicio seleccionada (id: 59c093aa1ddb97486e27a151)', (done) => {
+        // id_orden real
+        let id_orden = "59c093aa1ddb97486e27a151";
+
+        chai.request(server)
+        .get(`/movimientos/finalizarTrabajo/trabajos/${id_orden}`)
+        .end((err,res)=> {
+
+          res.should.have.status(200);
+          res.body.obj.should.be.a('array');
+
+          // Comprobamos que el arreglo sea de trabajos
+          sonTrabajos(res.body.obj);
+          done();
+        });
+      })
+
+
+
+    });
+
+    describe('/GET  /tiposParametro/tiposTrabajo/:idTipoTrabajo/tiposPieza/:codigoTipoPieza', () => {
+
+      it('Deberia devolver los tipos de parametros con sus documentos asociados (del trabajo 59c093aa1ddb97486e27a151)', (done) => {
+
+        let idTipoTrabajo = '59c08ff507e67d44d12cf067';
+        let codigoTipoPieza = '59c090bcd302460237fe952e';
+
+        chai.request(server)
+        .get(`/movimientos/finalizarTrabajo/tiposParametro/tiposTrabajo/${idTipoTrabajo}/tiposPieza/${codigoTipoPieza}`)
+        .end((err, res) => {
+
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+
+          done();
+        })
+      })
+
+    })
+
+    describe('/POST /resultados', () => {
+
+    })
+  })
+
+  describe('Grafo criterio de todos los estados: ordenes vacio', () => {
+
+    describe('/GET ordenes', () => {
+
+      it('Deberia una lista de ordenes vacia', (done)=> {
+
+        // Buscamos todos las ordenes
+        Orden.find()
+        .exec((err, ordenesBD) => {
+
+          // Guardamos las ordenes para luego restaurarlas
+          let ordenes = ordenesBD;
+
+          // Vaciamos las ordenes para obtener una lista vacia
+          Orden.remove({}, err => {
+
+            chai.request(server)
+            .get('/movimientos/finalizarTrabajo/ordenes')
+            .end((err,res) => {
+
+              res.body.obj.should.be.a('array');
+              res.body.obj.length.should.be.eql(0);
+
+              Orden.collection.insert(ordenes, (err, list)=>{
+                if(err){
+                  console.log("Error");
+                  console.error(err);
+                }
+
+                done();
+              })
+
+            });
+          })
+
+
+        })
+      });
+
+    })
+  })
+
+  describe('Grafo criterio de todos los estados: trabajos vacio', () => {
+
+    describe('/GET ordenes', () => {
+
+      it('Deberia devolver las ordenes', (done)=> {
+
+        chai.request(server)
+        .get('/movimientos/finalizarTrabajo/ordenes')
+        .end((err,res) => {
+
+          res.should.have.status(200);
+          res.body.obj.should.be.a('array');
+
+          sonOrdenes(res.body.obj);
+          done();
+        });
+
+      });
+
+
+
+    })
+
+    describe('/GET /trabajos/:numOrden', () => {
+
+      it('Deberia una lista de trabajos vacia', (done)=> {
+
+        // Seleccion de orden
+        let id_orden = "59c093aa1ddb97486e27a151";
+
+        // Buscamos todos las ordenes
+        Trabajo.find()
+        .exec((err, trabajosBD) => {
+
+          // Guardamos los trabajos para luego restaurarlos
+          let trabajos = trabajosBD;
+
+          // Vaciamos los trabajos para obtener una lista vacia
+          Trabajo.remove({}, err => {
+
+            chai.request(server)
+            .get(`/movimientos/finalizarTrabajo/trabajos/${id_orden}`)
+            .end((err,res) => {
+
+              res.body.obj.should.be.a('array');
+              res.body.obj.length.should.be.eql(0);
+
+              Trabajo.collection.insert(trabajos, (err, list)=>{
+                if(err){
+                  console.log("Error");
+                  console.error(err);
+                }
+
+                done();
+              })
+
+            });
+          })
+
+
+        })
+      });
+
+    })
+
+  })
+
+  describe('Grafo criterio de todos los estados: tiposParametro vacio', () => {
+
+    describe('/GET ordenes', () => {
+
+      it('Deberia devolver las ordenes', (done)=> {
+
+        chai.request(server)
+        .get('/movimientos/finalizarTrabajo/ordenes')
+        .end((err,res) => {
+
+          res.should.have.status(200);
+          res.body.obj.should.be.a('array');
+
+          sonOrdenes(res.body.obj);
+          done();
+        });
+
+      });
+    })
+
+    describe('/GET /trabajos/:numOrden' , () => {
+
+
+      it('Deberia devolver los trabajos asociados a la orden de servicio seleccionada (id: 59c093aa1ddb97486e27a151)', (done) => {
+        // id_orden real
+        let id_orden = "59c093aa1ddb97486e27a151";
+
+        chai.request(server)
+        .get(`/movimientos/finalizarTrabajo/trabajos/${id_orden}`)
+        .end((err,res)=> {
+
+          res.should.have.status(200);
+          res.body.obj.should.be.a('array');
+
+          // Comprobamos que el arreglo sea de trabajos
+          sonTrabajos(res.body.obj);
+          done();
+        });
+      })
+    });
+
+    describe('/GET tiposParametro/tiposTrabajo/:idTipoTrabajo/tiposPieza/:codigoTipoPieza', () => {
+
+      it('Deberia una lista de trabajos vacia', (done)=> {
+
+        // Seleccion de trabajo => tipoTrabajo + tipoPieza asociados
+        let idTipoTrabajo = '59c08ff507e67d44d12cf067';
+        let codigoTipoPieza = '59c090bcd302460237fe952e';
+
+
+        // Buscamos todos las ordenes
+        TipoParametro.find()
+        .exec((err, tiposBD) => {
+
+          // Guardamos los tipos para luego restaurarlos
+          let tipos = tiposBD;
+
+          // Vaciamos los tipos para obtener una lista vacia
+          TipoParametro.remove({}, err => {
+
+            chai.request(server)
+            .get(`/movimientos/finalizarTrabajo/tiposParametro/tiposTrabajo/${idTipoTrabajo}/tiposPieza/${codigoTipoPieza}`)
+            .end((err,res) => {
+
+              res.body.obj.should.be.a('array');
+              res.body.obj.length.should.be.eql(0);
+
+              TipoParametro.collection.insert(tipos, (err, list)=>{
+                if(err){
+                  console.log("Error");
+                  console.error(err);
+                }
+
+                done();
+              })
+
+            });
+          })
+
+
+        })
+      });
+
+    })
+
+
 
   })
 
