@@ -50,11 +50,11 @@ function comprobarErrorTrabajador(objetoResultado){
       //
       // expect(personal).to.have.property('puesto');
       // expect(personal.puesto).to.be.a('string');
-      console.log('####### PASEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe')
+      // console.log('####### PASEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe')
       return true;
     }catch(error){
-      console.log('#### ERROR')
-      console.log(error);
+      // console.log('#### ERROR')
+      // console.log(error);
       return false;
     }
   }

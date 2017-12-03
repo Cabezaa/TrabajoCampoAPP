@@ -58,15 +58,15 @@ class ResultadosRoute {
         });
 
         nuevoResultado.save().then(resultadoNuevo =>{
-          console.log('Resultado guardado con exito!!');
-          console.log(resultadoNuevo);
+          // console.log('Resultado guardado con exito!!');
+          // console.log(resultadoNuevo);
           res.status(200).json({
             message: 'Se ha guardado un resultado en la base de datos!',
             obj: resultadoNuevo
           });
         }, err =>{
           console.log('Error al guardar el resultado!!');
-          console.log(err);
+          // console.log(err);
         })
         // this.resultadosStub.push(nuevoResultado);
       }

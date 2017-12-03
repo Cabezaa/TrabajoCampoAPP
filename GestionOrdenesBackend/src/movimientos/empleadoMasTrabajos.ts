@@ -32,7 +32,7 @@ class EmpleadoMasTrabajos {
     this.router.get('/empleado', (req,res) => {
 
       let fechaInicio = req.query.fechaInicio;
-      let fechaFin = req.query.fechaFin;      
+      let fechaFin = req.query.fechaFin;
       if(!fechaInicio || !fechaFin){
         let err = new Error('Error en una de las dos fechas ingresadas.');
         // console.error(err);
@@ -45,8 +45,8 @@ class EmpleadoMasTrabajos {
       if(fechaFin >= fechaInicio){
         this.obtenerAsignaciones(fechaInicio, fechaFin).then(resultado => {
           resultado = JSON.parse(<any>resultado);
-          console.log('######## Obtuve las asignaciones');
-          console.log(resultado);
+          // console.log('######## Obtuve las asignaciones');
+          // console.log(resultado);
           let asignaciones= (<any>resultado).obj;
           if(asignaciones && asignaciones.length > 0){
             this.obtenerMaxEmpleado(asignaciones)
@@ -57,7 +57,7 @@ class EmpleadoMasTrabajos {
               });
             })
             .catch(err => {
-              console.log('### Error');
+              // console.log('### Error');
               return res.status(400).json({
                 title: 'Error en empleado con mas trabajos en un periodo!',
                 error: err
@@ -74,7 +74,7 @@ class EmpleadoMasTrabajos {
           }
 
         }).catch(err => {
-          console.log('ERROR', err);
+          // console.log('ERROR', err);
           return res.status(400).json({
             title: 'Error en empleado con mas trabajos en un periodo!',
             error: err
@@ -105,20 +105,20 @@ class EmpleadoMasTrabajos {
   */
   private obtenerAsignaciones(fechaInicio, fechaFin){
     return new Promise((resolve, reject) => {
-      console.log('----------------------------------------- obtenerAsignaciones');
-      console.log(fechaInicio);
-      console.log(fechaFin);
+      // console.log('----------------------------------------- obtenerAsignaciones');
+      // console.log(fechaInicio);
+      // console.log(fechaFin);
 
 
       let getAsignaciones = this.getOption(RUTAS.ASIGNACIONES_URL+'?expandirTrabajos=true&&expandirPersonal=true&&fechaInicio='+fechaInicio+'&&fechaFin='+fechaFin);
-      console.log('###### Aca 1');
+      // console.log('###### Aca 1');
       this.getRaw(getAsignaciones)
       .then(asignaciones => {
-        console.log('###### Aca 2');
+        // console.log('###### Aca 2');
         resolve(asignaciones);
       }).catch(err => {
-        console.log('###### Aca 3');
-        console.log('Error al buscar las asignaciones');
+        // console.log('###### Aca 3');
+        // console.log('Error al buscar las asignaciones');
         // console.error(err);
         reject(err)
       })
@@ -132,7 +132,7 @@ class EmpleadoMasTrabajos {
   */
   private obtenerMaxEmpleado(asignaciones){
 
-    console.log('----------------------------------- obtenerMaxEmpleado');
+    // console.log('----------------------------------- obtenerMaxEmpleado');
     // console.log(asignaciones);
 
     return new Promise((resolve, reject) => {
@@ -140,8 +140,8 @@ class EmpleadoMasTrabajos {
         count: -99
       };
       asignaciones.forEach(function(asignacion, indexAsignacion){
-        console.log('Asignacion:');
-        console.log(asignacion);
+        // console.log('Asignacion:');
+        // console.log(asignacion);
 
         if(asignacion._id.progreso == 'finalizado'){
           if(asignacion.count > empleadoMax.count){

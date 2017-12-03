@@ -2,12 +2,31 @@ import * as express from 'express';
 import { RUTAS } from '../config/rutas.config';
 
 var http = require("http");
-
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var Documento = require('../models/documento.model');
 var Trabajo = require('../models/trabajo.model');
 var Orden = require('../models/orden.model');
 var Resultado = require('../models/resultado.model');
+
+const checkObjectId = function(id) {
+
+    if (ObjectId.isValid(id)) {
+
+      var prueba = new ObjectId(id);
+
+      if (prueba == id) {
+        return true
+
+      } else {
+        return false
+      }
+
+    } else {
+      return false
+    }
+
+};
 
 class FinalizarTrabajo {
   public express;
@@ -83,7 +102,7 @@ class FinalizarTrabajo {
 
             const error = this.checkErrors(responseTrabajos);
             if (error) {
-              console.error(error.message);
+              // console.error(error.message);
               responseTrabajos.resume();
               return res.status(404).json({
                   title: 'Error al buscar trabajos!',
@@ -101,7 +120,7 @@ class FinalizarTrabajo {
                   return res.status(200).json(parsedTrabajos);
 
                 } catch (e) {
-                  console.error(e.message);
+                  // console.error(e.message);
                   return res.status(404).json({
                       title: 'Error al buscar trabajos!',
                       error: e
@@ -110,7 +129,7 @@ class FinalizarTrabajo {
               });
             }
           }).on('error', (e) => {
-            console.error(`Got error: ${e.message}`);
+            // console.error(`Got error: ${e.message}`);
             return res.status(404).json({
                 title: 'Error al buscar trabajos!',
                 error: e
@@ -128,12 +147,22 @@ class FinalizarTrabajo {
       let id_tipoTrabajo = req.params.idTipoTrabajo;
       let id_tipoPieza = req.params.codigoTipoPieza;
 
+
+      if (!checkObjectId(id_tipoTrabajo) || !checkObjectId(id_tipoPieza)) {
+        let respuesta = {
+          title: 'Error: Uno de los parametros ingresados no corresponden con un id valido ',
+          error: {}
+        };
+
+        return res.status(400).json(respuesta);
+      }
+
       let getOptions = this.getOption( url_tiposParametros + '/' + id_tipoTrabajo + '/' + id_tipoPieza);
 
       http.get(getOptions, (responseTiposParametros) => {
         const error = this.checkErrors(responseTiposParametros);
         if (error) {
-          console.error(error.message);
+          // console.error(error.message);
           responseTiposParametros.resume();
 
           return res.send(error);
@@ -152,7 +181,7 @@ class FinalizarTrabajo {
           });
         }
       }).on('error', (e) => {
-        console.error(`Got error: ${e.message}`);
+        // console.error(`Got error: ${e.message}`);
         return res.send(e);
       });;
 
@@ -162,12 +191,40 @@ class FinalizarTrabajo {
   private finalizar(url_resultados, url_trabajos){
     this.router.post('/resultados', (req, res) => {
 
-      console.log('ESTE ES EL POST De resultados');
-      console.log(req.body);
+      // console.log('ESTE ES EL POST De resultados');
+      // console.log(req.body);
 
 
       let resultados = req.body.resultados;
       let trabajo = req.body.trabajo;
+
+      if(!resultados || !trabajo ){
+        let respuesta = {
+          title: 'Error: Falta alguno de los dos parametros ingresados, o ambos. ',
+          error: {}
+        };
+
+        return res.status(400).json(respuesta);
+      }
+
+      if(!checkObjectId(trabajo)){
+        let respuesta = {
+          title: 'Error: El id del trabajo ingresado no es valido',
+          error: {}
+        };
+
+        return res.status(400).json(respuesta);
+      }
+
+
+      if(!Array.isArray(resultados)){
+        let respuesta = {
+          title: 'Error: Los resultados ingresados no respetan el formato de lista de resultados.',
+          error: {}
+        };
+
+        return res.status(400).json(respuesta);
+      }
 
       let aprobado = true;
 
@@ -207,15 +264,15 @@ class FinalizarTrabajo {
             });
 
             r.save().then(resultadoNuevo =>{
-              console.log('Resultado guardado con exito!!');
-              console.log(resultadoNuevo);
+              // console.log('Resultado guardado con exito!!');
+              // console.log(resultadoNuevo);
               res.status(200).json({
                 message: 'Se ha guardado un resultado en la base de datos!',
                 obj: resultadoNuevo
               });
             }, err =>{
               console.log('Error al guardar el resultado!!');
-              console.log(err);
+              // console.log(err);
             })
           })
         };
@@ -253,8 +310,6 @@ class FinalizarTrabajo {
               trabajoBuscado.fechaRealizacion = req.body.fechaRealizacion;
 
               trabajoBuscado.save().then(function(t){
-                console.log('SE ACTUALIZO EL CHABON!!!!!!');
-                console.log(t);
 
 
                 if(t.evaluacion == 'aprobado'){
