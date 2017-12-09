@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
 // Modelos
 var Orden = require('../models/orden.model');
@@ -324,7 +325,7 @@ describe('Movimiento Finalizar Trabajo', () => {
 
   describe('POST /resultados', () => {
 
-    it('Deberia devolver todo correctamente', (done)=> {
+    it('Deberia devolver trabajo con evaluacion "desaprobado"', (done)=> {
 
 
       let payload = {
@@ -409,10 +410,20 @@ describe('Movimiento Finalizar Trabajo', () => {
         res.should.have.status(200);
         res.body.should.be.a('object');
 
+        let res_trabajo = res.body.obj
+        expect(res_trabajo).to.have.property('numTrabajo');
+        expect(res_trabajo.numTrabajo).to.equal('4');
+
+        expect(res_trabajo).to.have.property('evaluacion');
+        expect(res_trabajo.evaluacion).to.equal('desaprobado');
+
+        expect(res_trabajo).to.have.property('ordenServicio');
+        expect(res_trabajo.ordenServicio).to.equal('59c093aa1ddb97486e27a151');
+
         done();
       });
 
-    });
+    })
 
 
     it('Deberia devolver un error ya que los resultados no son una lista, o porque no es un ObjectID valido', (done)=> {
@@ -623,7 +634,105 @@ describe('Movimiento Finalizar Trabajo', () => {
     })
 
     describe('/POST /resultados', () => {
+      it('Deberia devolver trabajo con evaluacion "desaprobado"', (done)=> {
 
+
+        let payload = {
+          "trabajo":"59c095d7d302460237fe96e2",
+          "fechaRealizacion":"2017-12-03T19:58:53.695Z",
+          "resultados":[
+            {"valor":232,
+            "tipoParametro":{
+              "_id":"59c09dc5d302460237fe9ad7",
+              "idTipoParametro":"8",
+              "valorMinimo":50,
+              "valorMaximo":70,
+              "nombreAtributo":"tope",
+              "tipoTrabajo":{
+                "_id":"59c08ff507e67d44d12cf068",
+                "idTipoTrabajo":"2",
+                "nombre":"Inspeccion por ultrasonido",
+                "descripcion":"Inspeccion por ultrasonido de piezas.",
+                "__v":0
+              },
+              "tipoPieza":{
+                "_id":"59c0910bd302460237fe9558",
+                "codigoTipoPieza":"tp2",
+                "nombre":"caño recto",
+                "descripcion":"Un caño que normalmente transporta fluidos espesos corrosivos.",
+                "__v":0
+              },
+              "documento":{
+                "_id":"59c09cb7d302460237fe9a3d",
+                "idDocumento":"4",
+                "descripcion":"documento numero 4",
+                "linkArchivo":"/carpeta4",
+                "nombreArchivo":"iso13131",
+                "__v":0
+              },
+              "valor":"232"
+            }
+          },
+          {
+            "valor":123,
+            "tipoParametro":{
+              "_id":"59c09dcbd302460237fe9ade",
+              "idTipoParametro":"9",
+              "valorMinimo":2,
+              "valorMaximo":10,
+              "nombreAtributo":"entrada",
+              "tipoTrabajo":{
+                "_id":"59c08ff507e67d44d12cf068",
+                "idTipoTrabajo":"2",
+                "nombre":"Inspeccion por ultrasonido",
+                "descripcion":"Inspeccion por ultrasonido de piezas.",
+                "__v":0
+              },
+              "tipoPieza":{
+                "_id":"59c090ecd302460237fe9541",
+                "codigoTipoPieza":"tp3",
+                "nombre":"Valvula de apertura",
+                "descripcion":"Una valvula encargada de controlar la presion de los caños.",
+                "__v":0
+              },
+              "documento":{
+                "_id":"59c09cb7d302460237fe9a3d",
+                "idDocumento":"4",
+                "descripcion":"documento numero 4",
+                "linkArchivo":"/carpeta4",
+                "nombreArchivo":"iso13131",
+                "__v":0
+              },
+              "valor":"123"
+            }
+          }
+          ]
+        };
+
+        // let payload2 = JSON.parse(payload);
+        chai.request(server)
+        .post(`/movimientos/finalizarTrabajo/resultados`)
+        .set('content-type', 'application/json')
+        .send(payload)
+        .end((err,res)=> {
+
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+
+          let res_trabajo = res.body.obj
+          expect(res_trabajo).to.have.property('numTrabajo');
+          expect(res_trabajo.numTrabajo).to.equal('4');
+
+          expect(res_trabajo).to.have.property('evaluacion');
+          expect(res_trabajo.evaluacion).to.equal('desaprobado');
+
+          expect(res_trabajo).to.have.property('ordenServicio');
+          expect(res_trabajo.ordenServicio).to.equal('59c093aa1ddb97486e27a151');
+
+          done();
+        });
+
+      });
     })
   })
 

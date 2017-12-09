@@ -1,6 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
 var Schema = mongoose.Schema;
 
 var TipoPieza = require('./tipoPieza.model');

@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 // var Documento = require('../models/documento.model');
 
 //Require the dev-dependencies

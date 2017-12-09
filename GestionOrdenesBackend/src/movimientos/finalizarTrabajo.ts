@@ -266,10 +266,12 @@ class FinalizarTrabajo {
             r.save().then(resultadoNuevo =>{
               // console.log('Resultado guardado con exito!!');
               // console.log(resultadoNuevo);
-              res.status(200).json({
-                message: 'Se ha guardado un resultado en la base de datos!',
-                obj: resultadoNuevo
-              });
+              // res.status(200).json({
+              //   message: 'Se ha guardado un resultado en la base de datos!',
+              //   obj: resultadoNuevo
+              // });
+
+              resolve(resultadoNuevo)
             }, err =>{
               console.log('Error al guardar el resultado!!');
               // console.log(err);

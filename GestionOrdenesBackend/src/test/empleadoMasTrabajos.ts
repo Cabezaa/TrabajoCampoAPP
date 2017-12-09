@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
 //Require the dev-dependencies
 var chai = require('chai');

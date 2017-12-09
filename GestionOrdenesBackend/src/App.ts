@@ -3,12 +3,13 @@ var bodyParser = require('body-parser')
 var cors = require('cors')
 
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/BM');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Error en la conexion con Mongo:'));
 db.once('open', function() {
-  console.log('Base de datos Mongo: BM conectada');
+  // console.log('Base de datos Mongo: BM conectada');
 });
 
 // //don't show the log when it is test
